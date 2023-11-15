@@ -1,0 +1,133 @@
+.chosesoda{
+    position: absolute;
+    width: 25%;
+    aspect-ratio: 250/580;
+    cursor: pointer;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+
+#black{
+    transform: rotate(-30deg);
+    left: 15%;
+    top: 0px;
+}
+
+#pink{
+    transform: rotate(60deg);
+    top: 0px;
+    right: 15%;
+}
+#white{
+    transform: rotate(-120deg);
+    bottom: 0px;
+    left: 15%;
+}
+
+#red{
+    transform: rotate(150deg);
+    bottom: 0px;
+    right: 15%;
+}
+
+.rotatecantainer{
+    position: absolute;
+    height: 160%;
+    aspect-ratio: 1/1;
+    right: 0px;
+    bottom: 0px;
+    transform: translate(50%, 53%);
+    z-index: 5;
+}
+
+.animrotate{
+    animation: animationrotate 1.1s 1;
+}
+
+@keyframes animationrotate{
+    100%{
+        transform: translate(50%, 53%) rotate(var(--change));
+    }
+}
+
+.description{
+    position: relative;
+    width: 40%;
+    left: 100px;
+    top: 15vh;
+    font-size: 4vh!important;
+    z-index: 5;
+    a,  p{
+        text-shadow: -1px -1px 0 #575757, 1px -1px 0 #575757, -1px 1px 0 #575757, 1px 1px 0 #575757;
+    }
+}
+
+.bodyafter{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+}
+.animcontainer{
+    animation: animbody 1.5s 1;
+}
+
+@keyframes animbody{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+.darkbg{
+    display: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 0px;
+    height: 100%;
+    background-color: black;
+    opacity: .2;
+    z-index: 3424;
+}
+
+.container4cartbutton{
+    position: relative;
+    left: 100px;
+    margin-top: 16vh;
+    z-index: 2;
+}
+.cartbutton{
+    padding: 15px 20px;
+    width: 200px;
+    color: white;
+    background-color: rgba(255, 255, 255, .3);
+    backdrop-filter: blur(8px);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.cartbutton:hover{
+    opacity: 0.8;
+    transition: .5s;
+}
+
+.rate{
+    display: flex;
+    height: 30px;
+    
+    p{
+        position: relative;
+        top: -32px;
+        margin-left: 10px;
+        font-size: 2vw;
+    }
+}

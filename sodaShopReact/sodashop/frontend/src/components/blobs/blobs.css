@@ -1,0 +1,18 @@
+#blob1{
+    width: 304px;
+    right: 300px;
+    top: 123px;
+}
+
+#blob2{
+    width: 450px;
+    left: -10px;
+    top: 350px;
+}
+
+.blob{
+    position: fixed;
+    filter: blur(8px);
+    z-index: 1;
+    transition: .5s;
+}

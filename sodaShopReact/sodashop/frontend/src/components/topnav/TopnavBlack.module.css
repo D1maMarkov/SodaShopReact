@@ -1,0 +1,13 @@
+.topnavA{
+    font-size: 35px;
+    color: #2d1344;
+    margin: 10px;
+    margin-right: 30px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.topnav{
+    border: 1px solid #2d1344;
+    padding: 10px 10px;
+    z-index: 999;
+}

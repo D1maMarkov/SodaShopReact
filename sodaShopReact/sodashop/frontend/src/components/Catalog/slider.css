@@ -1,0 +1,73 @@
+.center-swiper-slide{
+    transform: scale(1.3);
+    z-index: 9999;
+    transition: .5s;
+    animation: center .5s;
+}
+
+.edge-swiper-slide{
+    transform: scale(0.7);
+    z-index: 100;
+    transition: .5s;
+}
+
+.middle-swiper-slide{
+    transform: scale(1);
+    transition: .5s;
+    z-index: 500;
+}
+
+.swiper{
+    height: 80vh;
+    margin-top: 5vh;
+    
+}
+
+.swiper img{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: auto;
+    height: 100%;
+    transition: .5s;
+}
+
+.swiper-button-prev, .swiper-button-next{
+    position: relative;
+    z-index: 1000;
+    padding: 0px 1px;
+    height: 40vh!important;
+    top: 25vh!important;
+    color: #2d1344;
+    background-color: transparent;
+    border-radius: 15px;
+    border: 1px solid #2d1344;
+}
+
+.swiper-button-prev::after, .swiper-button-next::after{
+    color: #2d1344;
+    font-size: 15px!important;
+}
+
+.swiper-button-prev:hover, .swiper-button-next:hover{
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+.catalog_soda{
+    position: relative!important;
+    top: 20%;
+    transform: transition(-50%, -0%);
+    height: 50vh!important;
+    -webkit-filter: drop-shadow(10px 10px 10px #00124b)!important;
+    filter: drop-shadow(10px 10px 10px #00124b)!important;
+    align-items: center;
+    transition: .5s;
+}
+
+.catalog_soda img:hover{
+    cursor: pointer!important;
+    -webkit-filter: drop-shadow(3px 3px 3px #00124b);
+    filter: drop-shadow(3px 3px 3px #00124b);
+    transition: .2s;
+}
