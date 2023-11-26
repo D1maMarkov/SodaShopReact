@@ -1,0 +1,28 @@
+.topnavA{
+    font-size: 35px;
+    color: white;
+    margin-right: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 50px;
+    padding: 5px 15px;
+    border-radius: 19px;
+}
+
+.topnavA:hover{
+    background-color: rgba(150, 150, 150, 0.3);
+    transition: .1s;
+}
+
+.topnav{
+    position: fixed;
+    width: 80%;
+    left: 110px;
+    top: 2%;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 10px;
+    z-index: 34679;
+    background: linear-gradient(45deg, rgba(255, 195, 175, 0.7), rgba(255, 215, 195, 0.7));
+    backdrop-filter: blur(8px);
+}

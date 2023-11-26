@@ -1,0 +1,338 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+    overflow-x: hidden!important;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&display=swap');
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+input:-webkit-autofill, 
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border:none !important;
+  -webkit-text-fill-color: inherit !important;
+  background-color: transparent!important;
+  background: transparent!important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+#wave1{
+    position: absolute;
+    bottom: 0px;
+    width: 500%;
+    overflow: hidden;
+    animation: animwave1 80s linear infinite;
+    z-index: 999;
+}
+
+@keyframes animwave1{
+    0%{
+        left: 0px;
+    }
+    100%{
+        left: -400%;
+    }
+}
+
+#wave2{
+    position: absolute;
+    bottom: 0px;
+    width: 500%;
+    overflow: hidden;
+    animation: animwave2 80s linear infinite;
+    left: -400%;
+    opacity: 0.5;
+    z-index: 999;
+}
+
+@keyframes animwave2{
+    0%{
+        left: -400%;
+    }
+    100%{
+        left: 0%;
+    }
+}
+
+#mice{
+    position: absolute;
+    right: 0px;
+    top: 15%;
+    z-index: 101;
+    width: 35%;
+}
+
+#bg{
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 120vh;
+    background: linear-gradient(45deg, #d13381, #ffe88c);
+
+    div{
+        position: absolute;
+        width: 35%;
+        top: 100px;
+        left: 150px;
+        color: white;
+        z-index: 999999;
+        animation: textanim 1.5s 1;
+        
+        -webkit-touch-callout: none; 
+        -webkit-user-select: none; 
+        -khtml-user-select: none; 
+            -moz-user-select: none; 
+            -ms-user-select: none;
+                user-select: none;
+       
+    }
+    div h1{
+        font-size: 90px;
+    }
+
+    div p{
+        font-size: 30px;
+    }
+}
+
+@keyframes textanim{
+    0%{
+        left: -500px;
+    }
+    100%{
+        left: 150px;
+    }
+
+}
+
+.blockimg{
+    position: relative;
+    width: calc(100% - 40px);
+    display: flex;
+    justify-content: space-between;
+    z-index: 102;
+    padding: 100px 20px 0px 20px;
+    background-color: rgb(247, 247, 246);
+    font-size: 40px;
+}
+
+.sodacontainer{
+    overflow: hidden;
+    border-radius: 20px;
+    width: 48%;
+
+    img:hover {
+        transform: scale(1.2);
+        transition: 0.5s;   
+    }
+}
+
+#energycontainer{
+    width: 38%;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.blockimg img:hover{
+    opacity: .8;
+    transition: 0.5s;
+}
+
+.secondblock{
+    width: 60%;
+}
+
+.secondblockimgs{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+footer{
+    display: inline-block;
+    width: 100%;
+    background-color: white;
+    height: 400px;
+}
+
+.footer_text{
+    display: flex;
+    margin-left: 5%;
+}
+
+.social{
+    height: 500px;
+    line-height: 30px;
+    letter-spacing: 3px;
+    font-size: 18px;
+    width: 25%;
+
+    .social_text{
+        width: 70%;
+        margin-left: 15%;
+    }
+
+    a{
+        color: rgb(200, 200, 200);
+        letter-spacing: 3px;
+        font-size: 18px;
+    }
+
+    li::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+        transition: opacity 300ms, transform 300ms;
+        opacity: 1;
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    li:hover::after,
+    li:focus::after {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    li{
+        overflow: hidden;
+        text-decoration: none;
+        color: rgb(10, 10, 10);
+        display: inline-block;
+        position: relative;
+        padding: 0.2em 0;
+        cursor: pointer;
+        letter-spacing: 3px;
+        font-size: 18px;
+    }
+}
+
+.bottom{
+    background-color: rgb(240, 240, 240);
+    text-align: center;
+    height: 100px;
+    padding: 50px 0px;
+    width: 100%;
+    margin-left: 0px;
+
+    .bottom_text{
+        margin-top: 20px;
+        font-size: 12px;
+        
+        a{
+            position: relative;
+            text-decoration: none;
+            margin-right: 20px;
+            color: black;
+            letter-spacing: 3px;
+            font-size: 18px;
+        }
+    }
+
+    .bottom_imgs span{
+        margin-right: 30px;
+    }
+}
+
+.popular_product{
+    width: 29%;
+    height: 250px;
+    background-color: white;
+    border-radius: 20px;
+    margin: 2%;
+    cursor: pointer;
+    box-shadow: -5px 6px 15px 2px rgba(50, 50, 50, .4);
+}
+
+.popular_product:hover{
+    transform: scale(1.05);
+    opacity: 0.7;
+    transition: .3s;
+}
+
+.popular_products{
+    display: flex;
+    flex-wrap: wrap;
+    width: 96%;
+    margin-left: 2%;
+}
+
+#wave3{
+    position: absolute;
+    width: 500%;
+    animation: animwave1 80s linear infinite;
+    z-index: 999;
+    bottom: -80px;
+}
+
+.popular_products_block{
+    padding: 120px 0px;
+}
+
+.popular_products_header{
+    display: flex;
+    width: 100%;
+
+    p{
+        font-size: 50px;
+        margin-left: 50px;
+    }
+
+    button {
+        position: absolute;
+        padding: 15px 0px;
+        height: 75px;
+        width: 200px;
+        color: white;
+        background-color: #a0004f;
+        border: none;
+        border-radius: 20px;
+        font-size: 20px;
+        cursor: pointer;
+        right: 50px;
+    }
+        
+    button:hover{
+        transform: scale(1.1);
+        opacity: .7;
+        transition: .3s;
+    }
+    
+}
+
+.popular_product_cart{
+    display: flex;
+
+    img{
+        margin: 20px;
+        width: 100px;
+        height: 220px;
+    }
+
+    div {
+        margin-top: 50px;
+        font-size: 25px;
+    }
+}

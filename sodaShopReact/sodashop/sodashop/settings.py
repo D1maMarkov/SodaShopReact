@@ -35,7 +35,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-
 CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
@@ -128,35 +127,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'bikerental2023@mail.ru'
-EMAIL_HOST_PASSWORD = 'MQn6XwkGbEYtHWx84mtr'
+EMAIL_HOST_USER = 'sodastockonlinestore@gmail.com'
+EMAIL_HOST_PASSWORD = 'dvtl rjmi ahrf ufeu'
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 2525
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
 
-#CORS_ORIGIN_ALLOW_ALL = True
-'''
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_URL = '/media/'
-
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-'''
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIR = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+
+TELEGRAM_API_TOKEN = '6227767495:AAFQT-rlWgQWKpatJoJAMyzuPQAqpMxRLME'
+MY_TELEGRAM_ID = 5179846794

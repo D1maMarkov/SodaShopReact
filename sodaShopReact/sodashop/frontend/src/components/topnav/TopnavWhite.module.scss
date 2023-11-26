@@ -1,0 +1,20 @@
+.topnavA{
+    font-size: 35px;
+    color: white;
+    margin-right: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 19px;
+}
+
+.topnavA:hover{
+    background-color: rgba(130, 130, 130, 0.4);
+    transition: .1s;
+}
+
+.topnav{
+    border: 1px solid white;
+    padding: 10px 10px;
+    z-index: 999;
+}

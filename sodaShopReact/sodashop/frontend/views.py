@@ -7,10 +7,14 @@ import json
 from django.forms.models import model_to_dict
 from datetime import date
 from user.models import CustomUser
+import telepot
+from django.conf import settings
 
 
-def index(request, *args, **kwargs):
-    print(23)
+telegramBot = telepot.Bot(settings.TELEGRAM_API_TOKEN)
+
+
+def index(request, *args, **kwargs): 
     return render(request, "frontend/index.html")
 
 
@@ -45,15 +49,13 @@ def getOrders(request):
         anOrder = model_to_dict(order)
         products = order.cartproduct_set.all()
         p = list(map(model_to_dict, products))
-        print(p)
+   
         for i in range(len(p)):
             p[i]["product"] = model_to_dict(Product.objects.get(id=p[i]["product"]))
             p[i]["product"]["image"] = Product.objects.get(id=p[i]["product"]["id"]).image.url
             
         anOrder["orderlist"] = p
         orders_dict.append(anOrder)
-            
-    print(orders_dict)
     
     return HttpResponse(json.dumps(orders_dict))
     
@@ -94,6 +96,9 @@ def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
         
     cart.clear()
     cart.save()
+    
+    message = "На сайте новый заказ" + "\n" + "Пользователь: " + order.user.name + "\n" +  "Цена: " + str(order.price) + " $"
+    telegramBot.sendMessage(settings.MY_TELEGRAM_ID, message, parse_mode="Markdown")
 
     return HttpResponse(status=200)
  

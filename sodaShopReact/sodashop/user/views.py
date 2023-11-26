@@ -37,10 +37,11 @@ def RegisterUser(request, username, email, password):
         return HttpResponse(status=201)
     
     code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
-    try:
-        send_mail('verification code', code, settings.EMAIL_HOST_USER, [email])
-    except:
-        return HttpResponse(status=203)
+    
+    send_mail('verification code', code, settings.EMAIL_HOST_USER, [email], fail_silently=False)
+    #except:
+    #    return HttpResponse(status=203)
+    return HttpResponse(status=200)
 
     
     user = User.objects.create_user(username=username, password=password)
@@ -58,8 +59,6 @@ def RegisterUser(request, username, email, password):
 def get_user_info(request):
     user = request.user
     CurrentUser =  CustomUser.objects.get(user=user)
-    
-    print(CurrentUser)
     
     info = {
         "username": CurrentUser.user.username,
