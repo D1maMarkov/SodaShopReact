@@ -30,7 +30,6 @@ type TypeOrder = {
 
 export const Profile: FC<{}> = () => {
     window.scrollTo(0, 0);
-    document.body.style.height = "100%";
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const navigate = useNavigate();
@@ -91,6 +90,15 @@ export const Profile: FC<{}> = () => {
         get_user();
         getOrders();
     }, []);
+
+    useEffect(() => {
+        if (orders.length == 0){
+            document.body.style.height = "100vh";
+        }
+        else{
+            document.body.style.height = "100%";
+        }
+    }, [orders]);
 
 
     return (

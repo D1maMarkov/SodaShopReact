@@ -113,7 +113,7 @@ export const Home = () => {
 
                                 <div style={{ height: "20px" }}>
                                 <img style={{ height: "20px", marginRight: "10px" }} src="/static/frontend/img/index/telegram.png" />
-                                    <li style={{ padding: "0px", lineHeight: "17px" }} onClick={() => navigate('https://t.me/n3foooooor')} >Telegram</li><br />
+                                    <li style={{ padding: "0px", lineHeight: "17px" }}><a style={{ padding: "0px", lineHeight: "17px" }} href="https://t.me/n3foooooor">Telegram</a></li><br />
                                 </div>
                             </div>
                         </div>

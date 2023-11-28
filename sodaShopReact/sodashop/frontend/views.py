@@ -7,11 +7,11 @@ import json
 from django.forms.models import model_to_dict
 from datetime import date
 from user.models import CustomUser
-import telepot
+#import telepot
 from django.conf import settings
 
 
-telegramBot = telepot.Bot(settings.TELEGRAM_API_TOKEN)
+#telegramBot = telepot.Bot(settings.TELEGRAM_API_TOKEN)
 
 
 def index(request, *args, **kwargs): 
@@ -97,8 +97,8 @@ def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
     cart.clear()
     cart.save()
     
-    message = "На сайте новый заказ" + "\n" + "Пользователь: " + order.user.name + "\n" +  "Цена: " + str(order.price) + " $"
-    telegramBot.sendMessage(settings.MY_TELEGRAM_ID, message, parse_mode="Markdown")
+    #message = "На сайте новый заказ" + "\n" + "Пользователь: " + order.user.name + "\n" +  "Цена: " + str(order.price) + " $"
+    #telegramBot.sendMessage(settings.MY_TELEGRAM_ID, message, parse_mode="Markdown")
 
     return HttpResponse(status=200)
  

@@ -4,6 +4,7 @@ body{
     overflow: auto;
     overflow-x: hidden!important;
     font-family: 'Bebas Neue', sans-serif;
+    min-height: 100%;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&display=swap');
@@ -216,7 +217,7 @@ footer{
         transform: translate3d(0, 0, 0);
     }
 
-    li{
+    li, a{
         overflow: hidden;
         text-decoration: none;
         color: rgb(10, 10, 10);

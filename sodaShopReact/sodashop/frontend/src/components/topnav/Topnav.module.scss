@@ -1,9 +1,15 @@
 .topnavImg{
     width: 30px;
     height: 30px;
-    margin: 10px;
     float: right;
     cursor: pointer;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.topnavImg:hover{
+    background-color: rgba(150, 150, 150, 0.3);
+    transition: .1s;
 }
 
 .usercircle{
