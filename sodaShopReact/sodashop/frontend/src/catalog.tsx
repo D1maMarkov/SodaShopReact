@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { Slider } from "./components/Catalog/slider";
-import { Blobs } from "./components/blobs/Blobs";
-import { Topnav } from "./components/topnav/Topnav";
-import { Cart } from "./components/cart/Cart";
+import { Blobs } from "./components/Blobs/Blobs";
+import { Topnav } from "./components/Topnav/Topnav";
+import { Cart } from "./components/Cart/Cart";
 import { TypeCartProduct } from "./components/types";
 import { TypeImage } from "./components/types";
 

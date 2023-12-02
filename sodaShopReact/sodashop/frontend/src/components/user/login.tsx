@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Blobs } from "../blobs/Blobs";
-import { Cart } from "../cart/Cart";
-import { Topnav } from "../topnav/Topnav";
+import { Blobs } from "../Blobs/Blobs";
+import { Cart } from "../Cart/Cart";
+import { Topnav } from "../Topnav/Topnav";
 import { useNavigate } from "react-router-dom";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
@@ -23,6 +23,8 @@ export const Login = () => {
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
 
+    const [reset, setReset] = useState<string>("");
+
     function login(){
         let xhttp = new XMLHttpRequest();
       
@@ -34,8 +36,32 @@ export const Login = () => {
                 setError("the username or password is incorrect");
             }
         }
-    
-        xhttp.open("GET", "/user/LoginUser/" + username + "/" + password);
+       
+        let params = `username=${username}&password=${password}`;
+      
+        xhttp.open("POST", "/user/LoginUser", true);
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp.send(params);
+    }
+
+    function Reset(){
+        setError("");
+        setReset("");
+        let xhttp = new XMLHttpRequest();
+      
+        xhttp.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200){
+                setReset("we have sent you an email to recover your password");
+            }
+            else if (this.readyState == 4 && this.status == 202){
+                setError("Incorrect username");
+            }
+            else if (this.readyState == 4 && this.status == 201){
+                setReset("you have already received an email to reset your password");
+            }
+        }
+       
+        xhttp.open("GET", `/user/GetResetToken/${username}`);
         xhttp.send();
     }
 
@@ -56,7 +82,9 @@ export const Login = () => {
             <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
             <div className={styles.errorLog} >{ error }</div>
             <TextField className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
-            <button onClick={login} style={{marginRight: '10px'}}>Login</button>
+            <a href="#" onClick={Reset} style={{ float: 'left', marginLeft: "10%" }}  >Forgotten password?</a><br /><br />
+            <div className={styles.resetMail}>{ reset }</div>
+            <button onClick={login}>Login</button>
         </div>
         </>
     )

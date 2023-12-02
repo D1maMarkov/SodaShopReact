@@ -1,10 +1,15 @@
 import React, { FC, useState, useEffect } from "react";
-import { Blobs } from "../blobs/Blobs";
+import { Blobs } from "../Blobs/Blobs";
 import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";
-import { Topnav } from "../topnav/Topnav";
-import { Cart } from "../cart/Cart";
+import { Topnav } from "../Topnav/Topnav";
+import { Cart } from "../Cart/Cart";
 import { TypeCartProduct, TypeProduct } from "../types";
+import { Footer } from "../Footer/footer";
+import BlobStyles from "../Blobs/blobs.module.scss";
+import { ValidationEmail, ValidationPhone } from "../../hooks/validations";
+import Alert from "../Alert";
+import { get_user_info } from "../../hooks/useCurrentUser";
 
 
 type TypeOrderProduct = {
@@ -29,7 +34,6 @@ type TypeOrder = {
 }
 
 export const Profile: FC<{}> = () => {
-    window.scrollTo(0, 0);
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const navigate = useNavigate();
@@ -39,22 +43,18 @@ export const Profile: FC<{}> = () => {
     const [orders, setOrders] = useState<TypeOrder[]>([]);
 
     const [username, setUsername] = useState<string>("username");
-    const [email, setEmail] = useState<string>("emial");
+    const [email, setEmail] = useState<string>("email");
+    const [phone, setPhone] = useState<string>("");
+    const [adress, setAdress] = useState<string>("");
 
-    function get_user(){
-        let xhttp = new XMLHttpRequest();
-        xhttp.responseType = 'json';
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                setUsername(xhttp.response.username);
-                setEmail(xhttp.response.email);
-                let r = 9;
-            }
-        }
-    
-        xhttp.open("GET", "/user/get_user_info");
-        xhttp.send();
-    }
+    const [usernameError, setUsernameError] = useState<string>("");
+    const [emailError, setEmailError] = useState<string>("");
+    const [phoneError, setPhoneError] = useState<string>("");
+    const [adressError, setAdressError] = useState<string>("");
+
+    const [changed, setChanged] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     function getOrders(){
         let xhttp = new XMLHttpRequest();
@@ -86,8 +86,80 @@ export const Profile: FC<{}> = () => {
         xhttp.send();
     }
 
+    function confirmAndSave(){
+        let valid: boolean = true;
+
+        let input = document.getElementById("username") as HTMLAreaElement | null;
+        if (username.length == 0){
+            valid = false;
+            setUsernameError("write non empty username");
+
+            if (input != null){
+                input.classList.add(styles.errorInput);
+            }
+        }
+        else{
+            setUsernameError("");
+            if (input != null){
+                input.classList.remove(styles.errorInput);
+            }
+        }
+
+        input = document.getElementById("email") as HTMLAreaElement | null;
+        if (!ValidationEmail(email)){
+            valid = false;
+            setEmailError("write correct email");
+          
+            if (input != null){
+                input.classList.add(styles.errorInput);
+            }
+        }
+        else{
+            setEmailError("");
+            if (input != null){
+                input.classList.remove(styles.errorInput);
+            }
+        }
+
+        input = document.getElementById("phone") as HTMLAreaElement | null;
+        if (!ValidationPhone(phone)){
+            valid = false;
+            setPhoneError("write correct phone number");
+
+            if (input != null){
+                input.classList.add(styles.errorInput);
+            }
+        }
+        else{
+            setPhoneError("");
+            if (input != null){
+                input.classList.remove(styles.errorInput);
+            }
+        }
+
+        if (valid){
+            setChanged(false);
+            setLoading(true);
+
+            let xhttp = new XMLHttpRequest();
+      
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200){
+                    setLoading(false);
+                    setOpen(true);
+                }
+            }
+        
+            let params = `username=${username}&email=${email}&adress=${adress}&phone=${phone}`;
+   
+            xhttp.open("POST", "/user/changeFields", true);
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhttp.send(params);
+        }
+    }
+
     useEffect(() => {
-        get_user();
+        get_user_info({setUserName: setUsername, setEmail: setEmail, setPhone: setPhone, setAdress: setAdress});
         getOrders();
     }, []);
 
@@ -100,6 +172,30 @@ export const Profile: FC<{}> = () => {
         }
     }, [orders]);
 
+    useEffect(() => {
+        setTimeout(() => {
+            $("#" + BlobStyles.blob1).css("position", "absolute");
+            $("#" + BlobStyles.blob2).css("position", "absolute");
+        }, 1000)
+    })
+   
+    useEffect(() => {
+        const fields = document.getElementsByClassName(styles.fields)[0] as HTMLElement | null;
+        if (fields){
+            if (loading){
+                fields.classList.add(styles.loading);
+            }
+            else{
+                fields.classList.remove(styles.loading);
+            }
+        }
+    }, [loading]);
+
+    const [open, setOpen] = useState<boolean>(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <>
@@ -107,11 +203,32 @@ export const Profile: FC<{}> = () => {
         <Cart cart={cart} setCart={setCart} setLenCart={setLenCart} />
         <Blobs />
 
+        <Alert severity={"success"} handleClose={handleClose} open={open} text={"The changes are saved!"} />
+
         <div className={styles.profile} >
-            <p style={{ color: "rgb(250, 210, 210)" }}>Username</p>
-            <p className={styles.userinfo}>{ username }</p><br />
-            <p style={{ color: "rgb(250, 210, 210)" }}>Email</p>
-            <p className={styles.userinfo} >{ email }</p><br />
+            <div className={styles.fields}>
+                <p>Username</p>
+                <input id="username" value={ username } onChange={event => {setUsername(event.target.value); setChanged(true)}} /><br />
+                <div className={styles.error} >{ usernameError }</div>
+
+                <p>Email</p>
+                <input id="email" value={ email } onChange={event => {setEmail(event.target.value); setChanged(true)}} /><br />
+                <div className={styles.error} >{ emailError }</div>
+
+                <p>Phone number</p>
+                <input id="phone" value={ phone } onChange={event => {setPhone(event.target.value); setChanged(true)}} /><br />
+                <div className={styles.error} >{ phoneError }</div>
+
+                <p>Adress</p>
+                <input id="adress" value={ adress } onChange={event => {setAdress(event.target.value); setChanged(true)}} /><br />
+                <div className={styles.error} >{ adressError }</div>
+
+                {changed ? (
+                    <button  style={{ backgroundColor: "#f50057", width: "100%", marginLeft: "0px" }} onClick={confirmAndSave} >confirm and save changes</button>
+                ):( <></> )
+                }
+            </div>
+            
             <p style={{ color: "rgb(250, 210, 210)" }}>Orders</p>
             {orders.length > 0 ? (
                 orders.map((order: TypeOrder, ind: number) =>
@@ -141,6 +258,8 @@ export const Profile: FC<{}> = () => {
                 <a style={{ textDecoration: "none", cursor: "pointer", marginTop: "50px", color: "rgb(250, 210, 210)" }} onClick={logout}>Log out</a>
             </div>
         </div>
+
+        <Footer />
         </>
     )
 }

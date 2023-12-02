@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
-import { Topnav } from "../topnav/Topnav";
-import { Blobs } from "../blobs/Blobs";
-import { Cart } from "../cart/Cart";
+import { Topnav } from "../Topnav/Topnav";
+import { Blobs } from "../Blobs/Blobs";
+import { Cart } from "../Cart/Cart";
 import { TypeCartProduct } from "../types";
 import styles from "./notFound.module.scss";
 

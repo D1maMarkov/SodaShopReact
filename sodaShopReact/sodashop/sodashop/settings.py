@@ -1,11 +1,12 @@
+from dotenv import load_dotenv
 from pathlib import Path
 import os
 
 
+load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-SECRET_KEY = 'django-insecure-p(@r*_8#maz9)x&5r@v)co+*(^fgjo__0-=@u6(a+e7e#!to!9'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 DEBUG = True
 
@@ -72,10 +73,23 @@ WSGI_APPLICATION = 'sodashop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': str(os.getenv("DB_NAME")),
+        'USER': str(os.getenv("DB_USER")),
+        'PASSWORD': str(os.getenv("DB_PASSWORD")),
+        'HOST': str(os.getenv("DB_HOST")),   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
@@ -128,7 +142,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = 'sodastockonlinestore@gmail.com'
-EMAIL_HOST_PASSWORD = 'dvtl rjmi ahrf ufeu'
+EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_HOST_PASSWORD"))
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -143,5 +157,5 @@ STATICFILES_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
-TELEGRAM_API_TOKEN = '6227767495:AAFQT-rlWgQWKpatJoJAMyzuPQAqpMxRLME'
-MY_TELEGRAM_ID = 5179846794
+TELEGRAM_API_TOKEN = str(os.getenv("TELEGRAM_API_TOKEN"))
+MY_TELEGRAM_ID = int(os.getenv('MY_TELEGRAM_ID'))

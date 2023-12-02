@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect} from "react";
-import { Blobs } from "../blobs/Blobs";
-import { Cart } from "../cart/Cart";
-import { Topnav } from "../topnav/Topnav";
+import { Blobs } from "../Blobs/Blobs";
+import { Cart } from "../Cart/Cart";
+import { Topnav } from "../Topnav/Topnav";
 import { RotateSoda } from "./Rotate";
 import { MyButton } from "./addToCartButton";
 import { ProductRating } from "./Rating";

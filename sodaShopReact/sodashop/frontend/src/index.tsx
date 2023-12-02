@@ -4,13 +4,14 @@ import { Catalog } from "./catalog";
 import { Home } from "./Home";
 import { Soda } from "./components/SodaComponent/Soda";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Login } from './components/user/login';
-import { Register } from './components/user/register';
-import { Confirm } from "./components/user/confirm";
-import { Profile } from "./components/user/profile";
+import { Login } from './components/User/login';
+import { Register } from './components/User/register';
+import { Confirm } from "./components/User/confirm";
+import { Profile } from "./components/User/profile";
 import { PrivateRoute } from "./utils/privateroute";
 import { Page404 } from "./components/404error/notFound";
-import { SendLocation } from "./components/orderForm/orderForm";
+import { SendLocation } from "./components/OrderForm/orderForm";
+import { ResetPassword } from "./components/User/resetPassword";
 
 
 ReactDOM.render((
@@ -27,6 +28,7 @@ ReactDOM.render((
             <Route element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />}/>
             </Route>
+            <Route path="/resetPassword/:token" element={<ResetPassword />}/>
         </Routes>
     </BrowserRouter>
 

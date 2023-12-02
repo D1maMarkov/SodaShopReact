@@ -1,13 +1,13 @@
 import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import React, { FC, useCallback, useEffect, useState, ChangeEvent } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getCart } from "../../hooks/useCart";
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { Blobs } from "../blobs/Blobs";
+import { Blobs } from "../Blobs/Blobs";
 import usePlacesAutocomplete, {getGeocode, getLatLng } from "use-places-autocomplete";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -16,6 +16,8 @@ import 'swiper/css/navigation';
 import "swiper/swiper-bundle.css";
 import styles from "./orderForm.module.scss";
 import { TypeCartProduct } from "../types";
+import { ValidationPhone } from "../../hooks/validations";
+import { get_user_info } from "../../hooks/useCurrentUser";
 
 
 const libraries: Libraries = ["places"];
@@ -179,11 +181,7 @@ export const SendLocation: FC<{}> = () => {
         setErrorName("");
       }
 
-      let re = /[+][7]\d{10}/g;
-      let myArray = re.exec(phone);
-
-
-      if (myArray && phone.length == 12){
+      if (ValidationPhone(phone)){
         setErrorPhone("");
       }
 
@@ -250,6 +248,7 @@ export const SendLocation: FC<{}> = () => {
       }
     }
 
+
     useEffect(() => getCart(setCart), []);
     useEffect(checkPhoneNumber, [phone]);
     useEffect(getUserLocation, []);
@@ -259,6 +258,8 @@ export const SendLocation: FC<{}> = () => {
           product.product.price * product.quantity 
       ).reduce((accumulator, currentValue) => accumulator + currentValue, initialValue));
     }, [cart]);
+
+    useEffect(() => get_user_info({setUserName: setName, setPhone: setPhone, setAdress: setValue}), []);
 
     const changeDeliveryMethod = (value: string) =>{
       setDelivery(value);

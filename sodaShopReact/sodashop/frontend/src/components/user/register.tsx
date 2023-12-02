@@ -1,18 +1,19 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { Blobs } from "../blobs/Blobs";
-import { Cart } from "../cart/Cart";
-import { Topnav } from "../topnav/Topnav";
+import React, { useState, useEffect, ChangeEvent, FC } from "react";
+import { Blobs } from "../Blobs/Blobs";
+import { Cart } from "../Cart/Cart";
+import { Topnav } from "../Topnav/Topnav";
 import { useNavigate } from "react-router-dom";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
 import { TypeCartProduct } from "../types";
+import { ValidationEmail } from "../../hooks/validations";
 
 
-export const Register = () => {
+export const Register:FC = () => {
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
-    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat;";
     document.body.style.height = "100vh";
+    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const navigate = useNavigate();
     const [cart, setCart] = useState<TypeCartProduct[]>([]);
@@ -52,22 +53,24 @@ export const Register = () => {
             }
         }
 
-    
-        xhttp.open("GET", "/user/RegisterUser/" + username + "/" + email + "/" + password);
-        xhttp.send();
+        let params = `username=${username}&password=${password}&email=${email}`;
+      
+        xhttp.open("POST", "/user/RegisterUser", true);
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp.send(params);
     }
 
+    function handleEmail(email: string){
+        setEmail(email);
 
-    function ValidationEmail(event: ChangeEvent<HTMLInputElement>){
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        setEmail(event.target.value);
-        if (re.test(event.target.value) ) {
+        if (ValidationEmail(email)){
             setError2("");
         }
         else{
             setError2("invalid email address");
         }
     }
+
 
     useEffect(() =>{
         if (email.length > 0 && password.length > 0 && username.length > 0 && error2.length == 0 ){
@@ -105,7 +108,7 @@ export const Register = () => {
                 <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
                 <div className={styles.errorLog} >{ error1 }</div>
 
-                <TextField type="email" className={styles.loginInput} label="Email" value={email} variant="standard" onChange={(event: ChangeEvent<HTMLInputElement>) => ValidationEmail(event)}/>
+                <TextField type="email" className={styles.loginInput} label="Email" value={email} variant="standard" onChange={event => ValidationEmail(event.target.value)}/>
                 <div className={styles.errorLog} >{ error2 }</div>
 
                 <TextField className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>

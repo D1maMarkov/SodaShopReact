@@ -3,7 +3,6 @@ import Alert from "../Alert";
 import { TypeCartProduct, TypeProduct } from "../types";
 
 
-
 type TypeButton = {
     cart: TypeCartProduct[],
     setCart: Dispatch<TypeCartProduct[]>,

@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('price', models.IntegerField(null=True)),
                 ('user', models.CharField(max_length=50, null=True)),
                 ('curent_date', models.CharField(max_length=50, null=True)),
-                ('orderlist', models.CharField(max_length=5000000, null=True)),
+                ('orderlist', models.CharField(max_length=255, null=True)),
             ],
         ),
         migrations.CreateModel(

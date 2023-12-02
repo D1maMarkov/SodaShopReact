@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { SodaBlock } from "./SodaBlock";
 import { TypeProduct } from "../types";
 import "./main.scss";
-import blobStyles from "../blobs/blobs.module.scss";
 
 
 export const Soda = () => {

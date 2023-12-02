@@ -15,22 +15,22 @@ class Product(models.Model):
     gradient = models.CharField(max_length=500)
     blob1 = models.CharField(max_length=50)
     blob2 = models.CharField(max_length=50)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, unique=False)
     
 class PopularProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
     code = models.IntegerField(null=True)
 
 class Rate(models.Model):
     rate = models.IntegerField(null=True)
-    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, null=True, unique=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
     
 class Order(models.Model):
     price = models.IntegerField(null=True)
-    user = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
     curent_date = models.CharField(max_length=50, null=True)
-    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, null=True, unique=False)
     delivery = models.CharField(max_length=50, null=True, choices=deliveryMethods)
     payment = models.CharField(max_length=50, null=True, choices=paymentMethods)
     comment = models.CharField(max_length=50, null=True)
@@ -38,7 +38,7 @@ class Order(models.Model):
     lng = models.CharField(max_length = 500, null=True)
     
 class CartProduct(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, unique=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
     quantity = models.IntegerField(null=True)
     

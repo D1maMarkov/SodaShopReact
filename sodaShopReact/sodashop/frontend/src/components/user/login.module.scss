@@ -21,6 +21,13 @@ hr{
     z-index: 1;
     overflow: hidden;
     font-family: Roboto, Helvetica, Arial, sans-serif;
+
+    .resetMail{
+        margin-top: 20px;
+        margin-left: 10%;
+        width: 80%;
+        text-align: left;
+    }
 }
 
 .errorLog{
@@ -74,12 +81,6 @@ button:disabled{
     z-index: 999;
 }
 
-.userinfo{
-    background-color: rgba(255, 255, 255, 0.3);
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
 .order_product_description{
     position: relative;
     top: 25px;
@@ -127,6 +128,16 @@ button:disabled{
     transform: translate(-50%, 0%);
     z-index: 120;
 }
+
+.loading{
+    opacity: 0.7;
+    cursor: not-allowed;
+
+    * {
+        pointer-events: none;
+    }
+}
+
 .profile{
     position: relative;
     margin-top: 140px;
@@ -138,7 +149,43 @@ button:disabled{
     color: white;
     z-index: 3;
     width: 50%;
+
+    .fields{
+        p {
+            color: rgb(250, 210, 210);
+        }
+
+        .error{
+            text-align: left;
+            color: red;
+            font-size: 15px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        input {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            border: none;
+            width: calc(100% - 20px);
+            outline: none;
+            letter-spacing: 1px;
+        }
+
+        input:-webkit-autofill{
+            -webkit-text-fill-color: white !important;
+        }
+
+        input:-webkit-autofill {
+            caret-color: white;
+          }
+    }
 }
+
 .order_product_description{
     position: relative;
     top: 25px;
@@ -178,4 +225,17 @@ button:disabled{
     position: absolute;
     bottom: 20px;
     right: 40px;
+}
+
+.errorInput{
+    border: 1px solid red!important; 
+}
+
+.invalidLink{
+    position: absolute;
+    color: white;
+    margin-top: 30vh;
+    z-index: 2;
+    margin-left: 10%;
+    letter-spacing: 1px;
 }

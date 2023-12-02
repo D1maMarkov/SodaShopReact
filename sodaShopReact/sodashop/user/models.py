@@ -9,3 +9,9 @@ class CustomUser(models.Model):
     verification_code = models.IntegerField(null=True)
     name = models.CharField(max_length=50, null=True)
     phone = models.CharField(max_length=50, null=True)
+    adress = models.CharField(max_length=500, null=True)
+    
+class TokenToResetPassword(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    token = models.CharField(max_length=32)
+    created_at = models.DateTimeField(auto_now_add=True)

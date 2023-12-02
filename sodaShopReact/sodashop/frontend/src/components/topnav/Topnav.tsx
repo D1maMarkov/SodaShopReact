@@ -5,7 +5,8 @@ import stylesCommon from "./Topnav.module.scss";
 import stylesBlack from "./TopnavBlack.module.scss";
 import stylesWhite from "./TopnavWhite.module.scss";
 import stylesMainPage from "./TopnavMainPage.module.scss";
-import stylesCart from "../cart/Cart.module.scss";
+import stylesCart from "../Cart/Cart.module.scss";
+import { get_user_info } from "../../hooks/useCurrentUser";
 
 
 type TypeStyles = {
@@ -28,27 +29,11 @@ type TypeTopnav = {
 }
 
 export const Topnav: FC<TypeTopnav> = ({type, color, len_cart, setOpenCart}) => {
-    const [user, setCurrentUser] = useState<string | null>(null);
+    const [user, setUser] = useState<string>("");
 
     const navigate = useNavigate();
 
-    function get_user(){
-        let xhttp = new XMLHttpRequest();
-        xhttp.responseType = 'json';
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                setCurrentUser(xhttp.response);
-            }
-            else if (this.readyState == 4 && this.status == 202){
-                setCurrentUser(null);
-            }
-        }
-    
-        xhttp.open("GET", "/user/get_current_user");
-        xhttp.send();
-    }
-
-    useEffect(get_user, []);
+    useEffect(() => get_user_info({setUserName: setUser}), []);
 
     function OpenCart(){
         $("." + stylesCart.cart).css("right", "0px");
@@ -69,7 +54,7 @@ export const Topnav: FC<TypeTopnav> = ({type, color, len_cart, setOpenCart}) => 
             <a className={styles[type as keyof TypeStyles].topnavA} onClick={() => navigate("/catalog")}>Shop</a>
 
             <div style={{float: "right"}}>
-                {user != null ? (
+                {user != null && user.length > 0 ? (
                     <>
                         <div onClick={() => navigate("/profile")} className={stylesCommon.usercircle}>
                             <a className={stylesCommon.usercircleA} >{user[0]}</a>
