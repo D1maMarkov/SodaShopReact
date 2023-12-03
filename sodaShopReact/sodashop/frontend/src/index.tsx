@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from 'react-dom';
 import { Catalog } from "./catalog";
 import { Home } from "./Home";

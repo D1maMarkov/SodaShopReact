@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Blobs } from "../Blobs/Blobs";
 import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";

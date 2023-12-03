@@ -1,5 +1,6 @@
 import { Dispatch } from "react";
 
+
 type TypeUserInfo = {
     setUserName?: Dispatch<string> | Dispatch<string | null>;
     setEmail?: Dispatch<string>,

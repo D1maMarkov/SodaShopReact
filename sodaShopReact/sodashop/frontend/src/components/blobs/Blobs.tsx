@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC, SVGProps } from "react";
 import styles from "./blobs.module.scss";
 
 
@@ -6,7 +6,7 @@ type TypeBlobs = {
     colors?: string[]
 }
 
-export const Blobs:FC<TypeBlobs & React.SVGProps<SVGElement>> = ({colors = ["a0004f", "d97aa9"]}) => {
+export const Blobs:FC<TypeBlobs & SVGProps<SVGElement>> = ({colors = ["a0004f", "d97aa9"]}) => {
     return (
         <>
             <div className={styles.blob} id={styles.blob1}>

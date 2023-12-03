@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { Slider } from "./components/Catalog/slider";
 import { Blobs } from "./components/Blobs/Blobs";
 import { Topnav } from "./components/Topnav/Topnav";

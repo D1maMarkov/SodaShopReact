@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect, Dispatch, SetStateAction } from "react";
+import {FC, useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import Badge from '@material-ui/core/Badge';
 import stylesCommon from "./Topnav.module.scss";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { Blobs } from "../Blobs/Blobs";
 import { Cart } from "../Cart/Cart";
 import { Topnav } from "../Topnav/Topnav";

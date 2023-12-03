@@ -1,4 +1,4 @@
-import React, { FC, useState, ChangeEvent, Dispatch } from "react";
+import { FC, useState, Dispatch } from "react";
 import Alert from "../Alert";
 import { TypeCartProduct, TypeProduct } from "../types";
 

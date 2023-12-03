@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Blobs } from "../Blobs/Blobs";
 import { Cart } from "../Cart/Cart";
 import { Topnav } from "../Topnav/Topnav";

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Topnav } from "./components/Topnav/Topnav";
 import { Blobs } from "./components/Blobs/Blobs";
 import { Cart } from "./components/Cart/Cart";
 import { useNavigate } from "react-router-dom";
-import { TypeCartProduct, TypeProduct } from "./components/types";
+import { TypeCartProduct } from "./components/types";
 import BlobStyles from "./components/Blobs/blobs.module.scss";
 import "./Home.scss";
 import { Footer } from "./components/Footer/footer";

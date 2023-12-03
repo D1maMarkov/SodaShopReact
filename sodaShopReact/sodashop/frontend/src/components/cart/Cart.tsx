@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCart } from "../../hooks/useCart";
 import { TypeCartProduct } from "../types";

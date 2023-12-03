@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, FC } from "react";
+import { useState, useEffect, ChangeEvent, FC } from "react";
 import { Blobs } from "../Blobs/Blobs";
 import { Cart } from "../Cart/Cart";
 import { Topnav } from "../Topnav/Topnav";
@@ -32,32 +32,34 @@ export const Register:FC = () => {
     const [registerBlankStyles, setStyles] = useState({});
 
     function login(){
-        setLoading(true);
-        let xhttp = new XMLHttpRequest();
-      
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                navigate("/confirm");
+        if (error2.length == 0){
+            setLoading(true);
+            let xhttp = new XMLHttpRequest();
+        
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200){
+                    navigate("/confirm");
+                }
+                else if (this.readyState == 4 && this.status == 202){
+                    setError1("a user with this username already exists");
+                    setLoading(false);
+                }
+                else if (this.readyState == 4 && this.status == 201){
+                    setLoading(false);
+                    setError2("a user with this email already exists");
+                }
+                else if (this.readyState == 4 && this.status == 203){
+                    setLoading(false);
+                    setError2("apparently you entered an incorrect email address");
+                }
             }
-            else if (this.readyState == 4 && this.status == 202){
-                setError1("a user with this username already exists");
-                setLoading(false);
-            }
-            else if (this.readyState == 4 && this.status == 201){
-                setLoading(false);
-                setError2("a user with this email already exists");
-            }
-            else if (this.readyState == 4 && this.status == 203){
-                setLoading(false);
-                setError2("apparently you entered an incorrect email address");
-            }
-        }
 
-        let params = `username=${username}&password=${password}&email=${email}`;
-      
-        xhttp.open("POST", "/user/RegisterUser", true);
-        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhttp.send(params);
+            let params = `username=${username}&password=${password}&email=${email}`;
+        
+            xhttp.open("POST", "/user/RegisterUser", true);
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhttp.send(params);
+        }
     }
 
     function handleEmail(email: string){
@@ -108,7 +110,7 @@ export const Register:FC = () => {
                 <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
                 <div className={styles.errorLog} >{ error1 }</div>
 
-                <TextField type="email" className={styles.loginInput} label="Email" value={email} variant="standard" onChange={event => ValidationEmail(event.target.value)}/>
+                <TextField type="email" className={styles.loginInput} label="Email" value={email} variant="standard" onChange={event => handleEmail(event.target.value)}/>
                 <div className={styles.errorLog} >{ error2 }</div>
 
                 <TextField className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>

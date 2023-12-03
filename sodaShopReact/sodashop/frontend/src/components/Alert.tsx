@@ -1,8 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import MuiAlert, { AlertColor } from "@mui/material/Alert";
-import { ChangeEvent } from "react";
 
 
 type TypeAlert = {

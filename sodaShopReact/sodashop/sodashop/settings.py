@@ -73,7 +73,7 @@ WSGI_APPLICATION = 'sodashop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -92,7 +92,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -158,4 +158,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
 TELEGRAM_API_TOKEN = str(os.getenv("TELEGRAM_API_TOKEN"))
-MY_TELEGRAM_ID = int(os.getenv('MY_TELEGRAM_ID'))
+MY_TELEGRAM_ID = int(str(os.getenv('MY_TELEGRAM_ID')))

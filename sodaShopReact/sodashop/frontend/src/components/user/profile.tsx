@@ -1,15 +1,15 @@
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { Blobs } from "../Blobs/Blobs";
-import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";
 import { Topnav } from "../Topnav/Topnav";
 import { Cart } from "../Cart/Cart";
 import { TypeCartProduct, TypeProduct } from "../types";
 import { Footer } from "../Footer/footer";
-import BlobStyles from "../Blobs/blobs.module.scss";
 import { ValidationEmail, ValidationPhone } from "../../hooks/validations";
-import Alert from "../Alert";
 import { get_user_info } from "../../hooks/useCurrentUser";
+import Alert from "../Alert";
+import BlobStyles from "../Blobs/blobs.module.scss";
+import styles from "./login.module.scss";
 
 
 type TypeOrderProduct = {
