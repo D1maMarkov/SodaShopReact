@@ -35,6 +35,8 @@ type TypeOrder = {
 
 export const Profile: FC<{}> = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
+    document.body.style.height = "100%";
+    document.body.style.overflow = "auto";
 
     const navigate = useNavigate();
 
@@ -162,15 +164,6 @@ export const Profile: FC<{}> = () => {
         get_user_info({setUserName: setUsername, setEmail: setEmail, setPhone: setPhone, setAdress: setAdress});
         getOrders();
     }, []);
-
-    useEffect(() => {
-        if (orders.length == 0){
-            document.body.style.height = "100vh";
-        }
-        else{
-            document.body.style.height = "100%";
-        }
-    }, [orders]);
 
     useEffect(() => {
         setTimeout(() => {
