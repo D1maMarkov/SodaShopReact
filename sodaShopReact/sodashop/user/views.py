@@ -77,8 +77,8 @@ def get_user_info(request):
     info = {
         "username": CurrentUser.user.username,
         "email": CurrentUser.email,
-        "phone": CurrentUser.phone,
-        "adress": CurrentUser.adress,
+        "phone": CurrentUser.phone if CurrentUser.phone != None else "",
+        "adress": CurrentUser.adress if CurrentUser.adress != None else "",
     }
     
     return HttpResponse(json.dumps(info))

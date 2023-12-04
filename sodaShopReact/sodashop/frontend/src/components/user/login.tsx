@@ -81,7 +81,7 @@ export const Login = () => {
                
             <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
             <div className={styles.errorLog} >{ error }</div>
-            <TextField className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
+            <TextField type={"password"} className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
             <a href="#" onClick={Reset} style={{ float: 'left', marginLeft: "10%" }}  >Forgotten password?</a><br /><br />
             <div className={styles.resetMail}>{ reset }</div>
             <button onClick={login}>Login</button>

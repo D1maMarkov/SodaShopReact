@@ -12,7 +12,6 @@ import telebot
 
 
 bot = telebot.TeleBot(settings.TELEGRAM_API_TOKEN)
-bot.polling(none_stop=True)
 
 
 def index(request, *args, **kwargs): 
@@ -76,6 +75,9 @@ def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
         lng = lng
     )
     
+    message = "На сайте новый заказ"
+    bot.send_message(settings.MY_TELEGRAM_ID, message)
+    
     order.save()
     
     user = CustomUser.objects.get(user=request.user)
@@ -97,14 +99,14 @@ def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
         
     cart.clear()
     cart.save()
-    
-    message = "На сайте новый заказ" + "\n" + "Пользователь: " + order.user.name + "\n" +  "Цена: " + str(order.price) + " $"
-    bot.send_message(settings.MY_TELEGRAM_ID, message)
 
     return HttpResponse(status=200)
  
     
 def send_feedback(request, product_id, rate):
+    if not request.user.is_authenticated:
+        return HttpResponse(status = 201)
+    
     user = User.objects.get(username=request.user.get_username())
     
     customUser = CustomUser.objects.get(user=user)

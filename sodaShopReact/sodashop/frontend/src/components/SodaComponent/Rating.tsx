@@ -64,6 +64,9 @@ export const ProductRating: FC<TypeProductRating> = ({ product }) => {
             else if (this.readyState == 4 && this.status == 202){
                 setOpenWarning(true);
             }
+            else if (this.readyState == 4 && this.status == 201){
+                setOpenError(true);
+            }
         }
 
         xhttp.open("GET", "/send_feedback/" + product.id + "/" + rating);
@@ -71,10 +74,15 @@ export const ProductRating: FC<TypeProductRating> = ({ product }) => {
     }
 
     useEffect(get_rates, [product]);
+    useEffect(() => {
+        if (rating != 0){
+            send_feedback();
+        }
+    }, [rating]);
 
     return (
         <>
-        <div onClick={send_feedback} title="send feedback" className={"rate"} onMouseLeave={() => setRating(0)}>
+        <div title="send feedback" className={"rate"} onMouseLeave={() => setRating(0)}>
             <Rating initialValue={rating} onClick={handleRating} />
             <p>{ currentRate }</p>
         </div>
