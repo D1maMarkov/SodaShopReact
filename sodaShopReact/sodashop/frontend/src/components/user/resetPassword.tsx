@@ -5,15 +5,11 @@ import { Topnav } from "../Topnav/Topnav";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
-import { TypeCartProduct } from "../types";
 import Alert from "../Alert";
 
 
 export const ResetPassword:FC = () => {
-    window.scrollTo(0, 0);
-    document.body.style.overflow = "hidden";
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
-    document.body.style.height = "100vh";
 
     const navigate = useNavigate();
     const params = useParams();
@@ -21,9 +17,6 @@ export const ResetPassword:FC = () => {
     const token: string | undefined = params.token;
 
     const [username, setUsername] = useState<string>("");
-
-    const [cart, setCart] = useState<TypeCartProduct[]>([]);
-    const [len_cart, setLenCart] = useState<number>(0);
 
     const [password1, setPassword1] = useState<string>("");
     const [password2, setPassword2] = useState<string>("");
@@ -68,7 +61,6 @@ export const ResetPassword:FC = () => {
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200){
                 setUsername(xhttp.response);
-                console.log(xhttp.response);
             }
             else if (this.readyState == 4 && this.status == 202){
                 setLink(false);
@@ -103,8 +95,8 @@ export const ResetPassword:FC = () => {
 
     return (
         <>
-        <Topnav len_cart={len_cart} type={"mainPage"} color={"white"} />
-        <Cart cart={cart} setCart={setCart} setLenCart={setLenCart} />
+        <Topnav color={"white"} />
+        <Cart />
         <Blobs />
 
         <Alert severity={"success"} handleClose={handleClose} open={open} text={"The password has been saved successfully!"} />

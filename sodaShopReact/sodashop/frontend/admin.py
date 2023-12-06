@@ -10,8 +10,8 @@ class PopularProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['price', 'user', "delivery", "payment", "lat", "lng", 'curent_date', "comment"]
-    list_editable = ['price', 'user', "delivery", "payment", "lat", "lng", 'curent_date', "comment"]
+    list_display = ['price', 'user', 'curent_date', "comment", "state"]
+    list_editable = ['price', 'user', 'curent_date', "comment", "state"]
     list_display_links = None
 
 @admin.register(Rate)

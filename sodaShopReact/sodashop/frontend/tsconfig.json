@@ -9,7 +9,9 @@
       "ES6", 
       "DOM.Iterable", 
       "ScriptHost", 
-      "ES2016.Array.Include"
+      "ES2016.Array.Include",
+      "es5", 
+      "es6",
     ],
     "allowJs": true,
     "skipLibCheck": true,

@@ -1,7 +1,6 @@
 import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import { FC, useCallback, useEffect, useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCart } from "../../hooks/useCart";
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,6 +17,8 @@ import styles from "./orderForm.module.scss";
 import { TypeCartProduct } from "../types";
 import { ValidationPhone } from "../../hooks/validations";
 import { get_user_info } from "../../hooks/useCurrentUser";
+import { RootState } from "../../state/store";
+import { useSelector } from "react-redux";
 
 
 const libraries: Libraries = ["places"];
@@ -32,10 +33,7 @@ type TypeCords = {
     lng: number
 }
 
-export const SendLocation: FC<{}> = () => {
-    window.scrollTo(0, 0);
-    document.body.style.overflow = "hidden";
-    document.body.style.height = "100vh";
+export const SendLocation: FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
 	  const navigate = useNavigate();
@@ -55,13 +53,13 @@ export const SendLocation: FC<{}> = () => {
     const [errorPayment, setErrorPayment] = useState<string>("");
     const [errorDelivery, setErrorDelivery] = useState<string>("");
 
-    const [cart, setCart] = useState<TypeCartProduct[]>([]);
-    const initialValue: number = 0;
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [deliveryPrice, setDeliveryPrice] = useState<number>(0);
 
     const [loading, setLoading] = useState<boolean>(false); 
     const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+
+    const cart = useSelector((state: RootState) => state.cart.cart);
 
     const { isLoaded } = useJsApiLoader({
       id: 'google-map-script',
@@ -248,15 +246,13 @@ export const SendLocation: FC<{}> = () => {
       }
     }
 
-
-    useEffect(() => getCart(setCart), []);
     useEffect(checkPhoneNumber, [phone]);
     useEffect(getUserLocation, []);
 
     useEffect(() => {
       setTotalPrice(cart.map((product: TypeCartProduct) => 
           product.product.price * product.quantity 
-      ).reduce((accumulator, currentValue) => accumulator + currentValue, initialValue));
+      ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0));
     }, [cart]);
 
     useEffect(() => get_user_info({setUserName: setName, setPhone: setPhone, setAdress: setValue}), []);

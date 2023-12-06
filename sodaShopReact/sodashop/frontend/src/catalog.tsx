@@ -3,18 +3,11 @@ import { Slider } from "./components/Catalog/slider";
 import { Blobs } from "./components/Blobs/Blobs";
 import { Topnav } from "./components/Topnav/Topnav";
 import { Cart } from "./components/Cart/Cart";
-import { TypeCartProduct } from "./components/types";
 import { TypeImage } from "./components/types";
 
 
 export const Catalog = () => {
-    window.scrollTo(0, 0);
-    document.body.style.overflow = "hidden";
-    document.body.style.height = "100vh";
     document.body.style.background = "linear-gradient(45deg, rgb(110, 100, 120), rgb(250, 250, 250))";
-
-    const [cart, setCart] = useState<TypeCartProduct[]>([]);
-    const [len_cart, setLenCart] = useState<number>(0);
 
     const [ProdImgs, setImgs] = useState<TypeImage[]>([]);
 
@@ -38,14 +31,13 @@ export const Catalog = () => {
         xhttp.send();
     }
 
-
     useEffect(getProducts, []);
-   
+
     return (
         <>
-            <Topnav len_cart={len_cart} type={"black"} color={"black"}/>
-            <Cart cart={cart} setCart={setCart} setLenCart={setLenCart}/>
-            <Blobs colors={["60577e", "af9de8"]} />
+            <Topnav type={"simple"} color={"black"}/>
+            <Cart />
+            <Blobs colors={["60577e", "af9de8"]} overflow={"hidden"}/>
             <Slider slider={ProdImgs} />
         </>
     );

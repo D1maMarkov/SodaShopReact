@@ -3,6 +3,8 @@ from django.db import models
 
 deliveryMethods = (("Courier", "Courier"),  ("Pickup", "Pickup"))
 paymentMethods = (("By cash", "By cash"), ("Bank card", "Bank card"))
+orderStates = (("At the pick-up point", "At the pick-up point"), ("In the warehouse", "In the warehouse"), ("On the way", "On the way"))
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -36,6 +38,7 @@ class Order(models.Model):
     comment = models.CharField(max_length=50, null=True)
     lat = models.CharField(max_length = 500, null=True)
     lng = models.CharField(max_length = 500, null=True)
+    state = models.CharField(max_length = 50, choices=orderStates)
     
 class CartProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, unique=False)

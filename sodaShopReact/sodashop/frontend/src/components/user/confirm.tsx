@@ -1,15 +1,12 @@
 import { ChangeEvent, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Blobs } from "../Blobs/Blobs";
 import styles from "./login.module.scss";
-import { useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 
 
 export const Confirm = () => {
-    window.scrollTo(0, 0);
-    document.body.style.overflow = "hidden";
-    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat;";
-    document.body.style.height = "100vh";
+    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const [code, setCode] = useState<string>("");
     const [error, setError] = useState<string>("");

@@ -3,12 +3,11 @@ import { Blobs } from "../Blobs/Blobs";
 import { useNavigate } from "react-router-dom";
 import { Topnav } from "../Topnav/Topnav";
 import { Cart } from "../Cart/Cart";
-import { TypeCartProduct, TypeProduct } from "../types";
+import { TypeProduct } from "../types";
 import { Footer } from "../Footer/footer";
 import { ValidationEmail, ValidationPhone } from "../../hooks/validations";
 import { get_user_info } from "../../hooks/useCurrentUser";
 import Alert from "../Alert";
-import BlobStyles from "../Blobs/blobs.module.scss";
 import styles from "./login.module.scss";
 
 
@@ -20,7 +19,7 @@ type TypeOrderProduct = {
 }
 
 type TypeOrder = {
-    current_date: string,
+    curent_date: string,
     delivery: string,
     price: number,
     id: number,
@@ -30,18 +29,16 @@ type TypeOrder = {
     length: number,
     user: number,
     comment: string,
-    payment: string
+    payment: string,
+    state: string,
 }
 
-export const Profile: FC<{}> = () => {
+
+export const Profile: FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
-    document.body.style.height = "100%";
-    document.body.style.overflow = "auto";
 
     const navigate = useNavigate();
 
-    const [cart, setCart] = useState<TypeCartProduct[]>([]);
-    const [len_cart, setLenCart] = useState<number>(0);
     const [orders, setOrders] = useState<TypeOrder[]>([]);
 
     const [username, setUsername] = useState<string>("username");
@@ -64,10 +61,7 @@ export const Profile: FC<{}> = () => {
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200){
                 setOrders(xhttp.response);
-             
-                if (xhttp.response.length > 0){
-                    document.body.style.overflowY = "auto";
-                }
+                console.log(xhttp.response);
             }
         }
     
@@ -164,13 +158,6 @@ export const Profile: FC<{}> = () => {
         get_user_info({setUserName: setUsername, setEmail: setEmail, setPhone: setPhone, setAdress: setAdress});
         getOrders();
     }, []);
-
-    useEffect(() => {
-        setTimeout(() => {
-            $("#" + BlobStyles.blob1).css("position", "absolute");
-            $("#" + BlobStyles.blob2).css("position", "absolute");
-        }, 1000)
-    })
    
     useEffect(() => {
         const fields = document.getElementsByClassName(styles.fields)[0] as HTMLElement | null;
@@ -192,9 +179,9 @@ export const Profile: FC<{}> = () => {
 
     return (
         <>
-        <Topnav len_cart={len_cart} type={"mainPage"} color={"white"} />
-        <Cart cart={cart} setCart={setCart} setLenCart={setLenCart} />
-        <Blobs />
+        <Topnav color={"white"} />
+        <Cart />
+        <Blobs overflow={""} />
 
         <Alert severity={"success"} handleClose={handleClose} open={open} text={"The changes are saved!"} />
 
@@ -227,8 +214,14 @@ export const Profile: FC<{}> = () => {
                 orders.map((order: TypeOrder, ind: number) =>
                     <div className={styles.order_products}>
                         <div className={styles.order_date}>                     
-                            <p>{ order.current_date }</p>                      
+                            <p>{ order.curent_date }</p>                      
                             <p>price: { order.price } $</p>
+                            {order.state == "At the pick-up point" ? (
+                                    <div style={{ backgroundColor: "#77e565" }} className={styles.orderState}>{ order.state }</div>    
+                                ):(
+                                    <div className={styles.orderState}>{ order.state }</div> 
+                                ) 
+                            }           
                         </div>
                         <div className={styles.order_list} >
                            {order.orderlist.map((product: TypeOrderProduct) => 
@@ -245,10 +238,10 @@ export const Profile: FC<{}> = () => {
                     </div>
                 )
             ):(
-                <p style={{ position: "relative", left: "30px", color: "rgb(250, 210, 210)" }}>You have no any orders</p>
+                <p style={{ textAlign: "center", color: "white", fontSize: "35px" }} >You have no any orders</p>
             )}
             <div style={{ marginTop: "50px", paddingBottom: "100px" }}>
-                <a style={{ textDecoration: "none", cursor: "pointer", marginTop: "50px", color: "rgb(250, 210, 210)" }} onClick={logout}>Log out</a>
+                <button className={styles.LogOut} onClick={logout} >Log out</button>
             </div>
         </div>
 

@@ -13,7 +13,6 @@ import telebot
 
 bot = telebot.TeleBot(settings.TELEGRAM_API_TOKEN)
 
-
 def index(request, *args, **kwargs): 
     return render(request, "frontend/index.html")
 
@@ -42,7 +41,7 @@ def getOrders(request):
     user = request.user
     CurrentUser =  CustomUser.objects.get(user=user)
 
-    orders = list(Order.objects.filter(user=CurrentUser))
+    orders = sorted(list(Order.objects.filter(user=CurrentUser)), key = lambda x: x.curent_date, reverse = True)
     orders_dict = []
     
     for order in orders:
@@ -62,7 +61,6 @@ def getOrders(request):
 
 def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
     cart = Cart(request)
-
     
     order = Order.objects.create(
         price=cart.get_total_price(), 
@@ -72,7 +70,8 @@ def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
         payment=payment,
         comment=(comment if comment != "NoComment" else ""),
         lat = lat,
-        lng = lng
+        lng = lng,
+        state = "In the warehouse"
     )
     
     message = "На сайте новый заказ"

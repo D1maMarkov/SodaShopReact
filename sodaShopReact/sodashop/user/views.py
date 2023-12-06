@@ -118,17 +118,15 @@ def sendNewCode(request):
     return HttpResponse(status=200)
 
 
-def GetResetToken(request, username):
-    userExists = User.objects.filter(username=username).exists()
+def GetResetToken(request, email):
+    userExists = CustomUser.objects.filter(email=email).exists()
     if not userExists:
         return HttpResponse(status=202)
     
-    user = User.objects.get(username=username)
-    currentUser = CustomUser.objects.get(user=user)
+    currentUser = CustomUser.objects.get(email=email)
     
     start_date = datetime.now(tzinfo) - timedelta(hours = 1)
     end_date = datetime.now(tzinfo)
-    
     
     if TokenToResetPassword.objects.exclude(created_at__range=[start_date, end_date]).filter(user=currentUser).exists():
         TokenToResetPassword.objects.exclude(created_at__range=[start_date, end_date]).get(user=currentUser).delete()

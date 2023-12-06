@@ -1,6 +1,6 @@
 .chosesoda{
     position: absolute;
-    width: 25%;
+    width: 23%;
     aspect-ratio: 250/580;
     cursor: pointer;
     -webkit-touch-callout: none; /* iOS Safari */
@@ -11,39 +11,45 @@
             user-select: none;
 }
 
-#black{
-    transform: rotate(-30deg);
-    left: 15%;
-    top: 0px;
+.rotate{
+    #soda1{
+        transform: rotate(-30deg);
+        left: 20%;
+    }
+    #soda2{
+        transform: rotate(60deg);
+        top: 3%;
+        right: 15%;
+    }
+    #soda4{
+        transform: rotate(-120deg);
+        bottom: 3%;
+        left: 12%;
+    }
+    #soda3{
+        transform: rotate(150deg);
+        bottom: -2%;
+        right: 18%;
+    }
 }
-
-#pink{
-    transform: rotate(60deg);
-    top: 0px;
-    right: 15%;
-}
-#white{
-    transform: rotate(-120deg);
-    bottom: 0px;
-    left: 15%;
-}
-
-#red{
-    transform: rotate(150deg);
-    bottom: 0px;
-    right: 15%;
-}
-
-.rotatecantainer{
+.rotateContainer{
+    height: 100vh;
     position: absolute;
-    height: 160%;
-    aspect-ratio: 1/1;
+    top: 0px;
     right: 0px;
-    bottom: 0px;
-    transform: translate(50%, 53%);
-    z-index: 5;
-}
+    width: 100%;
+    overflow: hidden;
 
+    .rotate{
+        position: absolute;
+        height: 160%;
+        aspect-ratio: 1/1;
+        right: 0px;
+        bottom: 0px;
+        transform: translate(50%, 53%);
+        z-index: 5;
+    }
+}
 .animrotate{
     animation: animationrotate 1.1s 1;
 }
@@ -93,18 +99,6 @@
     }
 }
 
-.darkbg{
-    display: hidden;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 0px;
-    height: 100%;
-    background-color: black;
-    opacity: .2;
-    z-index: 3424;
-}
-
 .container4cartbutton{
     position: relative;
     left: 100px;
@@ -121,10 +115,11 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
-}
-.cartbutton:hover{
-    opacity: 0.8;
-    transition: .5s;
+
+    &:hover{
+        opacity: 0.8;
+        transition: .5s;
+    }
 }
 
 .rate{

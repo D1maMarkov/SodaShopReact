@@ -1,29 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Blobs } from "../Blobs/Blobs";
 import { Cart } from "../Cart/Cart";
 import { Topnav } from "../Topnav/Topnav";
 import { useNavigate } from "react-router-dom";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
-import { TypeCartProduct } from "../types";
+import { ValidationEmail } from "../../hooks/validations";
 
 
 export const Login = () => {
-    window.scrollTo(0, 0);
-    document.body.style.overflow = "hidden";
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
-    document.body.style.height = "100vh";
 
     const navigate = useNavigate();
-
-    const [cart, setCart] = useState<TypeCartProduct[]>([]);
-    const [len_cart, setLenCart] = useState<number>(0);
 
     const [username, setUser] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    
+    const [reset, setReset] = useState<boolean>(false);
+    const [resetText, setResetText] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [emailError, setEmailError] = useState<string>("");
 
-    const [reset, setReset] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     function login(){
         let xhttp = new XMLHttpRequest();
@@ -45,30 +44,57 @@ export const Login = () => {
     }
 
     function Reset(){
-        setError("");
-        setReset("");
-        let xhttp = new XMLHttpRequest();
-      
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                setReset("we have sent you an email to recover your password");
+        if (ValidationEmail(email)){
+            setLoading(true);
+            setResetText("");
+            let xhttp = new XMLHttpRequest();
+        
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4){
+                    setLoading(false);
+                
+                    if (this.status == 200){
+                        setResetText("we have sent you an email to recover your password");
+                    }
+                    else if (this.status == 202){
+                        setResetText("There is no user with such an email");
+                    }
+                    else if (this.status == 201){
+                        setResetText("you have already received an email to reset your password");
+                    }
+                }
             }
-            else if (this.readyState == 4 && this.status == 202){
-                setError("Incorrect username");
+        
+            xhttp.open("GET", `/user/GetResetToken/${email}`);
+            xhttp.send();
+        }
+    }
+
+    useEffect(() => {
+        const fields = document.getElementsByClassName(styles.registerBlank)[0] as HTMLElement | null;
+        if (fields){
+            if (loading){
+                fields.classList.add(styles.loading);
             }
-            else if (this.readyState == 4 && this.status == 201){
-                setReset("you have already received an email to reset your password");
+            else{
+                fields.classList.remove(styles.loading);
             }
         }
-       
-        xhttp.open("GET", `/user/GetResetToken/${username}`);
-        xhttp.send();
-    }
+    }, [loading]);
+
+    useEffect(() => {
+        if (!ValidationEmail(email)){
+            setEmailError("Write correct email");
+        }
+        else{
+            setEmailError("");
+        }
+    }, [email]);
 
     return (
         <>
-        <Topnav len_cart={len_cart} type={"mainPage"} color={"white"} />
-        <Cart cart={cart} setCart={setCart} setLenCart={setLenCart} />
+        <Topnav color={"white"} />
+        <Cart />
         <Blobs />
 
         <div className={styles.registerBlank}>
@@ -79,12 +105,22 @@ export const Login = () => {
 
             <hr />
                
-            <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
-            <div className={styles.errorLog} >{ error }</div>
-            <TextField type={"password"} className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
-            <a href="#" onClick={Reset} style={{ float: 'left', marginLeft: "10%" }}  >Forgotten password?</a><br /><br />
-            <div className={styles.resetMail}>{ reset }</div>
-            <button onClick={login}>Login</button>
+            {reset ? (
+                <>
+                    <TextField className={styles.loginInput} label="email" variant="standard" value={email} onChange={event => setEmail(event.target.value)}/>
+                    <div className={styles.errorLog}>{ emailError }</div>
+                    <div className={styles.resetMail}>{ resetText }</div>
+                    <button onClick={Reset}>Send mail to reset password</button>
+                </>
+            ):(
+                <>
+                    <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
+                    <div className={styles.errorLog} >{ error }</div>
+                    <TextField type={"password"} className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
+                    <a href="#" onClick={() => setReset(true)} style={{ float: 'left', marginLeft: "10%" }}  >Forgotten password?</a><br /><br />
+                    <button onClick={login}>Login</button>
+                </>
+            )}
         </div>
         </>
     )

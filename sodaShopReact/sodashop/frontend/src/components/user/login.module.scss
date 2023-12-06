@@ -64,17 +64,17 @@ button{
     border: none;
     width: 80%;
     margin: 20px;
-}
 
-button:hover:enabled{
-    opacity: 0.7;
-    transition: 0.2s;
-    cursor: pointer;
-}
+    &:hover:enabled{
+        opacity: 0.7;
+        transition: 0.2s;
+        cursor: pointer;
+    }
 
-button:disabled{
-    opacity: 0.7;
-    transition: 0.2s;
+    &:disabled{
+        opacity: 0.7;
+        transition: 0.2s;
+    }
 }
 
 .form-error{
@@ -218,6 +218,16 @@ button:disabled{
 .order_date{
     display: flex; 
     justify-content: space-between;
+    margin-top: 25px;
+
+    .orderState{
+        background-color: #fff04b;
+        padding: 10px 20px;
+        height: 23px;
+        border: none;
+        border-radius: 10px;
+        margin-top: 11px;
+    }
 }
 
 .timer{
@@ -238,4 +248,10 @@ button:disabled{
     z-index: 2;
     margin-left: 10%;
     letter-spacing: 1px;
+}
+
+.LogOut{
+    background-color: rgb(245, 0, 87);
+    width: 100%;
+    margin-left: 0px
 }

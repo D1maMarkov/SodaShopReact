@@ -1,90 +1,53 @@
 import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCart } from "../../hooks/useCart";
+import { initialValue, add_quantity, remove_from_cart, remove_quantity } from "../../state/cart/cartSlice";
 import { TypeCartProduct } from "../types";
 import styles from "./Cart.module.scss";
 import { Dispatch, SetStateAction } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import { removeFromCartSession, addQuantitySession, removeQuantitySession } from "../../hooks/useCart";
+import { updateLenght } from "../../state/cart/cartLenSlice";
 
 
-type TypeCart = {
-    cart : TypeCartProduct[],
-    setCart : Dispatch<SetStateAction<TypeCartProduct[]>>, 
-    setOpenCart? : Dispatch<SetStateAction<boolean>> | undefined, 
-    setLenCart: Dispatch<SetStateAction<number>>
-}
-
-
-export const Cart: FC<TypeCart> = ({cart, setCart, setOpenCart, setLenCart}) => {
+export const Cart: FC = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const initialValue: number = 0;
+    const cart = useSelector((state: RootState) => state.cart.cart);
+
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
     function CloseCart(){
         $("." + styles.cart).css("right", "-40vw");
         $("." + styles.cart).css("box-shadow", "0px 0px 0px gray");
-        $("body").css("position", "auto");
+        $("body").css("position", "");
         $("body").css("overflow-y", "auto");
-        $("body").css("filter", "auto");
-        $("." + styles.darkbg).css("width", "0px");
-        if(setOpenCart){
-            setOpenCart(false);
-        }
     }
-    
-    function remove_from_cart(product : number){
-        let xhttp = new XMLHttpRequest();
-        setCart(cart.filter((item : TypeCartProduct) => item.product.id != product));
-        xhttp.open("GET", "/cart/cart_remove/" + product + "/");
-        xhttp.send();
-    }
-    
-    function add_quantity(product : number){
-        let xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/cart/cart_add/" + product + "/");
-        xhttp.send();
 
-        for (let i = 0; i < cart.length; i++){
-            if (cart[i].product.id == product){
-                cart[i].quantity++;
+    const getCart = () => {
+        let xhttp = new XMLHttpRequest();
+        xhttp.responseType = 'json';
+        xhttp.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200){
+                dispatch(initialValue(xhttp.response));
             }
         }
-     
-        setCart([...cart]);
-    }
-
-    function remove_quantity(product : number){
-        let xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/cart/cart_low_quantity/" + product + "/");
+    
+        xhttp.open("GET", "/cart/get_cart");
         xhttp.send();
-
-        let zero:boolean = false;
-        for (let i = 0; i < cart.length; i++){
-            if (cart[i].product.id == product){
-                cart[i].quantity--;
-                if (cart[i].quantity == 0){
-                    zero = true;
-                }
-            }
-        }
-        
-        if (!zero){
-            setCart([...cart]);
-        }
-        else{
-            remove_from_cart(product);
-        }
     }
     
 
-    useEffect(() => getCart(setCart), []);
+    useEffect(getCart, []);
 
-    useEffect(() => setLenCart(cart.map((item: TypeCartProduct) => item.quantity).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, initialValue)), [cart]);
+
+    useEffect(() => {dispatch(updateLenght(cart))}, [cart]);
 
     useEffect(() => {
         setTotalPrice(cart.map((item: TypeCartProduct) =>
             item.product.price * item.quantity 
-        ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, initialValue));
+        ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0));
     }, [cart]);
 
 
@@ -111,14 +74,14 @@ export const Cart: FC<TypeCart> = ({cart, setCart, setOpenCart, setLenCart}) => 
                             </div>
 
                             <div className={styles.quantity}>
-                                <div onClick={() => remove_quantity(product.product.id)} className={styles.quantityselector}>
-                                <a style={{ lineHeight: "23px", display: "block" }} >-</a>
+                                <div onClick={() => {dispatch(remove_quantity(product.product.id)); removeQuantitySession(product.product.id)}} className={styles.quantityselector}>
+                                    <a style={{ lineHeight: "21px", display: "block" }} >-</a>
                                 </div>
 
                                 <a style={{ marginRight: "15px", marginLeft: "15px" }}>{ product.quantity }</a>
 
-                                <div onClick={() => add_quantity(product.product.id)} className={styles.quantityselector}>
-                                    <a style={{ lineHeight: "21px", display: "block" }} >+</a>
+                                <div onClick={() => {dispatch(add_quantity(product.product)); addQuantitySession(product.product.id)}} className={styles.quantityselector}>
+                                    <a style={{ lineHeight: "23px", display: "block" }} >+</a>
                                 </div>
                             </div>
 
@@ -126,7 +89,7 @@ export const Cart: FC<TypeCart> = ({cart, setCart, setOpenCart, setLenCart}) => 
                                 <a className={styles.price}>{product.product.price} $</a>
                             </div>
                         </div>
-                        <div className={styles.container4cross} onClick={() => remove_from_cart(product.product.id)}>
+                        <div className={styles.container4cross} onClick={() => {dispatch(remove_from_cart(product.product.id)); removeFromCartSession(product.product.id)}}>
                             <img className={styles.cross} src="https://cdn3.iconfinder.com/data/icons/status/100/close_1-1024.png"/>
                         </div>
                     </div>

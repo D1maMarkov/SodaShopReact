@@ -1,19 +1,24 @@
-import { FC, useState, Dispatch } from "react";
+import { FC, useState, useEffect } from "react";
 import Alert from "../Alert";
-import { TypeCartProduct, TypeProduct } from "../types";
+import { TypeProduct } from "../types";
+import { useDispatch } from "react-redux";
+import { add_quantity } from "../../state/cart/cartSlice";
+import { addQuantitySession } from "../../hooks/useCart";
+import { get_user_info } from "../../hooks/useCurrentUser";
 
 
 type TypeButton = {
-    cart: TypeCartProduct[],
-    setCart: Dispatch<TypeCartProduct[]>,
     product: TypeProduct
 }
 
-export const MyButton : FC<TypeButton> = ({cart, setCart, product}) => {
+export const MyButton: FC<TypeButton> = ({product}) => {
     const [open, setOpen] = useState<boolean>(false);
     const [openError, setOpenError] = useState<boolean>(false);
     const [openWarning, setOpenWarning] = useState<boolean>(false);
 
+    const [user, setUser] = useState<string | null>(null);
+
+    const dispatch = useDispatch();
 
     const handleCloseError = () => {
         setOpenError(false);
@@ -27,50 +32,22 @@ export const MyButton : FC<TypeButton> = ({cart, setCart, product}) => {
         setOpen(false);
     };
 
-
-    function add_quantity(){
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                setOpen(true);
-
-                let added = false;
-                for (let i = 0; i < cart.length; i++){
-                    if (cart[i].product.id == product.id){
-                        cart[i].quantity++;
-                        added = true;
-                    }
-                }
-
-                if (!added){
-                    let currProduct:TypeCartProduct = {
-                        quantity: 1, 
-                        price: 1, 
-                        id: product.id,
-                        product: product
-                    }
-                    setCart([...cart, currProduct]);
-                }  
-                else{
-                    setCart([...cart]);
-                }
-            }
-            else if (this.readyState == 4 && this.status == 202){
-                setOpenWarning(true);
-            }
-        
-            else if (this.readyState == 4 && this.status != 202 && this.status != 200){
-                setOpenError(true);
-            }
+    function addToCart(){
+        if (user == null){
+            setOpenWarning(true);
         }
-    
-        xhttp.open("GET", "/cart/cart_add/" + product.id + "/");
-        xhttp.send();
+        else{
+            setOpen(true);
+            dispatch(add_quantity(product)); 
+            addQuantitySession(product.id);
+        }
     }
+
+    useEffect(() => get_user_info({setUserName: setUser}), []);
 
     return (
         <>
-        <div onClick={add_quantity} className="container4cartbutton">
+        <div onClick={addToCart} className="container4cartbutton">
             <input className="cartbutton" type="submit" value="Add to cart" />
         </div>
 

@@ -5,19 +5,13 @@ import { Topnav } from "../Topnav/Topnav";
 import { useNavigate } from "react-router-dom";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
-import { TypeCartProduct } from "../types";
 import { ValidationEmail } from "../../hooks/validations";
 
 
 export const Register:FC = () => {
-    window.scrollTo(0, 0);
-    document.body.style.overflow = "hidden";
-    document.body.style.height = "100vh";
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const navigate = useNavigate();
-    const [cart, setCart] = useState<TypeCartProduct[]>([]);
-    const [len_cart, setLenCart] = useState<number>(0);
 
     const [username, setUser] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -94,8 +88,8 @@ export const Register:FC = () => {
 
     return (
         <>
-        <Topnav len_cart={len_cart} type={"mainPage"} color={"white"} />
-        <Cart cart={cart} setCart={setCart} setLenCart={setLenCart} />
+        <Topnav color={"white"} />
+        <Cart />
         <Blobs />
         
         <div style={registerBlankStyles} className={styles.registerBlank}>

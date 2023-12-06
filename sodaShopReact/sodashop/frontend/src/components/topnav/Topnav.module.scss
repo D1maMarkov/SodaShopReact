@@ -5,11 +5,11 @@
     cursor: pointer;
     padding: 10px;
     border-radius: 15px;
-}
 
-.topnavImg:hover{
-    background-color: rgba(150, 150, 150, 0.3);
-    transition: .1s;
+    &:hover{
+        background-color: rgba(150, 150, 150, 0.3);
+        transition: .1s;
+    }
 }
 
 .usercircle{
@@ -21,13 +21,65 @@
     float: right;
     margin-left: 20px;
     text-align: center;
-}
-.usercircle:hover{
-    opacity: 0.4;
+
+    &:hover{
+        opacity: 0.4;
+    }
+
+    a{
+        font-size: 30px;
+        color: white;
+        line-height: 50px;
+    }
 }
 
-.usercircleA{
-    font-size: 30px;
-    color: white;
-    line-height: 50px;
+.topnavMainPage{
+    position: fixed;
+    width: 80vw;
+    left: 10vw;
+    top: 2%;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 10px;
+    z-index: 34679;
+    background: linear-gradient(45deg, rgba(255, 195, 175, 0.7), rgba(255, 215, 195, 0.7));
+    backdrop-filter: blur(8px);
+
+    a:not(span a){
+        line-height: 50px;
+        font-size: 35px;
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 5px 15px;
+        border-radius: 19px;
+    
+        &:hover{
+            background-color: rgba(140, 140, 140, 0.3);
+            transition: .1s;
+        }
+    }
+}
+
+.topnav{
+    position: relative;
+    border: 1px solid var(--topnav-color);
+    padding: 10px 10px;
+    z-index: 999;
+
+    a:not(span a){
+        font-size: 35px;
+        color: var(--topnav-color);
+        margin-right: 10px;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 5px 15px;
+        border-radius: 19px;
+    
+        &:hover{
+            background-color: rgba(140, 140, 140, 0.4);
+            transition: .1s;
+        }
+    }
 }

@@ -10,7 +10,7 @@ urlpatterns = [
     path("get_user_info", get_user_info),
     path("changeFields", changeFields),
     path("logout", Logout),
-    path("GetResetToken/<username>", GetResetToken),
+    path("GetResetToken/<email>", GetResetToken),
     path("CheckToken", CheckToken),
     path("ResetPassword", ResetPassword),
 ]

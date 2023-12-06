@@ -11,24 +11,28 @@ import { PrivateRoute } from "./utils/privateroute";
 import { Page404 } from "./components/404error/notFound";
 import { SendLocation } from "./components/OrderForm/orderForm";
 import { ResetPassword } from "./components/User/resetPassword";
+import { Provider } from 'react-redux';
+import { store } from "./state/store";
 
 
 ReactDOM.render((
-    <BrowserRouter>
-        <Routes>
-            <Route path="*" element={<Page404 />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/orderForm" element={<SendLocation />} />
-            <Route path="/catalog" element={<Catalog />} />
-            <Route path="/soda/:category/:color" element={<Soda />} />
-            <Route path="/login" element={<Login />}/>
-            <Route path="/register" element={<Register />}/>
-            <Route path="/confirm" element={<Confirm />}/>
-            <Route element={<PrivateRoute />}>
-                <Route path="/profile" element={<Profile />}/>
-            </Route>
-            <Route path="/resetPassword/:token" element={<ResetPassword />}/>
-        </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Routes>
+                <Route path="*" element={<Page404 />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/orderForm" element={<SendLocation />} />
+                <Route path="/catalog" element={<Catalog />} />
+                <Route path="/soda/:category/:color" element={<Soda />} />
+                <Route path="/login" element={<Login />}/>
+                <Route path="/register" element={<Register />}/>
+                <Route path="/confirm" element={<Confirm />}/>
+                <Route element={<PrivateRoute />}>
+                    <Route path="/profile" element={<Profile />}/>
+                </Route>
+                <Route path="/resetPassword/:token" element={<ResetPassword />}/>
+            </Routes>
+        </BrowserRouter>
+    </Provider>
 
 ), document.getElementById("main"));

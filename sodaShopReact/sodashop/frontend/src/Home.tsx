@@ -16,11 +16,6 @@ export const Home = () => {
     const [popularProducts, setPopularProducts] = useState<TypeCartProduct[]>([]);
     const navigate = useNavigate();
 
-    const [cart, setCart] = useState<TypeCartProduct[]>([]);
-    const [len_cart, setLenCart] = useState<number>(0);
-
-    const initialValue: number = 0;
-
     function get_popular_product(){
         let xhttp = new XMLHttpRequest();
         xhttp.responseType = 'json';
@@ -36,29 +31,18 @@ export const Home = () => {
 
     useEffect(get_popular_product, []);
 
-    useEffect(() => setLenCart(cart.map((product: TypeCartProduct) => product.quantity).reduce((accumulator, currentValue) => accumulator + currentValue, initialValue)), [cart]);
-
-
-    useEffect(() => {
-        setTimeout(() => {
-            $("#" + BlobStyles.blob1).css("position", "absolute");
-            $("#" + BlobStyles.blob2).css("position", "absolute");
-        }, 1000)
-    })
-
     return (
         <>  
-            <Topnav len_cart={len_cart} type={"mainPage"} color={"white"} />
-            <Cart cart={cart} setCart={setCart} setLenCart={setLenCart} />
-            <Blobs />
-            <div className="darkbg"></div>
+            <Topnav color={"white"} />
+            <Cart />
             <div id="bg">
-                <div>
+                <Blobs style={{ position: "absolute" }} overflow={""} />
+                <div className={"title"} >
                     <h1>SodaStock</h1>
                     <p>an online store where you can buy carbonated drinks according to taste and color. everyone will find something of their own</p>
                 </div>
 
-                <img id="mice" src="static/frontend/img/index/9mice.png"/>
+                <img id="mice" src="static/frontend/img/index/main.png"/>
                 <img id="wave1" src="static/frontend/img/index/wave.svg"/>
                 <img id="wave2" src="static/frontend/img/index/wave.svg"/>
             </div>
