@@ -29,40 +29,44 @@ export const Slider: FC<TypeSlider> = ({slider}) => {
 
     function getSlides(){
         let currentInd = SlidesArray.indexOf(document.getElementsByClassName("swiper-slide-active")[0]) + Math.floor(length / 2);
-        SlidesArray[currentInd].classList.remove("middle-swiper-slide");
-        SlidesArray[currentInd].classList.remove("edge-swiper-slide");
-        SlidesArray[currentInd + 2].classList.remove("middle-swiper-slide");
-        SlidesArray[currentInd - 1].classList.remove("center-swiper-slide");
-        SlidesArray[currentInd + 1].classList.remove("center-swiper-slide");
-        SlidesArray[currentInd + 1].classList.remove("edge-swiper-slide");
-
-        SlidesArray[currentInd + 0].classList.add("center-swiper-slide");
-        SlidesArray[currentInd - 2].classList.add("edge-swiper-slide");
-        SlidesArray[currentInd + 2].classList.add("edge-swiper-slide");
-        SlidesArray[currentInd - 1].classList.add("middle-swiper-slide");
-        SlidesArray[currentInd + 1].classList.add("middle-swiper-slide");
+        if (SlidesArray.length > 0){
+            SlidesArray[currentInd - 2].classList.add("edge-swiper-slide");
+            SlidesArray[currentInd - 1].classList.remove("center-swiper-slide");
+            SlidesArray[currentInd - 1].classList.add("middle-swiper-slide");
+            
+            SlidesArray[currentInd].classList.remove("middle-swiper-slide");
+            SlidesArray[currentInd].classList.add("center-swiper-slide");
+            
+            SlidesArray[currentInd + 1].classList.remove("center-swiper-slide");
+            SlidesArray[currentInd + 1].classList.remove("edge-swiper-slide");
+            SlidesArray[currentInd + 1].classList.add("middle-swiper-slide");
+            SlidesArray[currentInd + 2].classList.remove("middle-swiper-slide");
+            SlidesArray[currentInd + 2].classList.add("edge-swiper-slide");
+        }
     }
 
     setTimeout(getArray, 900);
     setTimeout(getSlides, 1000);
 
     return (
-        <Swiper
-            spaceBetween={"0px"}
-            modules={[Navigation, Pagination, Autoplay]}
-            slidesPerView={length}
-            navigation
-            pagination={{ clickable: true }}
-            onSlideChange={() => setTimeout(() => getSlides(), 0.1)}
-            onSwiper={() => setTimeout(() => getSlides(), 0.1)}
-            speed={500}
-            >
-            {slider.map((image : TypeImage) =>
-                <SwiperSlide className={"catalog_soda"} key={image.id}>
-                    <img onClick={() => navigate("/soda/" + image.category + "/" + image.id)} src={image.image} alt={""}/>
-                </SwiperSlide>
-            )}
-        
-        </Swiper>
+        <div className={"catalog__wrapper"}>
+            <Swiper
+                spaceBetween={"0px"}
+                modules={[Navigation, Pagination, Autoplay]}
+                slidesPerView={length}
+                navigation
+                pagination={{ clickable: true }}
+                onSlideChange={() => setTimeout(() => getSlides(), 0.1)}
+                onSwiper={() => setTimeout(() => getSlides(), 0.1)}
+                speed={500}
+                >
+                {slider.map((image : TypeImage) =>
+                    <SwiperSlide className={"catalog__soda"} style={{ height: "50vh"}} key={image.id}>
+                        <img onClick={() => navigate("/soda/" + image.category + "/" + image.id)} src={image.image} alt={""}/>
+                    </SwiperSlide>
+                )}
+            
+            </Swiper>
+        </div>
     )
 }

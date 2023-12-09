@@ -39,7 +39,7 @@ export const RotateSoda: FC<TypeRotate> = ({Products, product, color, setColor})
 
     return (
         Products != undefined ? (
-            <div className="rotateContainer">
+            <div className="rotate__container">
                 <div id="rotate" className="rotate">
                     <img id="soda1" onClick={() => setColor((color + 1) % 4)} className="chosesoda" src={Products[0].image}/>
                     <img id="soda2" onClick={() => setColor((color + 1) % 4)} className="chosesoda" src={Products[1].image}/>

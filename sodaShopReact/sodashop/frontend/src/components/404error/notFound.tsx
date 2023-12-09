@@ -12,7 +12,7 @@ export const Page404:FC = () => {
         <>
         <Topnav color={"white"}/>
         <Cart />
-        <h1 id={styles.notfound}>404 not found</h1>
+        <h1 id={styles.not_found}>404 not found</h1>
         <Blobs />
         </>
     )

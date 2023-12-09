@@ -5,8 +5,8 @@ import { Topnav } from "../Topnav/Topnav";
 import { Cart } from "../Cart/Cart";
 import { TypeProduct } from "../types";
 import { Footer } from "../Footer/footer";
-import { ValidationEmail, ValidationPhone } from "../../hooks/validations";
-import { get_user_info } from "../../hooks/useCurrentUser";
+import { validationEmail, validationPhone } from "../../hooks/validations";
+import { getUserInfo } from "../../hooks/useCurrentUser";
 import Alert from "../Alert";
 import styles from "./login.module.scss";
 
@@ -19,7 +19,7 @@ type TypeOrderProduct = {
 }
 
 type TypeOrder = {
-    curent_date: string,
+    curentDate: string,
     delivery: string,
     price: number,
     id: number,
@@ -61,11 +61,10 @@ export const Profile: FC = () => {
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200){
                 setOrders(xhttp.response);
-                console.log(xhttp.response);
             }
         }
     
-        xhttp.open("GET", "/getOrders");
+        xhttp.open("GET", "/get-orders");
         xhttp.send();
     }
 
@@ -91,45 +90,45 @@ export const Profile: FC = () => {
             setUsernameError("write non empty username");
 
             if (input != null){
-                input.classList.add(styles.errorInput);
+                input.classList.add(styles.error__input);
             }
         }
         else{
             setUsernameError("");
             if (input != null){
-                input.classList.remove(styles.errorInput);
+                input.classList.remove(styles.error__input);
             }
         }
 
         input = document.getElementById("email") as HTMLAreaElement | null;
-        if (!ValidationEmail(email)){
+        if (!validationEmail(email)){
             valid = false;
             setEmailError("write correct email");
           
             if (input != null){
-                input.classList.add(styles.errorInput);
+                input.classList.add(styles.error__input);
             }
         }
         else{
             setEmailError("");
             if (input != null){
-                input.classList.remove(styles.errorInput);
+                input.classList.remove(styles.error__input);
             }
         }
 
         input = document.getElementById("phone") as HTMLAreaElement | null;
-        if (!ValidationPhone(phone)){
+        if (!validationPhone(phone)){
             valid = false;
             setPhoneError("write correct phone number");
 
             if (input != null){
-                input.classList.add(styles.errorInput);
+                input.classList.add(styles.error__input);
             }
         }
         else{
             setPhoneError("");
             if (input != null){
-                input.classList.remove(styles.errorInput);
+                input.classList.remove(styles.error__input);
             }
         }
 
@@ -148,14 +147,14 @@ export const Profile: FC = () => {
         
             let params = `username=${username}&email=${email}&adress=${adress}&phone=${phone}`;
    
-            xhttp.open("POST", "/user/changeFields", true);
+            xhttp.open("POST", "/user/change-fields", true);
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(params);
         }
     }
 
     useEffect(() => {
-        get_user_info({setUserName: setUsername, setEmail: setEmail, setPhone: setPhone, setAdress: setAdress});
+        getUserInfo({setUserName: setUsername, setEmail: setEmail, setPhone: setPhone, setAdress: setAdress});
         getOrders();
     }, []);
    
@@ -212,22 +211,22 @@ export const Profile: FC = () => {
             <p style={{ color: "rgb(250, 210, 210)" }}>Orders</p>
             {orders.length > 0 ? (
                 orders.map((order: TypeOrder, ind: number) =>
-                    <div className={styles.order_products}>
-                        <div className={styles.order_date}>                     
-                            <p>{ order.curent_date }</p>                      
+                    <div className={styles.order__products}>
+                        <div className={styles.order__date}>                     
+                            <p>{ order.curentDate }</p>                      
                             <p>price: { order.price } $</p>
                             {order.state == "At the pick-up point" ? (
-                                    <div style={{ backgroundColor: "#77e565" }} className={styles.orderState}>{ order.state }</div>    
+                                    <div style={{ backgroundColor: "#77e565" }} className={styles.order__state}>{ order.state }</div>    
                                 ):(
-                                    <div className={styles.orderState}>{ order.state }</div> 
+                                    <div className={styles.order__state}>{ order.state }</div> 
                                 ) 
                             }           
                         </div>
-                        <div className={styles.order_list} >
+                        <div className={styles.order__list} >
                            {order.orderlist.map((product: TypeOrderProduct) => 
-                                <div className={styles.order_product}>
+                                <div className={styles.order__product}>
                                     <img src={ product.product.image } />
-                                    <div className={styles.order_product_description}>
+                                    <div className={styles.order__product__description}>
                                         <p>{ product.product.name }</p>
                                         <p>{ product.product.description }</p>
                                         <p>quantity: { product.quantity }</p>
@@ -241,7 +240,7 @@ export const Profile: FC = () => {
                 <p style={{ textAlign: "center", color: "white", fontSize: "35px" }} >You have no any orders</p>
             )}
             <div style={{ marginTop: "50px", paddingBottom: "100px" }}>
-                <button className={styles.LogOut} onClick={logout} >Log out</button>
+                <button className={styles.logout} onClick={logout} >Log out</button>
             </div>
         </div>
 

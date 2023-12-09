@@ -1,12 +1,4 @@
-hr{
-    width: 100%!important;
-    background-color: lightgray!important;
-    border-width: 1px!important;
-    margin-bottom: 25px;
-    color: lightgray;
-}
-
-.registerBlank{
+.register__blank{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -22,24 +14,32 @@ hr{
     overflow: hidden;
     font-family: Roboto, Helvetica, Arial, sans-serif;
 
-    .resetMail{
+    hr{
+        width: 100%;
+        background-color: lightgray;
+        border-width: 1px;
+        margin-bottom: 25px;
+        color: lightgray;
+    }
+
+    .reset__mail{
         margin-top: 20px;
         margin-left: 10%;
         width: 80%;
         text-align: left;
     }
-}
 
-.errorLog{
-    text-align: left;
-    color: red;
-    width: 80%;
-    margin-left: 10%;
-}
-
-.loginInput{
-    width: 80%;
-    margin: 20px!important;
+    .error__log{
+        text-align: left;
+        color: red;
+        width: 80%;
+        margin-left: 10%;
+    }
+    
+    .login__input{
+        width: 80%;
+        margin: 20px;
+    }
 }
 
 .title{
@@ -77,11 +77,8 @@ button{
     }
 }
 
-.form-error{
-    z-index: 999;
-}
 
-.order_product_description{
+.order__product__description{
     position: relative;
     top: 25px;
     color: black;
@@ -90,12 +87,8 @@ button{
     padding: 0px;
     font-size: 2vh;
 }
-.order_product img{
-    width: auto;
-    height: 90%;
-    margin-top: 5px;
-}
-.order_product{
+
+.order__product{
     background-color: white;
     margin-bottom: 10px;
     margin-right: 10px;
@@ -106,9 +99,15 @@ button{
     border-radius: 10px;
     flex: 0 0 30%;
     columns: 3;
+
+    img{
+        width: auto;
+        height: 90%;
+        margin-top: 5px;
+    }
 }
 
-.order_list{
+.order__list{
     display: flex;
     flex-wrap: wrap;
     max-height: 240px;
@@ -118,7 +117,8 @@ button{
     padding-left: 10px;
     backdrop-filter: blur(8px);
 }
-.Confirm{
+
+.confirm{
     background-color: white;
     border-radius: 10px;
     width: 400px;
@@ -147,7 +147,7 @@ button{
     letter-spacing: 3px;
     text-decoration: none;
     color: white;
-    z-index: 3;
+    z-index: 1;
     width: 50%;
 
     .fields{
@@ -186,27 +186,7 @@ button{
     }
 }
 
-.order_product_description{
-    position: relative;
-    top: 25px;
-    color: black;
-    margin: 0px;
-    width: 100px;
-    padding: 0px;
-    font-size: 2vh;
-}
-
-.order_list{
-    display: flex;
-    flex-wrap: wrap;
-    max-height: 240px;
-    overflow-y: auto;
-    background-color: rgba(240, 240, 240, .5);
-    padding-top: 10px;
-    padding-left: 10px;
-    backdrop-filter: blur(8px);
-}
-.order_products{
+.order__products{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -215,12 +195,12 @@ button{
     transform: translate(-50%, 0);
 }
 
-.order_date{
+.order__date{
     display: flex; 
     justify-content: space-between;
     margin-top: 25px;
 
-    .orderState{
+    .order__state{
         background-color: #fff04b;
         padding: 10px 20px;
         height: 23px;
@@ -237,11 +217,11 @@ button{
     right: 40px;
 }
 
-.errorInput{
+.error__input{
     border: 1px solid red!important; 
 }
 
-.invalidLink{
+.invalid__link{
     position: absolute;
     color: white;
     margin-top: 30vh;
@@ -250,7 +230,7 @@ button{
     letter-spacing: 1px;
 }
 
-.LogOut{
+.logout{
     background-color: rgb(245, 0, 87);
     width: 100%;
     margin-left: 0px

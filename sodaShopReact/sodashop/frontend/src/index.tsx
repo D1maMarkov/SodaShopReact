@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
-import { Catalog } from "./catalog";
-import { Home } from "./Home";
+import { Catalog } from "./components/Catalog/catalog";
+import { Home } from "./components/Home/Home";
 import { Soda } from "./components/SodaComponent/Soda";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from './components/User/login';
@@ -21,7 +21,7 @@ ReactDOM.render((
             <Routes>
                 <Route path="*" element={<Page404 />} />
                 <Route path="/" element={<Home />} />
-                <Route path="/orderForm" element={<SendLocation />} />
+                <Route path="/order-form" element={<SendLocation />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/soda/:category/:color" element={<Soda />} />
                 <Route path="/login" element={<Login />}/>
@@ -30,7 +30,7 @@ ReactDOM.render((
                 <Route element={<PrivateRoute />}>
                     <Route path="/profile" element={<Profile />}/>
                 </Route>
-                <Route path="/resetPassword/:token" element={<ResetPassword />}/>
+                <Route path="/reset-password/:token" element={<ResetPassword />}/>
             </Routes>
         </BrowserRouter>
     </Provider>

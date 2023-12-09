@@ -9,7 +9,7 @@ type TypeUserInfo = {
 }
 
 
-export const get_user_info = ({setUserName, setEmail, setPhone, setAdress} : TypeUserInfo) => {
+export const getUserInfo = ({setUserName, setEmail, setPhone, setAdress} : TypeUserInfo) => {
     let xhttp = new XMLHttpRequest();
     xhttp.responseType = 'json';
     xhttp.onreadystatechange = function(){
@@ -29,7 +29,7 @@ export const get_user_info = ({setUserName, setEmail, setPhone, setAdress} : Typ
         }
     }
    
-    xhttp.open("POST", "/user/get_user_info", true);
+    xhttp.open("POST", "/user/get-user-info", true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.send();
 }

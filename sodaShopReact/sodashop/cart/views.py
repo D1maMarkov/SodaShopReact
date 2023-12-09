@@ -15,8 +15,7 @@ def cart_add(request, product_id):
 
 def cart_remove(request, product_id):
     cart = Cart(request)
-    product = product_id
-    cart.cart_remove(product)
+    cart.cart_remove(product_id)
     
     return HttpResponse(status=200)
 
@@ -33,6 +32,5 @@ def cart_low_quantity(request, product_id):
 
 def get_cart(request):
     cart = Cart(request)
-    cartJson = [product for product in cart]
- 
-    return HttpResponse(json.dumps(cartJson))
+    
+    return HttpResponse(json.dumps(list(cart.cart.values())))

@@ -1,22 +1,20 @@
 import { useState, useEffect } from "react";
-import { Topnav } from "./components/Topnav/Topnav";
-import { Blobs } from "./components/Blobs/Blobs";
-import { Cart } from "./components/Cart/Cart";
+import { Topnav } from "../Topnav/Topnav";
+import { Blobs } from "../Blobs/Blobs";
+import { Cart } from "../Cart/Cart";
 import { useNavigate } from "react-router-dom";
-import { TypeCartProduct } from "./components/types";
-import BlobStyles from "./components/Blobs/blobs.module.scss";
+import { TypeCartProduct } from "../types";
+import { Footer } from "../Footer/footer";
 import "./Home.scss";
-import { Footer } from "./components/Footer/footer";
 
 
 export const Home = () => {
-    document.body.style.overflow = "auto";
     document.body.style.background = "white";
 
     const [popularProducts, setPopularProducts] = useState<TypeCartProduct[]>([]);
     const navigate = useNavigate();
 
-    function get_popular_product(){
+    function getPopularProduct(){
         let xhttp = new XMLHttpRequest();
         xhttp.responseType = 'json';
         xhttp.onreadystatechange = function(){
@@ -25,11 +23,11 @@ export const Home = () => {
             }
         }
     
-        xhttp.open("GET", "/getPopularProducts");
+        xhttp.open("GET", "/get-popular-products");
         xhttp.send();
     }
 
-    useEffect(get_popular_product, []);
+    useEffect(getPopularProduct, []);
 
     return (
         <>  
@@ -65,15 +63,15 @@ export const Home = () => {
                 <img id="wave3" src="static/frontend/img/index/whitewave.svg"/>
             </div>
 
-            <div className="popular_products_block">
-                <div className="popular_products_header">
+            <div className="popular__products__block">
+                <div className="popular__products__header">
                     <p>Popular products</p>
                     <button onClick={() => navigate("/catalog")}>All products</button>
                 </div>
-                <div className="popular_products">
+                <div className="popular__products">
                     {popularProducts.map((product: TypeCartProduct) => 
-                        <div className="popular_product" onClick={() => navigate("/soda/" + product.product.category + "/" + product.product.id)}>
-                            <div className="popular_product_cart">
+                        <div className="popular__product" onClick={() => navigate("/soda/" + product.product.category + "/" + product.product.id)}>
+                            <div className="popular__product__cart">
                                 <img src={ product.product.image } />
                                 <div>
                                     <p>{ product.product.name }</p>

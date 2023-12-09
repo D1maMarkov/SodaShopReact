@@ -1,9 +1,9 @@
 from django.db import models
 
 
-deliveryMethods = (("Courier", "Courier"),  ("Pickup", "Pickup"))
-paymentMethods = (("By cash", "By cash"), ("Bank card", "Bank card"))
-orderStates = (("At the pick-up point", "At the pick-up point"), ("In the warehouse", "In the warehouse"), ("On the way", "On the way"))
+delivery_methods = (("Courier", "Courier"),  ("Pickup", "Pickup"))
+payment_methods = (("By cash", "By cash"), ("Bank card", "Bank card"))
+order_states = (("At the pick-up point", "At the pick-up point"), ("In the warehouse", "In the warehouse"), ("On the way", "On the way"))
 
 
 class Category(models.Model):
@@ -17,31 +17,31 @@ class Product(models.Model):
     gradient = models.CharField(max_length=500)
     blob1 = models.CharField(max_length=50)
     blob2 = models.CharField(max_length=50)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, unique=False)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, unique=False)
     
 class PopularProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, unique=False)
     code = models.IntegerField(null=True)
 
 class Rate(models.Model):
     rate = models.IntegerField(null=True)
-    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, null=True, unique=False)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
+    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, unique=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, unique=False)
     
 class Order(models.Model):
     price = models.IntegerField(null=True)
-    user = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
-    curent_date = models.CharField(max_length=50, null=True)
-    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, null=True, unique=False)
-    delivery = models.CharField(max_length=50, null=True, choices=deliveryMethods)
-    payment = models.CharField(max_length=50, null=True, choices=paymentMethods)
-    comment = models.CharField(max_length=50, null=True)
-    lat = models.CharField(max_length = 500, null=True)
-    lng = models.CharField(max_length = 500, null=True)
-    state = models.CharField(max_length = 50, choices=orderStates)
+    user = models.ForeignKey(Product, on_delete=models.CASCADE, unique=False)
+    curent_date = models.CharField(max_length=50)
+    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, unique=False)
+    delivery = models.CharField(max_length=50, choices=delivery_methods)
+    payment = models.CharField(max_length=50, choices=payment_methods)
+    comment = models.CharField(max_length=50, null=True, blank=True)
+    lat = models.CharField(max_length = 50)
+    lng = models.CharField(max_length = 50)
+    state = models.CharField(max_length = 50, choices=order_states)
     
 class CartProduct(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, unique=False)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, unique=False)
-    quantity = models.IntegerField(null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, unique=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, unique=False)
+    quantity = models.IntegerField()
     

@@ -2,11 +2,10 @@ body{
     padding: 0px;
     margin: 0px;
     overflow: auto;
-    overflow-x: hidden!important;
+    overflow-x: hidden;
     font-family: 'Bebas Neue', sans-serif;
     min-width: 100vw;
     min-height: 100vh;
-
     --topnav-color: white;
 }
 
@@ -36,7 +35,7 @@ select:-webkit-autofill:focus {
     width: 500%;
     overflow: hidden;
     animation: animwave1 80s linear infinite;
-    z-index: 999;
+    z-index: 1;
 }
 
 @keyframes animwave1{
@@ -56,7 +55,7 @@ select:-webkit-autofill:focus {
     animation: animwave2 80s linear infinite;
     left: -400%;
     opacity: 0.5;
-    z-index: 999;
+    z-index: 1;
 }
 
 @keyframes animwave2{
@@ -72,9 +71,9 @@ select:-webkit-autofill:focus {
     position: absolute;
     right: -12%;
     top: 10%;
-    z-index: 101;
     height: 105vh;
     pointer-events: none;
+    z-index: 1;
 }
 
 #bg{
@@ -91,7 +90,7 @@ select:-webkit-autofill:focus {
         top: 100px;
         left: 10vw;
         color: white;
-        z-index: 9999;
+        z-index: 2;
         animation: textanim 1.5s 1;
         
         -webkit-touch-callout: none; 
@@ -126,7 +125,6 @@ select:-webkit-autofill:focus {
     width: calc(100% - 40px);
     display: flex;
     justify-content: space-between;
-    z-index: 102;
     padding: 100px 20px 0px 20px;
     background-color: rgb(247, 247, 246);
     font-size: 40px;
@@ -172,7 +170,7 @@ select:-webkit-autofill:focus {
     }
 }
 
-.popular_product{
+.popular__product{
     width: 29%;
     height: 250px;
     background-color: white;
@@ -188,7 +186,7 @@ select:-webkit-autofill:focus {
     }
 }
 
-.popular_products{
+.popular__products{
     display: flex;
     flex-wrap: wrap;
     width: 96%;
@@ -199,15 +197,15 @@ select:-webkit-autofill:focus {
     position: absolute;
     width: 500%;
     animation: animwave1 80s linear infinite;
-    z-index: 999;
     bottom: -80px;
+    z-index: 1;
 }
 
-.popular_products_block{
+.popular__products__block{
     padding: 120px 0px;
 }
 
-.popular_products_header{
+.popular__products__header{
     display: flex;
     width: 100%;
 
@@ -237,7 +235,7 @@ select:-webkit-autofill:focus {
     }
 }
 
-.popular_product_cart{
+.popular__product__cart{
     display: flex;
 
     img{

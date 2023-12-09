@@ -27,7 +27,7 @@ export const Soda:FC = () => {
             }
         }
     
-        xhttp.open("GET", "/getProduct/" + params.category + "/" + params.color);
+        xhttp.open("GET", "/get-product/" + params.category + "/" + params.color);
         xhttp.send();
     }
 

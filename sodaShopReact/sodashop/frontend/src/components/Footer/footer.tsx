@@ -6,9 +6,9 @@ export const Footer:FC = () => {
     return (
         <div>
             <footer>
-                <div className="footer_text">
+                <div className="footer__text">
                     <div className="social">
-                        <div className="social_text">
+                        <div className="social__text">
                             <a>Social network</a><br /><br />
                             <div style={{ height: "20px", marginBottom: "20px" }}>
                                 <img style={{ height: "20px", marginRight: "10px" }} src="/static/frontend/img/index/vk.png" />
@@ -22,14 +22,14 @@ export const Footer:FC = () => {
                         </div>
                     </div>
                     <div className="social">
-                        <div className="social_text">
+                        <div className="social__text">
                             <a>Online store</a><br /><br />
                             <li>+79505168534</li><br />
                             <li>+74429489248</li><br />
                         </div>
                     </div>
                     <div className="social">
-                        <div className="social_text">
+                        <div className="social__text">
                             <a>Support</a><br /><br />
                             <li>Customer assistance</li><br />
                             <li>Delivery and payment</li><br />
@@ -39,8 +39,8 @@ export const Footer:FC = () => {
                         </div>
                     </div>
                     <div className="social">
-                        <div className="social_text">
-                            <a>Information</a><br /><br />
+                        <div className="social__text">
+                            <a>Information</a><br/><br />
                             <li>Contacts</li><br />
                             <li>The shops</li><br />
                             <li>The blog</li><br />
@@ -50,7 +50,7 @@ export const Footer:FC = () => {
                 </div>
             </footer>
             <div className="bottom">
-                <div className="bottom_imgs" >
+                <div className="bottom__imgs" >
                     <span><img src="https://brandshop.ru/assets/images/footer-icons/mir.svg"/></span>
                     <span><img src="https://brandshop.ru/assets/images/footer-icons/visa.svg"/></span>
                     <span><img src="https://brandshop.ru/assets/images/footer-icons/mastercard.svg"/></span>
@@ -60,7 +60,7 @@ export const Footer:FC = () => {
                     <span><img src="https://brandshop.ru/assets/images/footer-icons/ems.svg"/></span>
                     <span><img src="https://brandshop.ru/assets/images/footer-icons/cdek.svg"/></span>
                 </div>
-                <div className="bottom_text">
+                <div className="bottom__text">
                     <span><a>Ⓒ SODASTOCK MARKET, 2023</a></span>
                     <a>User agreement</a>
                     <a>Privacy Policy</a>

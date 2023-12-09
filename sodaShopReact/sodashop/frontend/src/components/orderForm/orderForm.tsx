@@ -1,24 +1,26 @@
-import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import { FC, useCallback, useEffect, useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { Blobs } from "../Blobs/Blobs";
+import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import usePlacesAutocomplete, {getGeocode, getLatLng } from "use-places-autocomplete";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import Alert from "../Alert";
 import 'swiper/css/navigation';
 import "swiper/swiper-bundle.css";
-import styles from "./orderForm.module.scss";
-import { TypeCartProduct } from "../types";
-import { ValidationPhone } from "../../hooks/validations";
-import { get_user_info } from "../../hooks/useCurrentUser";
+import { Blobs } from "../Blobs/Blobs";
+import Alert from "../Alert";
+import { validationPhone } from "../../hooks/validations";
+import { getUserInfo } from "../../hooks/useCurrentUser";
 import { RootState } from "../../state/store";
-import { useSelector } from "react-redux";
+import { initialValue } from '../../state/cart/cartSlice';
+import { TypeCartProduct } from "../types";
+import styles from "./orderForm.module.scss";
+import { Cart } from '../Cart/Cart';
 
 
 const libraries: Libraries = ["places"];
@@ -36,6 +38,7 @@ type TypeCords = {
 export const SendLocation: FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
+    const dispatch = useDispatch();
 	  const navigate = useNavigate();
 
     const [name, setName] = useState<string>("");
@@ -179,7 +182,7 @@ export const SendLocation: FC = () => {
         setErrorName("");
       }
 
-      if (ValidationPhone(phone)){
+      if (validationPhone(phone)){
         setErrorPhone("");
       }
 
@@ -219,7 +222,7 @@ export const SendLocation: FC = () => {
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200){
                 setOpenSuccess(true);
-                setTimeout(() => navigate("/"), 2100);
+                setTimeout(() => {navigate("/"); dispatch(initialValue([]))}, 2100);
             }
         }
 
@@ -228,7 +231,7 @@ export const SendLocation: FC = () => {
           currentComment = comment;
         }
 
-        xhttp.open("GET", "/createOrder/" + name + "/" + phone + "/" + delivery + "/" + payment + "/" + center.lat + "/" + center.lng + "/" + currentComment);
+        xhttp.open("GET", "/create-order/" + name + "/" + phone + "/" + delivery + "/" + payment + "/" + center.lat + "/" + center.lng + "/" + currentComment);
         xhttp.send();
       }
     }
@@ -255,7 +258,7 @@ export const SendLocation: FC = () => {
       ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0));
     }, [cart]);
 
-    useEffect(() => get_user_info({setUserName: setName, setPhone: setPhone, setAdress: setValue}), []);
+    useEffect(() => getUserInfo({setUserName: setName, setPhone: setPhone, setAdress: setValue}), []);
 
     const changeDeliveryMethod = (value: string) =>{
       setDelivery(value);
@@ -274,20 +277,21 @@ export const SendLocation: FC = () => {
 	  return (
         <>
         <Blobs />
+        <Cart />
 
         <Alert severity={"success"} handleClose={handleCloseSuccess} open={openSuccess} text={"The order has been successfully placed"} />
 
         <div className={styles.main}>
-          <div className={styles.registerBlank} style={{ borderRight: "1px solid rgb(150, 150, 150)" }} >
+          <div className={styles.register__blank} style={{ borderRight: "1px solid rgb(150, 150, 150)" }} >
               <p style={{ textAlign: "left", marginLeft: "10%" }}>required fields are marked with asterisks</p>
 
-              <TextField className={styles.loginInput} label="recipient's name*" variant="standard" value={name} onChange={event => setName(event.target.value)}/><br />
-              <div className={ styles.errorLog }>{ errorName }</div>
-              <TextField className={styles.loginInput} label="phone number (+)*" variant="standard" value={phone} onChange={event => setPhone(event.target.value)}/><br />
-              <div className={ styles.errorLog }>{ errorPhone }</div>
+              <TextField className={styles.login__input} label="recipient's name*" variant="standard" value={name} onChange={event => setName(event.target.value)}/><br />
+              <div className={ styles.error__log }>{ errorName }</div>
+              <TextField className={styles.login__input} label="phone number (+)*" variant="standard" value={phone} onChange={event => setPhone(event.target.value)}/><br />
+              <div className={ styles.error__log }>{ errorPhone }</div>
               
               <TextField 
-                  className={styles.loginInput} 
+                  className={styles.login__input} 
                   style={{ marginBottom: "0px!important" }}
                   label="adress*" 
                   variant="standard" 
@@ -296,7 +300,7 @@ export const SendLocation: FC = () => {
                   disabled={!ready}
                   onChange={handleInput}
               />
-              <div className={ styles.errorLog }>{ errorAdress }</div>
+              <div className={ styles.error__log }>{ errorAdress }</div>
 
               {status === "OK" && <ul className={styles.hint} >{renderSuggestions()}</ul>}  
               
@@ -331,56 +335,51 @@ export const SendLocation: FC = () => {
                       
                   </FormControl>
               </div>
-              <div style={{ marginLeft: "25%", position: "relative" }} className={ styles.errorLog }>{ errorPayment }</div>
-              <div style={{ marginLeft: "25%", position: "relative" }} className={ styles.errorLog }>{ errorDelivery }</div>
+              <div style={{ marginLeft: "25%", position: "relative" }} className={ styles.error__log }>{ errorPayment }</div>
+              <div style={{ marginLeft: "25%", position: "relative" }} className={ styles.error__log }>{ errorDelivery }</div>
 
-              <InputLabel id="outlined-multiline-static" className={styles.textAreaLabel}>Comment</InputLabel>
+              <InputLabel id="outlined-multiline-static" className={styles.text__area__label}>Comment</InputLabel>
               <TextField
                   id="outlined-multiline-static"
                   value={comment} 
                   onChange={event => setComment(event.target.value)}
                   label="Multiline"
                   multiline
-                  className={styles.textArea}
+                  className={styles.text__area}
                   rows={3}
               />
           </div>
 
-          <div className={styles.registerBlank}>
+          <div className={styles.register__blank}>
               <div style={{ marginLeft: "5%", width: "90%" }}>
-                <div className={styles.spaceBeetween}>
+                <div className={styles.space__beetween}>
                     <p>products</p>
-                    
                 </div>
 
-                <div className={styles.spaceBeetween}>
+                <div className={styles.space__beetween}>
                     <Swiper
                         spaceBetween={"0px"}
                         modules={[Navigation, Pagination, Autoplay]}
                         slidesPerView={length}
                         navigation
                         pagination={{ clickable: true }}
-                        className={styles.allProducts}
+                        className={styles.all__products}
                         speed={500}
                         >
-                        {cart.length > 0 ? (
-                          cart.map((product: TypeCartProduct) =>
-                            <SwiperSlide key={product.id} className={styles.SwiperImage}>
+                        {cart.map((product: TypeCartProduct) =>
+                            <SwiperSlide key={product.id} className={styles.swiper__image}>
                                 <img src={product.product.image} alt={""}/>
                             </SwiperSlide>
-                          )):(
-                            <></>
-                          )
-                        }
+                        )}
                     </Swiper>
                 </div>
 
-                <div className={styles.spaceBeetween}>
+                <div className={styles.space__beetween}>
                     <p>Delivery</p>
                     <p>{deliveryPrice + "$"}</p>
                 </div>
 
-                <div className={styles.spaceBeetween}>
+                <div className={styles.space__beetween}>
                     <p>Price</p>
                     <p>{totalPrice + "$"}</p>
                 </div>
@@ -390,9 +389,9 @@ export const SendLocation: FC = () => {
                 </div>
 
                 {loading || cart.length == 0 ? (
-                  <button style={{cursor: "not-allowed"}} disabled className={styles.orderFormButt}>Buy</button>
+                  <button style={{cursor: "not-allowed"}} disabled className={styles.order__form__butt}>Buy</button>
                 ):(
-                    <button onClick={getForm} className={styles.orderFormButt}>Buy</button>
+                    <button onClick={getForm} className={styles.order__form__butt}>Buy</button>
                 )}
               </div>
           </div>

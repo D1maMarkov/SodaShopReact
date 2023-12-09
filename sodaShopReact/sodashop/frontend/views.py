@@ -17,7 +17,7 @@ def index(request, *args, **kwargs):
     return render(request, "frontend/index.html")
 
 
-def getPopularProducts(request):
+def get_popular_products(request):
     populars = sorted(list(PopularProduct.objects.all()), key = lambda x: x.code, reverse = True)
     products = []
     
@@ -37,7 +37,7 @@ def get_rates(request, product_id):
     return HttpResponse(json.dumps(rate))
 
     
-def getOrders(request):
+def get_orders(request):
     user = request.user
     CurrentUser =  CustomUser.objects.get(user=user)
 
@@ -45,7 +45,7 @@ def getOrders(request):
     orders_dict = []
     
     for order in orders:
-        anOrder = model_to_dict(order)
+        order_json = model_to_dict(order)
         products = order.cartproduct_set.all()
         p = list(map(model_to_dict, products))
    
@@ -53,13 +53,13 @@ def getOrders(request):
             p[i]["product"] = model_to_dict(Product.objects.get(id=p[i]["product"]))
             p[i]["product"]["image"] = Product.objects.get(id=p[i]["product"]["id"]).image.url
             
-        anOrder["orderlist"] = p
-        orders_dict.append(anOrder)
+        order_json["orderlist"] = p
+        orders_dict.append(order_json)
     
     return HttpResponse(json.dumps(orders_dict))
     
 
-def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
+def create_order(request, name, phone, delivery, payment, lat, lng, comment):
     cart = Cart(request)
     
     order = Order.objects.create(
@@ -84,7 +84,7 @@ def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
     user.phone = phone
     user.save()
     
-    for item in cart:
+    for item in cart.cart.values():
         product = PopularProduct.objects.filter(product=Product.objects.get(name=item["product"]["name"]))
         if len(product) > 0:
             product[0].code += item['quantity']
@@ -93,8 +93,8 @@ def createOrder(request, name, phone, delivery, payment, lat, lng, comment):
             product = PopularProduct.objects.create(product=Product.objects.get(name=item["product"]["name"]), code=item['quantity'])
             product.save()
             
-        newCartProduct = CartProduct.objects.create(order=order, product=Product.objects.get(name=item["product"]["name"]), quantity=item['quantity'])
-        newCartProduct.save()
+        new_cart_product = CartProduct.objects.create(order=order, product=Product.objects.get(name=item["product"]["name"]), quantity=item['quantity'])
+        new_cart_product.save()
         
     cart.clear()
     cart.save()
@@ -118,39 +118,41 @@ def send_feedback(request, product_id, rate):
     if feedback_left:
         return HttpResponse(status=202)
 
-    newrate = Rate.objects.create(product=Product.objects.get(id=int(product_id)), rate=int(rate), user=customUser)
-    newrate.save()
+    new_rate = Rate.objects.create(product=Product.objects.get(id=int(product_id)), rate=int(rate), user=customUser)
+    new_rate.save()
 
     return HttpResponse(status=200)
 
-def getProducts(request):
+def get_products(request):
     products = list(Product.objects.all())
-    productsJson = []
+    products_json = []
     for i in range(len(products)):
         product = model_to_dict(products[i])
         product["image"] = products[i].image.url
-        productsJson.append(product)
+        products_json.append(product)
     
-    return HttpResponse(json.dumps(productsJson))
+    return HttpResponse(json.dumps(products_json))
 
 
-def getProduct(request, category, color):
+def get_product(request, category, color):
     products = list(Product.objects.filter(category=category))
     
-    productsJson = []
+    products_json = []
     for i in range(len(products)):
         product = model_to_dict(products[i])
         product["image"] = products[i].image.url
-        productsJson.append(product)
+        products_json.append(product)
         
     for i in range(len(products)):
-        if productsJson[i]["id"] == int(color):
-            productsJson = productsJson[i::] + productsJson[0: i]
+        if products_json[i]["id"] == int(color):
+            products_json = products_json[i::] + products_json[0: i]
         
-    productsJson = productsJson * 4
-    productsJson = productsJson[0:4]
+    if len(products_json) < 4:
+        products_json *= 4
+        products_json = products_json[0:4]
+        
     
-    return HttpResponse(json.dumps(productsJson))
+    return HttpResponse(json.dumps(products_json))
         
         
     

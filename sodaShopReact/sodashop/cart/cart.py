@@ -10,21 +10,14 @@ class Cart(object):
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
 
-       # cart = self.session[settings.CART_SESSION_ID] = {}
-
+        #cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
-
-    def __iter__(self):
-        cart = self.cart.copy()
-
-        for item in cart.values():
-            yield item
 
 
     def cart_add(self, product_id):  
-        productObj = Product.objects.get(id=product_id)
-        product = model_to_dict(productObj)
-        product["image"] = productObj.image.url
+        product_obj = Product.objects.get(id=product_id)
+        product = model_to_dict(product_obj)
+        product["image"] = product_obj.image.url
        
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 1, "product": product}
@@ -38,8 +31,7 @@ class Cart(object):
     def save(self):
         self.session.modified = True
 
-    def cart_remove(self, product):
-        product_id = str(product)
+    def cart_remove(self, product_id):
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()

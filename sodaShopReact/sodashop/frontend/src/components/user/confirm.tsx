@@ -1,11 +1,11 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { Blobs } from "../Blobs/Blobs";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
 
 
-export const Confirm = () => {
+export const Confirm:FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const [code, setCode] = useState<string>("");
@@ -27,15 +27,14 @@ export const Confirm = () => {
             }
         }
        
-        xhttp.open("GET", "/user/confirmEmail/" + code);
+        xhttp.open("GET", "/user/confirm-email/" + code);
         xhttp.send();
     }
 
     function sendNewCode(){
         let xhttp = new XMLHttpRequest();
-        
         setActive(false);
-        xhttp.open("GET", "/user/sendNewCode");
+        xhttp.open("GET", "/user/send-new-code");
         xhttp.send();
     }
 
@@ -60,10 +59,10 @@ export const Confirm = () => {
         <>
         <Blobs />
 
-        <div style={{ paddingBottom: "40px" }} className={styles.registerBlank} >
+        <div style={{ paddingBottom: "40px" }} className={styles.register__blank} >
             <p>Enter the confirmation code sent to the email</p>
-            <TextField style={{ width: "70%" }} className={styles.loginInput} label="Code" variant="standard" value={code} onChange={(event: ChangeEvent<HTMLInputElement>) => handleChange(event)}/><br />
-            <div style={{ marginLeft: "15%" }} className={ styles.errorLog }>{ error }</div>
+            <TextField style={{ width: "70%" }} className={styles.login__input} label="Code" variant="standard" value={code} onChange={(event: ChangeEvent<HTMLInputElement>) => handleChange(event)}/><br />
+            <div style={{ marginLeft: "15%" }} className={ styles.error__log }>{ error }</div>
             <button style={{ padding: "15px 5px", width: "70%", marginTop: "0px" }} onClick={confirmEmail} >Confirm</button>
             <br />
             <div style={{ display: "flex" }}>

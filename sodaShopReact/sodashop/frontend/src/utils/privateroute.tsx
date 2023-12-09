@@ -19,7 +19,7 @@ export const PrivateRoute = () => {
             }
         }
     
-        xhttp.open("GET", "/user/get_current_user");
+        xhttp.open("GET", "/user/get-current-user");
         xhttp.send();
     }
 

@@ -3,14 +3,14 @@ from .views import *
 
 
 urlpatterns = [
-    path('LoginUser', LoginUser),
-    path('RegisterUser', RegisterUser),
-    path("sendNewCode", sendNewCode),
-    path("confirmEmail/<verification_code>", confirmEmail),
-    path("get_user_info", get_user_info),
-    path("changeFields", changeFields),
-    path("logout", Logout),
-    path("GetResetToken/<email>", GetResetToken),
-    path("CheckToken", CheckToken),
-    path("ResetPassword", ResetPassword),
+    path('login-user', login_user),
+    path('register-user', register_user),
+    path("send-new-code", send_new_code),
+    path("confirm-email/<int:verification_code>", confirm_email),
+    path("get-user-info", get_user_info),
+    path("change-fields", change_fields),
+    path("logout", logout_user),
+    path("get-reset-token/<email>", get_reset_token),
+    path("check-token", check_token),
+    path("reset-password", reset_password),
 ]

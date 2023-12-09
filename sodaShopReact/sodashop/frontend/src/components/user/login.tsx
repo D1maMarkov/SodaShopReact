@@ -5,7 +5,7 @@ import { Topnav } from "../Topnav/Topnav";
 import { useNavigate } from "react-router-dom";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
-import { ValidationEmail } from "../../hooks/validations";
+import { validationEmail } from "../../hooks/validations";
 
 
 export const Login = () => {
@@ -38,13 +38,13 @@ export const Login = () => {
        
         let params = `username=${username}&password=${password}`;
       
-        xhttp.open("POST", "/user/LoginUser", true);
+        xhttp.open("POST", "/user/login-user", true);
         xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhttp.send(params);
     }
 
     function Reset(){
-        if (ValidationEmail(email)){
+        if (validationEmail(email)){
             setLoading(true);
             setResetText("");
             let xhttp = new XMLHttpRequest();
@@ -65,13 +65,13 @@ export const Login = () => {
                 }
             }
         
-            xhttp.open("GET", `/user/GetResetToken/${email}`);
+            xhttp.open("GET", `/user/get-reset-token/${email}`);
             xhttp.send();
         }
     }
 
     useEffect(() => {
-        const fields = document.getElementsByClassName(styles.registerBlank)[0] as HTMLElement | null;
+        const fields = document.getElementsByClassName(styles.register__blank)[0] as HTMLElement | null;
         if (fields){
             if (loading){
                 fields.classList.add(styles.loading);
@@ -83,7 +83,7 @@ export const Login = () => {
     }, [loading]);
 
     useEffect(() => {
-        if (!ValidationEmail(email)){
+        if (!validationEmail(email)){
             setEmailError("Write correct email");
         }
         else{
@@ -97,7 +97,7 @@ export const Login = () => {
         <Cart />
         <Blobs />
 
-        <div className={styles.registerBlank}>
+        <div className={styles.register__blank}>
             <div className={styles.title}>
                 <p onClick={() => navigate('/login') } ><b>Login</b></p>
                 <p onClick={() => navigate('/register')} >Registration</p>
@@ -107,16 +107,16 @@ export const Login = () => {
                
             {reset ? (
                 <>
-                    <TextField className={styles.loginInput} label="email" variant="standard" value={email} onChange={event => setEmail(event.target.value)}/>
-                    <div className={styles.errorLog}>{ emailError }</div>
-                    <div className={styles.resetMail}>{ resetText }</div>
+                    <TextField className={styles.login__input} label="email" variant="standard" value={email} onChange={event => setEmail(event.target.value)}/>
+                    <div className={styles.error__log}>{ emailError }</div>
+                    <div className={styles.reset__mail}>{ resetText }</div>
                     <button onClick={Reset}>Send mail to reset password</button>
                 </>
             ):(
                 <>
-                    <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
-                    <div className={styles.errorLog} >{ error }</div>
-                    <TextField type={"password"} className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
+                    <TextField className={styles.login__input} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
+                    <div className={styles.error__log} >{ error }</div>
+                    <TextField type={"password"} className={styles.login__input} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
                     <a href="#" onClick={() => setReset(true)} style={{ float: 'left', marginLeft: "10%" }}  >Forgotten password?</a><br /><br />
                     <button onClick={login}>Login</button>
                 </>

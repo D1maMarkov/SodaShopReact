@@ -36,7 +36,7 @@ export const ProductRating: FC<TypeProductRating> = ({ product }) => {
     }
 
 
-    function get_rates(){
+    function getRates(){
         let xhttp = new XMLHttpRequest();
         xhttp.responseType = 'json';
         xhttp.onreadystatechange = function(){
@@ -50,12 +50,12 @@ export const ProductRating: FC<TypeProductRating> = ({ product }) => {
             }
         }
     
-        xhttp.open("GET", "/get_rates/" + product.id);
+        xhttp.open("GET", "/get-rates/" + product.id);
         xhttp.send();
     }
 
 
-    function send_feedback(){
+    function sendFeedback(){
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200){
@@ -69,14 +69,15 @@ export const ProductRating: FC<TypeProductRating> = ({ product }) => {
             }
         }
 
-        xhttp.open("GET", "/send_feedback/" + product.id + "/" + rating);
+        xhttp.open("GET", "/send-feedback/" + product.id + "/" + rating);
         xhttp.send();
     }
 
-    useEffect(get_rates, [product]);
+    useEffect(getRates, [product]);
+    
     useEffect(() => {
         if (rating != 0){
-            send_feedback();
+            sendFeedback();
         }
     }, [rating]);
 

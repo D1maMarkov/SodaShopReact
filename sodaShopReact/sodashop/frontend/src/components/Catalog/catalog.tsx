@@ -1,12 +1,12 @@
-import {useState, useEffect} from "react";
-import { Slider } from "./components/Catalog/slider";
-import { Blobs } from "./components/Blobs/Blobs";
-import { Topnav } from "./components/Topnav/Topnav";
-import { Cart } from "./components/Cart/Cart";
-import { TypeImage } from "./components/types";
+import { useState, useEffect, FC } from "react";
+import { Slider } from "./slider";
+import { Blobs } from "../Blobs/Blobs";
+import { Topnav } from "../Topnav/Topnav";
+import { Cart } from "../Cart/Cart";
+import { TypeImage } from "../types";
 
 
-export const Catalog = () => {
+export const Catalog:FC = () => {
     document.body.style.background = "linear-gradient(45deg, rgb(110, 100, 120), rgb(250, 250, 250))";
 
     const [ProdImgs, setImgs] = useState<TypeImage[]>([]);
@@ -27,7 +27,7 @@ export const Catalog = () => {
                 setImgs(shuffleArray(xhttp.response));
             }
         }
-        xhttp.open("GET", "/getProducts");
+        xhttp.open("GET", "/get-products");
         xhttp.send();
     }
 

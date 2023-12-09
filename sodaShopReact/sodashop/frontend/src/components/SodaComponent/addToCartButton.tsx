@@ -2,9 +2,9 @@ import { FC, useState, useEffect } from "react";
 import Alert from "../Alert";
 import { TypeProduct } from "../types";
 import { useDispatch } from "react-redux";
-import { add_quantity } from "../../state/cart/cartSlice";
+import { addQuantity } from "../../state/cart/cartSlice";
 import { addQuantitySession } from "../../hooks/useCart";
-import { get_user_info } from "../../hooks/useCurrentUser";
+import { getUserInfo } from "../../hooks/useCurrentUser";
 
 
 type TypeButton = {
@@ -38,16 +38,16 @@ export const MyButton: FC<TypeButton> = ({product}) => {
         }
         else{
             setOpen(true);
-            dispatch(add_quantity(product)); 
+            dispatch(addQuantity(product)); 
             addQuantitySession(product.id);
         }
     }
 
-    useEffect(() => get_user_info({setUserName: setUser}), []);
+    useEffect(() => getUserInfo({setUserName: setUser}), []);
 
     return (
         <>
-        <div onClick={addToCart} className="container4cartbutton">
+        <div onClick={addToCart} className="container__cartbutton">
             <input className="cartbutton" type="submit" value="Add to cart" />
         </div>
 

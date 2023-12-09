@@ -5,7 +5,7 @@ import { Topnav } from "../Topnav/Topnav";
 import { useNavigate } from "react-router-dom";
 import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
-import { ValidationEmail } from "../../hooks/validations";
+import { validationEmail } from "../../hooks/validations";
 
 
 export const Register:FC = () => {
@@ -50,7 +50,7 @@ export const Register:FC = () => {
 
             let params = `username=${username}&password=${password}&email=${email}`;
         
-            xhttp.open("POST", "/user/RegisterUser", true);
+            xhttp.open("POST", "/user/register-user", true);
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(params);
         }
@@ -59,7 +59,7 @@ export const Register:FC = () => {
     function handleEmail(email: string){
         setEmail(email);
 
-        if (ValidationEmail(email)){
+        if (validationEmail(email)){
             setError2("");
         }
         else{
@@ -92,23 +92,23 @@ export const Register:FC = () => {
         <Cart />
         <Blobs />
         
-        <div style={registerBlankStyles} className={styles.registerBlank}>
+        <div style={registerBlankStyles} className={styles.register__blank}>
             <div className={styles.title}>
                 <p onClick={() => navigate('/login') } >Login</p>
                 <p onClick={() => navigate('/register')} ><b>Registration</b></p>
             </div>
 
-            <hr style={{ color: "lightgray", width: "100%!important" }} />
+            <hr />
 
-            <div className="login-form">     
-                <TextField className={styles.loginInput} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
-                <div className={styles.errorLog} >{ error1 }</div>
+            <div>     
+                <TextField className={styles.login__input} label="Username" variant="standard" value={username} onChange={event => setUser(event.target.value)}/>
+                <div className={styles.error__log} >{ error1 }</div>
 
-                <TextField type="email" className={styles.loginInput} label="Email" value={email} variant="standard" onChange={event => handleEmail(event.target.value)}/>
-                <div className={styles.errorLog} >{ error2 }</div>
+                <TextField type="email" className={styles.login__input} label="Email" value={email} variant="standard" onChange={event => handleEmail(event.target.value)}/>
+                <div className={styles.error__log} >{ error2 }</div>
 
-                <TextField className={styles.loginInput} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
-                <div className={styles.errorLog} >{ error3 }</div>
+                <TextField className={styles.login__input} label="Password" variant="standard" value={password} onChange={event => setPassword(event.target.value)}/>
+                <div className={styles.error__log} >{ error3 }</div>
 
                 {activeBut ? (
                     <button onClick={login} style={{marginRight: '10px'}}>Sign in</button>

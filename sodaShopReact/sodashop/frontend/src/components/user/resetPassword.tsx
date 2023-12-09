@@ -49,7 +49,7 @@ export const ResetPassword:FC = () => {
         
             let params = `username=${username}&password=${password1}`;
         
-            xhttp.open("POST", "/user/ResetPassword", true);
+            xhttp.open("POST", "/user/reset-password", true);
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(params);
         }
@@ -74,7 +74,7 @@ export const ResetPassword:FC = () => {
        
         let params = `token=${token}`;
       
-        xhttp.open("POST", "/user/CheckToken", true);
+        xhttp.open("POST", "/user/check-token", true);
         xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhttp.send(params);
     }
@@ -82,7 +82,7 @@ export const ResetPassword:FC = () => {
     useEffect(CheckToken, []);
 
     useEffect(() => {
-        const fields = document.getElementsByClassName(styles.registerBlank)[0] as HTMLElement | null;
+        const fields = document.getElementsByClassName(styles.register__blank)[0] as HTMLElement | null;
         if (fields){
             if (loading){
                 fields.classList.add(styles.loading);
@@ -102,14 +102,14 @@ export const ResetPassword:FC = () => {
         <Alert severity={"success"} handleClose={handleClose} open={open} text={"The password has been saved successfully!"} />
 
         {validLink ? (
-            <div className={styles.registerBlank}>
-                <TextField className={styles.loginInput} label="Password" variant="standard" value={password1} onChange={event => setPassword1(event.target.value)}/>
-                <TextField className={styles.loginInput} label="Repeat password" variant="standard" value={password2} onChange={event => setPassword2(event.target.value)}/>
-                <div className={styles.errorLog} >{ error }</div>
+            <div className={styles.register__blank}>
+                <TextField className={styles.login__input} label="Password" variant="standard" value={password1} onChange={event => setPassword1(event.target.value)}/>
+                <TextField className={styles.login__input} label="Repeat password" variant="standard" value={password2} onChange={event => setPassword2(event.target.value)}/>
+                <div className={styles.error__log} >{ error }</div>
                 <button onClick={resetPassword} style={{marginRight: '10px'}}>Confirm</button>
             </div>
             ):(
-                <h1 className={styles.invalidLink} >{ message }</h1>
+                <h1 className={styles.invalid__link} >{ message }</h1>
             )
         }
         </>

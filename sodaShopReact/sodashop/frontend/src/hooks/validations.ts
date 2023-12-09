@@ -1,4 +1,4 @@
-export const ValidationEmail = (email: string) => {
+export const validationEmail = (email: string) => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (re.test(email)) {
@@ -8,7 +8,7 @@ export const ValidationEmail = (email: string) => {
     return false;
 }
 
-export const ValidationPhone = (phone: string) => {
+export const validationPhone = (phone: string) => {
     let re = /[+][7]\d{10}/g;
 
     if (re.test(phone) && phone.length == 12) {

@@ -1,25 +1,22 @@
 footer{
-    display: inline-block;
     width: 100%;
     background-color: white;
-    height: 400px;
     margin-top: 50px;
     padding-top: 50px;
-}
 
-.footer_text{
-    display: flex;
-    margin-left: 5%;
+    .footer__text{
+        display: flex;
+        margin-left: 5%;
+        padding-bottom: 75px;
+    }
 }
 
 .social{
-    height: 500px;
-    line-height: 30px;
     letter-spacing: 3px;
     font-size: 18px;
     width: 25%;
 
-    .social_text{
+    .social__text{
         width: 70%;
         margin-left: 15%;
     }
@@ -59,12 +56,10 @@ footer{
 .bottom{
     background-color: rgb(240, 240, 240);
     text-align: center;
-    height: 100px;
     padding: 50px 0px;
     width: 100%;
-    margin-left: 0px;
 
-    .bottom_text{
+    .bottom__text{
         margin-top: 20px;
         font-size: 12px;
         
@@ -78,7 +73,7 @@ footer{
         }
     }
 
-    .bottom_imgs span{
+    .bottom__imgs span{
         margin-right: 30px;
     }
 }
