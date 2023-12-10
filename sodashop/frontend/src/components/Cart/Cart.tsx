@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useMemo } from "react";
+import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCartSession, addQuantitySession, removeQuantitySession } from "../../hooks/useCart";
@@ -51,7 +51,6 @@ export const Cart: FC = () => {
         ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0));
     }, [cart]);
 
-
     return (
         <div className={styles.cart}>
             <div className={styles.cart__header}>
@@ -67,7 +66,7 @@ export const Cart: FC = () => {
                 <hr />
                 {cart.map((product: TypeCartProduct) =>
                     <div className={styles.product}>
-                        <img className={styles.proudct__img} src={product.product.image} />
+                        <img className={styles.product__img} src={product.product.image} />
                         <div className={styles.product__description}>
                             <div className={styles.container__text}>
                                 <a><b>{ product.product.name }</b></a>

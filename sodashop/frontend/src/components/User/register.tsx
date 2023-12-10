@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { Blobs } from "../Blobs/Blobs";
 import { Cart } from "../Cart/Cart";
 import { Topnav } from "../Topnav/Topnav";
@@ -25,26 +25,29 @@ export const Register:FC = () => {
     const [activeBut, setActiveBut] = useState<boolean>(false);
     const [registerBlankStyles, setStyles] = useState({});
 
-    function login(){
+    function register(){
         if (error2.length == 0){
             setLoading(true);
             let xhttp = new XMLHttpRequest();
-        
+            xhttp.responseType = 'json';
             xhttp.onreadystatechange = function(){
-                if (this.readyState == 4 && this.status == 200){
-                    navigate("/confirm");
-                }
-                else if (this.readyState == 4 && this.status == 202){
-                    setError1("a user with this username already exists");
+                if (this.readyState == 4){
                     setLoading(false);
-                }
-                else if (this.readyState == 4 && this.status == 201){
-                    setLoading(false);
-                    setError2("a user with this email already exists");
-                }
-                else if (this.readyState == 4 && this.status == 203){
-                    setLoading(false);
-                    setError2("apparently you entered an incorrect email address");
+                    switch(this.status){
+                        case 200:
+                            const token = xhttp.response;
+                            navigate(`/confirm/${token}`);
+                            break;
+                        case 202:
+                            setError1("a user with this username already exists");
+                            break;
+                        case 201:
+                            setError2("a user with this email already exists");
+                            break;
+                        case 203:
+                            setError2("apparently you entered an incorrect email address");
+                            break;
+                    }
                 }
             }
 
@@ -58,18 +61,11 @@ export const Register:FC = () => {
 
     function handleEmail(email: string){
         setEmail(email);
-
-        if (validationEmail(email)){
-            setError2("");
-        }
-        else{
-            setError2("invalid email address");
-        }
+        validationEmail(email) ? setError2("") : setError2("invalid email address");
     }
 
-
     useEffect(() =>{
-        if (email.length > 0 && password.length > 0 && username.length > 0 && error2.length == 0 ){
+        if (email.length > 0 && password.length > 0 && username.length > 0 && error2.length == 0){
             setActiveBut(true);
         }
         else{
@@ -78,12 +74,7 @@ export const Register:FC = () => {
     }, [email, username, password]);
 
     useEffect(() => {
-        if (loading){
-            setStyles({ opacity: ".7", pointerEvents: "none"});
-        }
-        else{
-            setStyles({});
-        }
+        loading ? setStyles({ opacity: ".7", pointerEvents: "none"}) : setStyles({});
     }, [loading]);
 
     return (
@@ -111,7 +102,7 @@ export const Register:FC = () => {
                 <div className={styles.error__log} >{ error3 }</div>
 
                 {activeBut ? (
-                    <button onClick={login} style={{marginRight: '10px'}}>Sign in</button>
+                    <button onClick={register} style={{marginRight: '10px'}}>Sign in</button>
                 ):(
                     <button disabled style={{marginRight: '10px'}}>Sign in</button>
                 )}

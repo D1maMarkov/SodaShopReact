@@ -4,13 +4,13 @@ import { Home } from "./components/Home/Home";
 import { Soda } from "./components/SodaComponent/Soda";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from './components/User/login';
+import { ResetPassword } from './components/User/resetPassword';
 import { Register } from './components/User/register';
-import { Confirm } from "./components/User/confirm";
-import { Profile } from "./components/User/profile";
+import { Confirm } from './components/User/confirm';
+import { Profile } from './components/User/profile';
 import { PrivateRoute } from "./utils/privateroute";
 import { Page404 } from "./components/404error/notFound";
-import { SendLocation } from "./components/OrderForm/orderForm";
-import { ResetPassword } from "./components/User/resetPassword";
+import { SendLocation } from './components/orderForm/orderForm'; 
 import { Provider } from 'react-redux';
 import { store } from "./state/store";
 
@@ -26,7 +26,7 @@ ReactDOM.render((
                 <Route path="/soda/:category/:color" element={<Soda />} />
                 <Route path="/login" element={<Login />}/>
                 <Route path="/register" element={<Register />}/>
-                <Route path="/confirm" element={<Confirm />}/>
+                <Route path="/confirm/:token" element={<Confirm />}/>
                 <Route element={<PrivateRoute />}>
                     <Route path="/profile" element={<Profile />}/>
                 </Route>

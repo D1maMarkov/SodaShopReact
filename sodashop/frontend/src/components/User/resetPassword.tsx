@@ -82,15 +82,8 @@ export const ResetPassword:FC = () => {
     useEffect(CheckToken, []);
 
     useEffect(() => {
-        const fields = document.getElementsByClassName(styles.register__blank)[0] as HTMLElement | null;
-        if (fields){
-            if (loading){
-                fields.classList.add(styles.loading);
-            }
-            else{
-                fields.classList.remove(styles.loading);
-            }
-        }
+        const fields = document.getElementsByClassName(styles.register__blank)[0] as HTMLElement;
+        loading ? fields.classList.add(styles.loading) : fields.classList.remove(styles.loading);
     }, [loading]);
 
     return (

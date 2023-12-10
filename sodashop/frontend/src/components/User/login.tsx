@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { Blobs } from "../Blobs/Blobs";
-import { Cart } from "../Cart/Cart";
-import { Topnav } from "../Topnav/Topnav";
+import { useEffect, useState, FC } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./login.module.scss";
 import TextField from '@mui/material/TextField';
 import { validationEmail } from "../../hooks/validations";
+import { Topnav } from "../Topnav/Topnav";
+import { Cart } from "../Cart/Cart";
+import { Blobs } from "../Blobs/Blobs";
+import styles from "./login.module.scss";
 
 
-export const Login = () => {
+export const Login:FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const navigate = useNavigate();
@@ -52,15 +52,16 @@ export const Login = () => {
             xhttp.onreadystatechange = function(){
                 if (this.readyState == 4){
                     setLoading(false);
-                
-                    if (this.status == 200){
-                        setResetText("we have sent you an email to recover your password");
-                    }
-                    else if (this.status == 202){
-                        setResetText("There is no user with such an email");
-                    }
-                    else if (this.status == 201){
-                        setResetText("you have already received an email to reset your password");
+                    switch(this.status){
+                        case 200:
+                            setResetText("we have sent you an email to recover your password");
+                            break;
+                        case 202:
+                            setResetText("There is no user with such an email");
+                            break;
+                        case 201:
+                            setResetText("you have already received an email to reset your password");
+                            break;
                     }
                 }
             }
@@ -71,24 +72,12 @@ export const Login = () => {
     }
 
     useEffect(() => {
-        const fields = document.getElementsByClassName(styles.register__blank)[0] as HTMLElement | null;
-        if (fields){
-            if (loading){
-                fields.classList.add(styles.loading);
-            }
-            else{
-                fields.classList.remove(styles.loading);
-            }
-        }
+        const fields = document.getElementsByClassName(styles.register__blank)[0] as HTMLElement;
+        loading ? fields.classList.add(styles.loading) : fields.classList.remove(styles.loading);
     }, [loading]);
 
     useEffect(() => {
-        if (!validationEmail(email)){
-            setEmailError("Write correct email");
-        }
-        else{
-            setEmailError("");
-        }
+        !validationEmail(email) ? setEmailError("Write correct email") : setEmailError("");
     }, [email]);
 
     return (

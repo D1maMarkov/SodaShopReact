@@ -69,7 +69,7 @@
     left: 100px;
     top: 15vh;
     font-size: 4vh;
-    z-index: 1;
+    z-index: 2;
     a,  p{
         text-shadow: -1px -1px 0 #575757, 1px -1px 0 #575757, -1px 1px 0 #575757, 1px 1px 0 #575757;
     }
@@ -129,11 +129,13 @@
     display: flex;
     height: 30px;
     width: 195px;
+    cursor: pointer;
     
     p{
         position: relative;
         top: -32px;
         margin-left: 10px;
         font-size: 2vw;
+        pointer-events: none;
     }
 }

@@ -1,5 +1,6 @@
 from django.forms.models import model_to_dict
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.shortcuts import render
 from user.models import CustomUser
@@ -13,7 +14,7 @@ import telebot
 
 bot = telebot.TeleBot(settings.TELEGRAM_API_TOKEN)
 
-def index(request, *args, **kwargs): 
+def index(request, *args, **kwargs):
     return render(request, "frontend/index.html")
 
 
@@ -29,19 +30,12 @@ def get_popular_products(request):
     
     return HttpResponse(json.dumps(products))
 
-
-def get_rates(request, product_id):
-    rates = list(map(model_to_dict, Product.objects.get(id=int(product_id)).rate_set.all()))
-    rate = {"value": round(sum([i["rate"] for i in rates]) / max(1, len(rates)), 1), "count": len(rates)}
-    
-    return HttpResponse(json.dumps(rate))
-
     
 def get_orders(request):
     user = request.user
-    CurrentUser =  CustomUser.objects.get(user=user)
+    current_user =  CustomUser.objects.get(user=user)
 
-    orders = sorted(list(Order.objects.filter(user=CurrentUser)), key = lambda x: x.curent_date, reverse = True)
+    orders = sorted(list(Order.objects.filter(user=current_user)), key = lambda x: x.curent_date, reverse = True)
     orders_dict = []
     
     for order in orders:
@@ -108,20 +102,34 @@ def send_feedback(request, product_id, rate):
     
     user = User.objects.get(username=request.user.get_username())
     
-    customUser = CustomUser.objects.get(user=user)
-    
-    feedback_left = False
-    for obj in Rate.objects.all():
-        if obj.product.id == int(product_id) and obj.user == customUser:
-            feedback_left = True
+    custom_user = CustomUser.objects.get(user=user)
 
-    if feedback_left:
-        return HttpResponse(status=202)
-
-    new_rate = Rate.objects.create(product=Product.objects.get(id=int(product_id)), rate=int(rate), user=customUser)
+    new_rate = Rate.objects.create(product=Product.objects.get(id=int(product_id)), rate=int(rate), user=custom_user)
     new_rate.save()
 
     return HttpResponse(status=200)
+
+
+def get_rates(request, product_id):
+    feedback_left = False
+    
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.get_username())
+        custom_user = CustomUser.objects.get(user=user)
+        rate_exists = Product.objects.get(id=int(product_id)).rate_set.all().filter(user=custom_user).exists()
+        
+        if rate_exists:
+            feedback_left = True
+        
+    rates = list(map(model_to_dict, Product.objects.get(id=int(product_id)).rate_set.all()))
+    rate = {"value": round(sum([i["rate"] for i in rates]) / max(1, len(rates)), 1), "count": len(rates)}
+    
+    response = {
+        "rate": rate,
+        "left": feedback_left
+    }
+    
+    return HttpResponse(json.dumps(response))
 
 def get_products(request):
     products = list(Product.objects.all())

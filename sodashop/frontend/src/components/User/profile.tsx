@@ -84,52 +84,37 @@ export const Profile: FC = () => {
     function confirmAndSave(){
         let valid: boolean = true;
 
-        let input = document.getElementById("username") as HTMLAreaElement | null;
+        let input = document.getElementById("username") as HTMLAreaElement;
         if (username.length == 0){
             valid = false;
             setUsernameError("write non empty username");
-
-            if (input != null){
-                input.classList.add(styles.error__input);
-            }
+            input.classList.add(styles.error__input);
         }
         else{
             setUsernameError("");
-            if (input != null){
-                input.classList.remove(styles.error__input);
-            }
+            input.classList.remove(styles.error__input);
         }
 
-        input = document.getElementById("email") as HTMLAreaElement | null;
+        input = document.getElementById("email") as HTMLAreaElement;
         if (!validationEmail(email)){
             valid = false;
             setEmailError("write correct email");
-          
-            if (input != null){
-                input.classList.add(styles.error__input);
-            }
+            input.classList.add(styles.error__input);
         }
         else{
             setEmailError("");
-            if (input != null){
-                input.classList.remove(styles.error__input);
-            }
+            input.classList.remove(styles.error__input);
         }
 
-        input = document.getElementById("phone") as HTMLAreaElement | null;
+        input = document.getElementById("phone") as HTMLAreaElement;
         if (!validationPhone(phone)){
             valid = false;
             setPhoneError("write correct phone number");
-
-            if (input != null){
-                input.classList.add(styles.error__input);
-            }
+            input.classList.add(styles.error__input);
         }
         else{
             setPhoneError("");
-            if (input != null){
-                input.classList.remove(styles.error__input);
-            }
+            input.classList.remove(styles.error__input);
         }
 
         if (valid){
@@ -159,15 +144,8 @@ export const Profile: FC = () => {
     }, []);
    
     useEffect(() => {
-        const fields = document.getElementsByClassName(styles.fields)[0] as HTMLElement | null;
-        if (fields){
-            if (loading){
-                fields.classList.add(styles.loading);
-            }
-            else{
-                fields.classList.remove(styles.loading);
-            }
-        }
+        const fields = document.getElementsByClassName(styles.fields)[0] as HTMLElement;
+        loading ? fields.classList.add(styles.loading) : fields.classList.remove(styles.loading);
     }, [loading]);
 
     const [open, setOpen] = useState<boolean>(false);

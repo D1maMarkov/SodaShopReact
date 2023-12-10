@@ -26,6 +26,24 @@ def login_user(request):
     return HttpResponse(status=200)
 
 
+def check_confirm_email_token(request, token):
+    start_date = datetime.now(tzinfo) - timedelta(hours = 1)
+    end_date = datetime.now(tzinfo)
+    
+    token_exists = TokenToConfirmEmail.objects.filter(token = token).exists()
+    if not token_exists:
+        return HttpResponse(status=202)
+    
+    tokens = TokenToConfirmEmail.objects.filter(created_at__range=[start_date, end_date])
+    token_exists = tokens.filter(token=token)
+    if not token_exists:
+        return HttpResponse(status=201)
+    
+    token = tokens.get(token = token)
+
+    return HttpResponse(json.dumps(token.email))
+    
+
 @csrf_exempt
 def register_user(request):
     user_exists = User.objects.filter(username=request.POST["username"]).exists()
@@ -40,16 +58,19 @@ def register_user(request):
     
     send_mail('verification code', code, settings.EMAIL_HOST_USER, [request.POST["email"]], fail_silently=False)
     
-    user = User.objects.create_user(username=request.POST["username"], password=request.POST["password"])
-    user.save()
+    token_value = ''.join(map(str, [randrange(0, 10) for i in range(32)]))
     
-    custom_user = CustomUser.objects.create(user=user, email=request.POST["email"], is_verificated=False, verification_code=code)
-    custom_user.save()
+    token = TokenToConfirmEmail.objects.create(
+        username = request.POST["username"],
+        password = request.POST["password"],
+        email = request.POST["email"],
+        token = token_value,
+        code = code
+    )
     
-    user = authenticate(username=request.POST["username"], password=request.POST["password"])
-    login(request, user)
+    token.save()
     
-    return HttpResponse(status=200)
+    return HttpResponse(json.dumps(token_value))
 
 
 @csrf_exempt
@@ -65,51 +86,36 @@ def change_fields(request):
     return HttpResponse(status=200)
 
 
-@csrf_exempt
-def get_user_info(request):  
-    if not request.user.is_authenticated:
-        return HttpResponse(status = 202)
-
-    current_user =  CustomUser.objects.get(user=request.user)
-    
-    info = {
-        "username": current_user.user.username,
-        "email": current_user.email,
-        "phone": current_user.phone if current_user.phone != None else "",
-        "adress": current_user.adress if current_user.adress != None else "",
-    }
-    
-    return HttpResponse(json.dumps(info))
-
-
-def logout_user(request):
-    logout(request)
-    return HttpResponse(status=200)
-
-
-def confirm_email(request, verification_code):
-    user = User.objects.get(username=request.user.get_username())
-    code = CustomUser.objects.get(user=user).verification_code
+def confirm_email(request, token, verification_code):
+    token_obj = TokenToConfirmEmail.objects.get(token=token)
+    code = token_obj.code
     
     if code == verification_code:
-        custom_user = CustomUser.objects.get(user=user)
-        custom_user.is_verificated = True
+        user = User.objects.create_user(username=token_obj.username, password=token_obj.password)
+        user.save()
+        
+        custom_user = CustomUser.objects.create(user=user, email=token_obj.email)
         custom_user.save()
+        
+        user = authenticate(username=token_obj.username, password=token_obj.password)
+        login(request, user)
+        
+        token_obj.delete()
+        
         return HttpResponse(status=200)
     else:
         return HttpResponse(status=202)
 
 
-def send_new_code(request):
-    user = User.objects.get(username=request.user.get_username())
-    currevt_user = CustomUser.objects.get(user=user)
+def send_new_code(request, token):
+    token_obj = TokenToConfirmEmail.objects.get(token=token)
     
-    code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
+    new_code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
     
-    currevt_user.verification_code = code
-    currevt_user.save()
+    token_obj.code = new_code
+    token_obj.save()
     
-    send_mail('verification code', code, settings.EMAIL_HOST_USER, [currevt_user.email])
+    send_mail('verification code', new_code, settings.EMAIL_HOST_USER, [token_obj.email])
     
     return HttpResponse(status=200)
 
@@ -188,3 +194,24 @@ def reset_password(request):
     
     return HttpResponse(status=200)
     
+
+@csrf_exempt
+def get_user_info(request):  
+    if not request.user.is_authenticated:
+        return HttpResponse(status = 202)
+
+    current_user =  CustomUser.objects.get(user=request.user)
+    
+    info = {
+        "username": current_user.user.username,
+        "email": current_user.email,
+        "phone": current_user.phone if current_user.phone != None else "",
+        "adress": current_user.adress if current_user.adress != None else "",
+    }
+    
+    return HttpResponse(json.dumps(info))
+
+
+def logout_user(request):
+    logout(request)
+    return HttpResponse(status=200)

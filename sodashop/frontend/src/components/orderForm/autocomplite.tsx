@@ -26,7 +26,7 @@ type TypeAutocomplite = {
     center: TypeCords,
 }
 
-export const Autocomplite:FC<> = ({value, setValue, errorAdress, ready, clearSuggestions, init, data, setCenter, center}) => {
+export const Autocomplite:FC<TypeAutocomplite> = ({value, setValue, errorAdress, ready, clearSuggestions, init, data, setCenter, center}) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "AIzaSyAu689F2vjh_sjG2o86WSd07Uk1KTJb8KA",

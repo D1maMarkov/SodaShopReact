@@ -13,7 +13,7 @@ import "./main.scss";
 export const Soda:FC = () => {    
     const params = useParams();
 
-    const [Products, setProducts] = useState<TypeProduct[]>();
+    const [Products, setProducts] = useState<TypeProduct[]>([]);
 
     const [color, setColor] = useState<number>(0);
 
@@ -22,7 +22,6 @@ export const Soda:FC = () => {
         xhttp.responseType = 'json';
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200){
-                setTimeout(() => product(xhttp.response[0]), 500);
                 setProducts(xhttp.response);
             }
         }
@@ -44,9 +43,15 @@ export const Soda:FC = () => {
     }
 
     useEffect(getProduct, []);
+    
+    useEffect(() => {
+        if (Products.length > 0){
+            product(Products[0])
+        }
+    }, [Products]);
 
     return (
-        Products != undefined ? (
+        Products.length > 0 ? (
             <>
             <Topnav type={"simple"} color={"white"} />
             <Cart />
