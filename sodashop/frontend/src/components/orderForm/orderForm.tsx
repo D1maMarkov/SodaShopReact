@@ -29,6 +29,8 @@ const defaultCenter = {
 
 export const SendLocation: FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
+    document.body.style.overflowY = "auto";
+    
 
     const dispatch = useDispatch();
 	  const navigate = useNavigate();
@@ -69,7 +71,6 @@ export const SendLocation: FC = () => {
     });
 
     function getForm(){
-
       name.length == 0 ? setErrorName("Write your name") : setErrorName("");
       validationPhone(phone) ? setErrorPhone("") : setErrorPhone("Write correct phone number");
       value.length == 0 ? setErrorAdress("Write correct adress") : setErrorAdress("");
@@ -123,7 +124,7 @@ export const SendLocation: FC = () => {
 	  return (
         <>
         <Blobs />
-        <Cart />
+       
 
         <Alert severity={"success"} handleClose={handleCloseSuccess} open={openSuccess} text={"The order has been successfully placed"} />
 

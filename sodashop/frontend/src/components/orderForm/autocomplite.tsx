@@ -4,7 +4,6 @@ import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import {getGeocode, getLatLng } from "use-places-autocomplete";
 import { TextField } from "@material-ui/core";
 import { SetValue } from "use-places-autocomplete";
-import AutocompletePrediction from "use-places-autocomplete";
 
 
 const libraries: Libraries = ["places"];

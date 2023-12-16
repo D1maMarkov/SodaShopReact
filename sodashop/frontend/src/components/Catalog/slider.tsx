@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import "./slider.scss";
 import 'swiper/css/navigation';
 import "swiper/swiper-bundle.css";
@@ -14,21 +14,14 @@ type TypeSlider = {
 
 
 export const Slider: FC<TypeSlider> = ({slider}) => {
-    const Slides = document.getElementsByClassName("swiper-slide");
-
-    const SlidesArray:Element[] = [];
+    const navigate = useNavigate();
+    
     const length: number = 5;
 
-    const navigate = useNavigate();
-
-    function getArray(){
-        for (let i = 0; i < Slides.length; i++){
-            SlidesArray.push(Slides[i]);
-        }
-    }
-
     function getSlides(){
+        let SlidesArray : Element[] = [...document.getElementsByClassName("swiper-slide")];
         let currentInd = SlidesArray.indexOf(document.getElementsByClassName("swiper-slide-active")[0]) + Math.floor(length / 2);
+        
         if (SlidesArray.length > 0){
             SlidesArray[currentInd - 2].classList.add("edge-swiper-slide");
             SlidesArray[currentInd - 1].classList.remove("center-swiper-slide");
@@ -45,7 +38,6 @@ export const Slider: FC<TypeSlider> = ({slider}) => {
         }
     }
 
-    setTimeout(getArray, 900);
     setTimeout(getSlides, 1000);
 
     return (
@@ -61,8 +53,8 @@ export const Slider: FC<TypeSlider> = ({slider}) => {
                 speed={500}
                 >
                 {slider.map((image : TypeImage) =>
-                    <SwiperSlide className={"catalog__soda"} style={{ height: "50vh"}} key={image.id}>
-                        <img onClick={() => navigate("/soda/" + image.category + "/" + image.id)} src={image.image} alt={""}/>
+                    <SwiperSlide className={"catalog__soda"} key={image.id}>
+                        <img onClick={() => navigate(`/soda/${image.category}/${image.id}`)} src={image.image} alt={""}/>
                     </SwiperSlide>
                 )}
             

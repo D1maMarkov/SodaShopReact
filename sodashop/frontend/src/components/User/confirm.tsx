@@ -116,10 +116,3 @@ export const Confirm:FC = () => {
         </>
     )
 }
-
-/*
-text-align: center;
-    width: 100%;
-    margin-left: 0px;
-    font-size: 45px;
-    */

@@ -3,43 +3,18 @@ import { Blobs } from "../Blobs/Blobs";
 import { useNavigate } from "react-router-dom";
 import { Topnav } from "../Topnav/Topnav";
 import { Cart } from "../Cart/Cart";
-import { TypeProduct } from "../types";
 import { Footer } from "../Footer/footer";
 import { validationEmail, validationPhone } from "../../hooks/validations";
 import { getUserInfo } from "../../hooks/useCurrentUser";
+import { Orders } from "./Order/Order";
 import Alert from "../Alert";
 import styles from "./login.module.scss";
-
-
-type TypeOrderProduct = {
-    id: number,
-    order: number,
-    quantity: number,
-    product: TypeProduct
-}
-
-type TypeOrder = {
-    curentDate: string,
-    delivery: string,
-    price: number,
-    id: number,
-    lat: string,
-    lng: string,
-    orderlist: TypeOrderProduct[],
-    length: number,
-    user: number,
-    comment: string,
-    payment: string,
-    state: string,
-}
 
 
 export const Profile: FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
 
     const navigate = useNavigate();
-
-    const [orders, setOrders] = useState<TypeOrder[]>([]);
 
     const [username, setUsername] = useState<string>("username");
     const [email, setEmail] = useState<string>("email");
@@ -53,20 +28,6 @@ export const Profile: FC = () => {
 
     const [changed, setChanged] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-
-
-    function getOrders(){
-        let xhttp = new XMLHttpRequest();
-        xhttp.responseType = 'json';
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                setOrders(xhttp.response);
-            }
-        }
-    
-        xhttp.open("GET", "/get-orders");
-        xhttp.send();
-    }
 
     function logout(){
         let xhttp = new XMLHttpRequest();
@@ -140,7 +101,6 @@ export const Profile: FC = () => {
 
     useEffect(() => {
         getUserInfo({setUserName: setUsername, setEmail: setEmail, setPhone: setPhone, setAdress: setAdress});
-        getOrders();
     }, []);
    
     useEffect(() => {
@@ -185,38 +145,9 @@ export const Profile: FC = () => {
                 ):( <></> )
                 }
             </div>
-            
-            <p style={{ color: "rgb(250, 210, 210)" }}>Orders</p>
-            {orders.length > 0 ? (
-                orders.map((order: TypeOrder, ind: number) =>
-                    <div className={styles.order__products}>
-                        <div className={styles.order__date}>                     
-                            <p>{ order.curentDate }</p>                      
-                            <p>price: { order.price } $</p>
-                            {order.state == "At the pick-up point" ? (
-                                    <div style={{ backgroundColor: "#77e565" }} className={styles.order__state}>{ order.state }</div>    
-                                ):(
-                                    <div className={styles.order__state}>{ order.state }</div> 
-                                ) 
-                            }           
-                        </div>
-                        <div className={styles.order__list} >
-                           {order.orderlist.map((product: TypeOrderProduct) => 
-                                <div className={styles.order__product}>
-                                    <img src={ product.product.image } />
-                                    <div className={styles.order__product__description}>
-                                        <p>{ product.product.name }</p>
-                                        <p>{ product.product.description }</p>
-                                        <p>quantity: { product.quantity }</p>
-                                    </div>
-                                </div>
-                           )}
-                        </div>
-                    </div>
-                )
-            ):(
-                <p style={{ textAlign: "center", color: "white", fontSize: "35px" }} >You have no any orders</p>
-            )}
+                        
+            <Orders />
+
             <div style={{ marginTop: "50px", paddingBottom: "100px" }}>
                 <button className={styles.logout} onClick={logout} >Log out</button>
             </div>

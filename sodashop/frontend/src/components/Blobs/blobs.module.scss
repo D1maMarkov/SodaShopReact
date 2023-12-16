@@ -13,9 +13,20 @@
     z-index: 1;
     position: absolute;
     filter: blur(8px);
+
+    --blob-start-color: white;
+    --blob-end-color: white;
+
+    path {
+        transition: 1s;
+    }
+
+    svg{
+        width: 100%;
+    }
 }
 
-.blobs_container{
+.blobs__container{
     position: absolute;
     top: 0px;
     width: 100%;

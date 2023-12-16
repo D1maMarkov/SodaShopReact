@@ -1,11 +1,11 @@
 import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCartSession, addQuantitySession, removeQuantitySession } from "../../hooks/useCart";
 import { TypeCartProduct } from "../types";
-import { initialValue, addQuantity, removeFromCart, removeQuantity } from "../../state/cart/cartSlice";
+import { initialValue } from "../../state/cart/cartSlice";
 import { RootState } from "../../state/store";
 import { updateLenght } from "../../state/cart/cartLenSlice";
+import { CartProuct } from "./Proudct/Product";
 import styles from "./Cart.module.scss";
 
 
@@ -65,35 +65,7 @@ export const Cart: FC = () => {
             
                 <hr />
                 {cart.map((product: TypeCartProduct) =>
-                    <div className={styles.product}>
-                        <img className={styles.product__img} src={product.product.image} />
-                        <div className={styles.product__description}>
-                            <div className={styles.container__text}>
-                                <a><b>{ product.product.name }</b></a>
-                                <a className={styles.little__description}>{ product.product.description }</a>
-                            </div>
-
-                            <div className={styles.quantity}>
-                                <div onClick={() => {dispatch(removeQuantity(product.product.id)); removeQuantitySession(product.product.id)}} className={styles.quantity__selector}>
-                                    <a style={{ lineHeight: "21px", display: "block" }} >-</a>
-                                </div>
-
-                                <a style={{ marginRight: "15px", marginLeft: "15px" }}>{ product.quantity }</a>
-
-                                <div onClick={() => {dispatch(addQuantity(product.product)); addQuantitySession(product.product.id)}} className={styles.quantity__selector}>
-                                    <a style={{ lineHeight: "23px", display: "block" }} >+</a>
-                                </div>
-                            </div>
-
-                            <div className={styles.container__price}>
-                                <a className={styles.price}>{product.product.price} $</a>
-                            </div>
-                        </div>
-                        <div className={styles.container__cross} onClick={() => {dispatch(removeFromCart(product.product.id)); removeFromCartSession(product.product.id)}}>
-                            <img className={styles.cross} src="https://cdn3.iconfinder.com/data/icons/status/100/close_1-1024.png"/>
-                        </div>
-                    </div>
-
+                    <CartProuct product={product} />
                 )}
 
                 {cart != undefined && cart.length != 0 ? (
