@@ -30,10 +30,9 @@ const defaultCenter = {
 export const SendLocation: FC = () => {
     document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
     document.body.style.overflowY = "auto";
-    
 
     const dispatch = useDispatch();
-	  const navigate = useNavigate();
+	const navigate = useNavigate();
 
     const [name, setName] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
@@ -101,7 +100,7 @@ export const SendLocation: FC = () => {
 
     useEffect(() => {
       setTotalPrice(cart.map((product: TypeCartProduct) => 
-          product.product.price * product.quantity 
+          product.price * product.quantity 
       ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0));
     }, [cart]);
 
@@ -201,7 +200,7 @@ export const SendLocation: FC = () => {
                         >
                         {cart.map((product: TypeCartProduct) =>
                             <SwiperSlide key={product.id} className={styles.swiper__image}>
-                                <img src={product.product.image} alt={""}/>
+                                <img src={product.image} alt={""}/>
                             </SwiperSlide>
                         )}
                     </Swiper>

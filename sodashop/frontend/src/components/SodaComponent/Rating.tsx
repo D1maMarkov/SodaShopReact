@@ -1,15 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import { Rating } from 'react-simple-star-rating';
 import Alert from "../Alert";
-import { TypeProduct } from "../types";
 import "./main.scss";
 
 
-type TypeProductRating = {
-    product: TypeProduct
+type TypeRating = {
+    productId: Number
 }
 
-export const ProductRating: FC<TypeProductRating> = ({ product }) => {
+export const ProductRating: FC<TypeRating> = ({productId}) => {
     const [openSuccess, setOpenSuccess] = useState<boolean>(false);
     const [openError, setOpenError] = useState<boolean>(false);
     const [openWarning, setOpenWarning] = useState<boolean>(false);
@@ -70,7 +69,7 @@ export const ProductRating: FC<TypeProductRating> = ({ product }) => {
             }
         }
     
-        xhttp.open("GET", "/get-rates/" + product.id);
+        xhttp.open("GET", "/get-rates/" + productId);
         xhttp.send();
     }
 
@@ -86,11 +85,11 @@ export const ProductRating: FC<TypeProductRating> = ({ product }) => {
             }
         }
 
-        xhttp.open("GET", "/send-feedback/" + product.id + "/" + rate);
+        xhttp.open("GET", "/send-feedback/" + productId + "/" + rate);
         xhttp.send();
     }
 
-    useEffect(getRates, [product, rating]);
+    useEffect(getRates, [rating, productId]);
 
     return (
         <>

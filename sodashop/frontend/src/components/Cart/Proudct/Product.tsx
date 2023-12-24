@@ -15,30 +15,30 @@ export const CartProuct: FC<TypeCartProductComponent> = ({product}) => {
 
     return (
         <div className={styles.product}>
-            <img className={styles.product__img} src={product.product.image} />
+            <img className={styles.product__img} src={product.image} />
             <div className={styles.product__description}>
                 <div className={styles.container__text}>
-                    <a><b>{ product.product.name }</b></a>
-                    <a className={styles.little__description}>{ product.product.description }</a>
+                    <a><b>{ product.name }</b></a>
+                    <a className={styles.little__description}>{ product.description }</a>
                 </div>
 
                 <div className={styles.quantity}>
-                    <div onClick={() => {dispatch(removeQuantity(product.product.id)); removeQuantitySession(product.product.id)}} className={styles.quantity__selector}>
+                    <div onClick={() => {dispatch(removeQuantity(product.id)); removeQuantitySession(product.id)}} className={styles.quantity__selector}>
                         <a style={{ lineHeight: "23px", display: "block" }} >-</a>
                     </div>
 
                     <a style={{ margin: "0px 15px" }}>{ product.quantity }</a>
 
-                    <div onClick={() => {dispatch(addQuantity(product.product)); addQuantitySession(product.product.id)}} className={styles.quantity__selector}>
+                    <div onClick={() => {dispatch(addQuantity(product)); addQuantitySession(product.id)}} className={styles.quantity__selector}>
                         <a style={{ lineHeight: "22px", display: "block" }} >+</a>
                     </div>
                 </div>
 
                 <div className={styles.container__price}>
-                    <a className={styles.price}>{product.product.price} $</a>
+                    <a className={styles.price}>{product.price} $</a>
                 </div>
             </div>
-            <div className={styles.container__cross} onClick={() => {dispatch(removeFromCart(product.product.id)); removeFromCartSession(product.product.id)}}>
+            <div className={styles.container__cross} onClick={() => {dispatch(removeFromCart(product.id)); removeFromCartSession(product.id)}}>
                 <img className={styles.cross} src="https://cdn3.iconfinder.com/data/icons/status/100/close_1-1024.png"/>
             </div>
         </div>

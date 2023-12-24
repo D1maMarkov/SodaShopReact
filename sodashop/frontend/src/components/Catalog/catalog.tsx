@@ -3,15 +3,15 @@ import { Slider } from "./slider";
 import { Blobs } from "../Blobs/Blobs";
 import { Topnav } from "../Topnav/Topnav";
 import { Cart } from "../Cart/Cart";
-import { TypeImage } from "../types";
+import { TypeProduct } from "../types";
 
 
 export const Catalog:FC = () => {
     document.body.style.background = "linear-gradient(45deg, rgb(110, 100, 120), rgb(250, 250, 250))";
 
-    const [ProdImgs, setImgs] = useState<TypeImage[]>([]);
+    const [ProdImgs, setImgs] = useState<TypeProduct[]>([]);
 
-    function shuffleArray(array : TypeImage[]) {
+    function shuffleArray(array : TypeProduct[]) {
         for (let i: number = array.length - 1; i > 0; i--) {
             const j: number = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];

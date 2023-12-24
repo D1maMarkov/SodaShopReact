@@ -59,7 +59,7 @@ export const Soda:FC = () => {
             <div className="bodyafter"></div>
             <div className="description">
                 <div title="send feedback">
-                    <ProductRating product={Products[color]} />
+                    <ProductRating productId={Products[color].id}/>
                 </div>
                 <p>{Products[color].name}</p>
                 <a>Carbonated soft drink produced by Coca-Cola. Originally marketed as a drink to replace alcohol and intended as a patent medicine, it was invented in the late 19th century by John Stith Pemberton and was bought out by businessman Asa Griggs Candler, whose marketing tactics led Coca-Cola to dominate the global soft drinks market throughout the twentieth century.</a>

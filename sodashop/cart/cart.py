@@ -1,6 +1,6 @@
 from django.conf import settings
 from frontend.models import Product
-from django.forms.models import model_to_dict
+from frontend.serializer import CartProductSerializer
 
 
 class Cart(object):
@@ -15,12 +15,10 @@ class Cart(object):
 
 
     def cart_add(self, product_id):  
-        product_obj = Product.objects.get(id=product_id)
-        product = model_to_dict(product_obj)
-        product["image"] = product_obj.image.url
+        product = CartProductSerializer(Product.objects.get(id=product_id)).data
        
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 1, "product": product}
+            self.cart[product_id] = product
             
         else:
             self.cart[product_id]['quantity'] += 1
@@ -38,7 +36,7 @@ class Cart(object):
 
 
     def get_total_price(self):
-        return sum(int(self.cart[item]["product"]['price']) * self.cart[item]['quantity'] for item in self.cart)
+        return sum(self.cart[item]['price'] * self.cart[item]['quantity'] for item in self.cart)
 
     def clear(self):
         del self.session[settings.CART_SESSION_ID]

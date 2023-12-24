@@ -10,8 +10,8 @@ class PopularProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['price', 'user', 'curent_date', "comment", "state"]
-    list_editable = ['price', 'user', 'curent_date', "comment", "state"]
+    list_display = ['id', 'price', 'user', 'date', "comment", "state"]
+    list_editable = ['price', 'user', 'date', "comment", "state"]
     list_display_links = None
 
 @admin.register(Rate)
@@ -28,13 +28,13 @@ class CategoryAdmin(admin.ModelAdmin):
     
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "description", "price", "image", "gradient", "blob1", "blob2", "category"]
-    list_editable = ["name", "description", "price", "image", "gradient", "blob1", "blob2", "category"]
+    list_display = ["price", "name", "description", "image", "gradient", "blob1", "blob2", "category"]
+    list_editable = ["price", "name", "description", "image", "gradient", "blob1", "blob2", "category"]
     list_display_links = None
     
 @admin.register(CartProduct)
 class CartProductAdmin(admin.ModelAdmin):
-    list_display = ["order", "product", "quantity"]
-    list_editable = ["order", "product", "quantity"]
+    list_display = ["order", "quantity"]
+    list_editable = ["order", "quantity"]
     list_display_links = None
     

@@ -79,7 +79,7 @@ def change_fields(request):
     current_user.email = request.POST["email"]
     current_user.phone = "+" + request.POST["phone"][1::]
     current_user.adress = request.POST["adress"] if request.POST["adress"] else ""
-    current_user.username = request.POST["username"]
+    current_user.name = request.POST["username"]
     
     current_user.save()
     
@@ -92,10 +92,8 @@ def confirm_email(request, token, verification_code):
     
     if code == verification_code:
         user = User.objects.create_user(username=token_obj.username, password=token_obj.password)
-        user.save()
         
-        custom_user = CustomUser.objects.create(user=user, email=token_obj.email)
-        custom_user.save()
+        CustomUser.objects.create(name=user.username, user=user, email=token_obj.email)
         
         user = authenticate(username=token_obj.username, password=token_obj.password)
         login(request, user)
@@ -112,8 +110,7 @@ def send_new_code(request, token):
     
     new_code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
     
-    token_obj.code = new_code
-    token_obj.save()
+    token_obj.update(code=new_code)
     
     send_mail('verification code', new_code, settings.EMAIL_HOST_USER, [token_obj.email])
     
@@ -144,8 +141,6 @@ def get_reset_token(request, email):
         token = "".join([chr(randrange(97, 123)) for i in range(32)])
     )
     
-    token.save()
-    
     text = f'''
     password reset link\n
     http://127.0.0.1:8000/reset-password/{token.token} \n
@@ -153,7 +148,6 @@ def get_reset_token(request, email):
     '''
     
     send_mail('password reset link', text, settings.EMAIL_HOST_USER, [current_user.email])
-    send_mail
     
     return HttpResponse(status=200)
 
@@ -182,8 +176,7 @@ def reset_password(request):
     username = request.POST["username"][1:-1]
     
     user = User.objects.get(username = username)
-    user.password = make_password(request.POST["password"])
-    user.save()
+    user.update(password=make_password(request.POST["password"]))
     
     user = authenticate(username=username, password=request.POST["password"])
     
@@ -198,12 +191,12 @@ def reset_password(request):
 @csrf_exempt
 def get_user_info(request):  
     if not request.user.is_authenticated:
-        return HttpResponse(status = 202)
+        return HttpResponse(status=202)
 
     current_user =  CustomUser.objects.get(user=request.user)
     
     info = {
-        "username": current_user.user.username,
+        "username": current_user.name,
         "email": current_user.email,
         "phone": current_user.phone if current_user.phone != None else "",
         "adress": current_user.adress if current_user.adress != None else "",

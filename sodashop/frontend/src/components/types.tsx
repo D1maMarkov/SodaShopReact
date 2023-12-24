@@ -1,10 +1,3 @@
-export  type TypeCartProduct = {
-    product: TypeProduct,
-    id: number,
-    quantity: number,
-    price: number
-}
-
 export type TypeProduct = {
     category: number,
     image: string,
@@ -17,8 +10,6 @@ export type TypeProduct = {
     price: number
 }
 
-export type TypeImage = {
-    id: number,
-    category: string,
-    image: string
+export type TypeCartProduct = TypeProduct & {
+    quantity: number
 }

@@ -47,7 +47,7 @@ export const Cart: FC = () => {
 
     useEffect(() => {
         setTotalPrice(cart.map((item: TypeCartProduct) =>
-            item.product.price * item.quantity 
+            item.price * item.quantity 
         ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0));
     }, [cart]);
 

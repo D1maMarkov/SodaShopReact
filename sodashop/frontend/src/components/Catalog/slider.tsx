@@ -1,17 +1,16 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import { FC, useEffect } from "react";
 import "./slider.scss";
 import 'swiper/css/navigation';
 import "swiper/swiper-bundle.css";
-import { TypeImage } from '../types';
+import { TypeProduct } from '../types';
 
 
 type TypeSlider = {
-    slider: TypeImage[]
+    slider: TypeProduct[]
 }
-
 
 export const Slider: FC<TypeSlider> = ({slider}) => {
     const navigate = useNavigate();
@@ -44,15 +43,15 @@ export const Slider: FC<TypeSlider> = ({slider}) => {
         <div className={"catalog__wrapper"}>
             <Swiper
                 spaceBetween={"0px"}
-                modules={[Navigation, Pagination, Autoplay]}
+                modules={[Navigation, Pagination]}
                 slidesPerView={length}
-                navigation
                 pagination={{ clickable: true }}
                 onSlideChange={() => setTimeout(() => getSlides(), 0.1)}
                 onSwiper={() => setTimeout(() => getSlides(), 0.1)}
                 speed={500}
+                navigation
                 >
-                {slider.map((image : TypeImage) =>
+                {slider.map((image : TypeProduct) =>
                     <SwiperSlide className={"catalog__soda"} key={image.id}>
                         <img onClick={() => navigate(`/soda/${image.category}/${image.id}`)} src={image.image} alt={""}/>
                     </SwiperSlide>

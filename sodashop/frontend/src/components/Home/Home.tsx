@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { Topnav } from "../Topnav/Topnav";
 import { Blobs } from "../Blobs/Blobs";
 import { Cart } from "../Cart/Cart";
 import { useNavigate } from "react-router-dom";
-import { TypeCartProduct } from "../types";
+import { TypeProduct } from "../types";
 import { Footer } from "../Footer/footer";
 import "./Home.scss";
 
 
-export const Home = () => {
+export const Home: FC = () => {
     document.body.style.background = "white";
 
-    const [popularProducts, setPopularProducts] = useState<TypeCartProduct[]>([]);
+    const [popularProducts, setPopularProducts] = useState<TypeProduct[]>([]);
     const navigate = useNavigate();
 
     function getPopularProduct(){
@@ -69,13 +69,13 @@ export const Home = () => {
                     <button onClick={() => navigate("/catalog")}>All products</button>
                 </div>
                 <div className="popular__products">
-                    {popularProducts.map((product: TypeCartProduct) => 
-                        <div className="popular__product" onClick={() => navigate("/soda/" + product.product.category + "/" + product.product.id)}>
+                    {popularProducts.map((product: TypeProduct) =>
+                        <div className="popular__product" onClick={() => navigate("/soda/" + product.category + "/" + product.id)}>
                             <div className="popular__product__cart">
-                                <img src={ product.product.image } />
+                                <img src={ product.image } />
                                 <div>
-                                    <p>{ product.product.name }</p>
-                                    <p>{ product.product.description }</p>
+                                    <p>{ product.name }</p>
+                                    <p>{ product.description }</p>
                                 </div>
                             </div>
                         </div>

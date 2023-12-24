@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import styles from "./Order.module.scss";
-import { TypeProduct } from "../../types";
+import { TypeCartProduct } from "../../types";
 
 
 enum OrderState {
@@ -8,25 +8,11 @@ enum OrderState {
     warehouse = "In the warehouse",
 }
 
-type TypeOrderProduct = {
-    id: number,
-    order: number,
-    quantity: number,
-    product: TypeProduct
-}
-
 type TypeOrder = {
-    curent_date: string,
-    delivery: string,
-    price: number,
+    date: string,
     id: number,
-    lat: string,
-    lng: string,
-    orderlist: TypeOrderProduct[],
-    length: number,
-    user: number,
-    comment: string,
-    payment: string,
+    price: number,
+    products: TypeCartProduct[],
     state: OrderState,
 }
 
@@ -55,7 +41,7 @@ export const Orders: FC = () => {
             orders.map((order: TypeOrder, ind: number) =>
                 <div className={styles.order__products}>
                     <div className={styles.order__date}>                     
-                        <p>{ order.curent_date }</p>                      
+                        <p>{ order.date }</p>                      
                         <p>price: { order.price } $</p>
                         {order.state == OrderState.pickUp ? (
                                 <div style={{ backgroundColor: "#77e565" }} className={styles.order__state}>{ order.state }</div>    
@@ -65,12 +51,12 @@ export const Orders: FC = () => {
                         }           
                     </div>
                     <div className={styles.order__list} >
-                       {order.orderlist.map((product: TypeOrderProduct) => 
+                       {order.products.map((product: TypeCartProduct) => 
                             <div className={styles.order__product}>
-                                <img src={ product.product.image } />
+                                <img src={ product.image } />
                                 <div className={styles.order__product__description}>
-                                    <p>{ product.product.name }</p>
-                                    <p>{ product.product.description }</p>
+                                    <p>{ product.name }</p>
+                                    <p>{ product.description }</p>
                                     <p>quantity: { product.quantity }</p>
                                 </div>
                             </div>
