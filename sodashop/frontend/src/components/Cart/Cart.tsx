@@ -33,7 +33,7 @@ export const Cart: FC = () => {
             }
         }
     
-        xhttp.open("GET", "/cart/get-cart");
+        xhttp.open("GET", "/cart/get");
         xhttp.send();
     }
 

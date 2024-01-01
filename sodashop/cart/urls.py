@@ -3,8 +3,8 @@ from .views import *
 
 
 urlpatterns = [
-    path('cart-add/<product_id>', cart_add),
-    path('cart-remove/<product_id>', cart_remove),
-    path('cart-low-quantity/<product_id>', cart_low_quantity),
-    path('get-cart', get_cart),
+    path('add/<product_id>', add),
+    path('remove/<product_id>', remove),
+    path('low-quantity/<product_id>', low_quantity),
+    path('get', get),
 ]

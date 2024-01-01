@@ -28,7 +28,7 @@ type TypeAutocomplite = {
 export const Autocomplite:FC<TypeAutocomplite> = ({value, setValue, errorAdress, ready, clearSuggestions, init, data, setCenter, center}) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: "AIzaSyAu689F2vjh_sjG2o86WSd07Uk1KTJb8KA",
+        googleMapsApiKey: "AIzaSyDOd9Bx2sWmTLhVjR07Df89bmk4W2K-x5M",
         libraries
     })
   
@@ -54,8 +54,6 @@ export const Autocomplite:FC<TypeAutocomplite> = ({value, setValue, errorAdress,
             <li key={place_id} className={styles.li} onClick={handleSelect(suggestion)}>
                 <svg
                   className={styles.svg}
-                  width="22"
-                  height="21"
                   viewBox="0 0 22 21"
                   fill="none">
                   <path
@@ -63,7 +61,7 @@ export const Autocomplite:FC<TypeAutocomplite> = ({value, setValue, errorAdress,
                     stroke="#B7B7B7"
                     stroke-width="1.5"
                   />
-				        </svg>
+				</svg>
               <span>{main_text}, {secondary_text}</span>
             </li>
           );
@@ -108,7 +106,7 @@ export const Autocomplite:FC<TypeAutocomplite> = ({value, setValue, errorAdress,
   
   
     function reverseGeocode(center: TypeCords){
-        fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + center.lat + ',' + center.lng + '&key=' + "AIzaSyAu689F2vjh_sjG2o86WSd07Uk1KTJb8KA")
+        fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + center.lat + ',' + center.lng + '&key=' + "AIzaSyDOd9Bx2sWmTLhVjR07Df89bmk4W2K-x5M")
             .then((response) => response.json())
             .then((responseJson) => {
             const adress2 = responseJson;

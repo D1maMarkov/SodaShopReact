@@ -55,7 +55,7 @@ def create_order(request, name, phone, delivery, payment, lat, lng, comment):
     
     CustomUser.objects.filter(user=request.user).update(name=name, phone=phone)
     
-    for item in cart.cart.values():
+    for item in cart:
         product = PopularProduct.objects.filter(product=Product.objects.get(name=item["name"]))
         if len(product) > 0:
             product[0].code += item['quantity']

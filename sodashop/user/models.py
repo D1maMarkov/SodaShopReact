@@ -9,6 +9,9 @@ class CustomUser(models.Model):
     phone = models.CharField(max_length=50, null=True)
     adress = models.CharField(max_length=500, null=True)
     
+    def __str__(self):
+        return self.name
+    
 class TokenToResetPassword(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     token = models.CharField(max_length=32)

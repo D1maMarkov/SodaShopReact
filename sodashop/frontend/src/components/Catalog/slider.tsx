@@ -14,30 +14,34 @@ type TypeSlider = {
 
 export const Slider: FC<TypeSlider> = ({slider}) => {
     const navigate = useNavigate();
-    
+
+    let SlidesArray : Element[] = [];
+
     const length: number = 5;
 
     function getSlides(){
-        let SlidesArray : Element[] = [...document.getElementsByClassName("swiper-slide")];
+        SlidesArray = [...document.getElementsByClassName("swiper-slide")];
         let currentInd = SlidesArray.indexOf(document.getElementsByClassName("swiper-slide-active")[0]) + Math.floor(length / 2);
         
         if (SlidesArray.length > 0){
-            SlidesArray[currentInd - 2].classList.add("edge-swiper-slide");
-            SlidesArray[currentInd - 1].classList.remove("center-swiper-slide");
-            SlidesArray[currentInd - 1].classList.add("middle-swiper-slide");
-            
-            SlidesArray[currentInd].classList.remove("middle-swiper-slide");
-            SlidesArray[currentInd].classList.add("center-swiper-slide");
-            
-            SlidesArray[currentInd + 1].classList.remove("center-swiper-slide");
-            SlidesArray[currentInd + 1].classList.remove("edge-swiper-slide");
-            SlidesArray[currentInd + 1].classList.add("middle-swiper-slide");
-            SlidesArray[currentInd + 2].classList.remove("middle-swiper-slide");
-            SlidesArray[currentInd + 2].classList.add("edge-swiper-slide");
+          
+                SlidesArray[currentInd - 2].classList.add("edge-swiper-slide");
+                SlidesArray[currentInd - 1].classList.remove("center-swiper-slide");
+                SlidesArray[currentInd - 1].classList.add("middle-swiper-slide");
+                
+                SlidesArray[currentInd].classList.remove("middle-swiper-slide");
+                SlidesArray[currentInd].classList.add("center-swiper-slide");
+                
+                SlidesArray[currentInd + 1].classList.remove("center-swiper-slide");
+                SlidesArray[currentInd + 1].classList.remove("edge-swiper-slide");
+                SlidesArray[currentInd + 1].classList.add("middle-swiper-slide");
+                SlidesArray[currentInd + 2].classList.remove("middle-swiper-slide");
+                SlidesArray[currentInd + 2].classList.add("edge-swiper-slide");
+         
         }
     }
 
-    setTimeout(getSlides, 1000);
+    useEffect(getSlides, [SlidesArray]);
 
     return (
         <div className={"catalog__wrapper"}>
@@ -53,10 +57,9 @@ export const Slider: FC<TypeSlider> = ({slider}) => {
                 >
                 {slider.map((image : TypeProduct) =>
                     <SwiperSlide className={"catalog__soda"} key={image.id}>
-                        <img onClick={() => navigate(`/soda/${image.category}/${image.id}`)} src={image.image} alt={""}/>
+                        <img onClick={() => navigate(`/soda/${image.category}/${image.id}`)} src={image.image}/>
                     </SwiperSlide>
                 )}
-            
             </Swiper>
         </div>
     )

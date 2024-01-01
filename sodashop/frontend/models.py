@@ -8,6 +8,9 @@ order_states = (("At the pick-up point", "At the pick-up point"), ("In the wareh
         
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
 
     
 class Product(models.Model):
@@ -19,6 +22,10 @@ class Product(models.Model):
     blob1 = models.CharField(max_length=50)
     blob2 = models.CharField(max_length=50)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, unique=False)
+    
+    def __str__(self):
+        return self.name
+    
     
 class PopularProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, unique=False)

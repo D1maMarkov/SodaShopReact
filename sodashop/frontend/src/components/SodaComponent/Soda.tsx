@@ -26,7 +26,7 @@ export const Soda:FC = () => {
             }
         }
     
-        xhttp.open("GET", "/get-product/" + params.category + "/" + params.color);
+        xhttp.open("GET", `/get-product/${params.category}/${params.color}`);
         xhttp.send();
     }
 
@@ -39,6 +39,7 @@ export const Soda:FC = () => {
         $(".bodyafter").addClass("animcontainer");
         setTimeout(function(){
             $(".bodyafter").removeClass("animcontainer");
+            $("#rotate *").css("pointer-events", "auto");
         }, 1000);
     }
 
