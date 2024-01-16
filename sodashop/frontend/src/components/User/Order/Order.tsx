@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
-import styles from "./Order.module.scss";
 import { TypeCartProduct } from "../../types";
+import styles from "./Order.module.scss";
 
 
 enum OrderState {
@@ -65,7 +65,7 @@ export const Orders: FC = () => {
                 </div>
             )
         ):(
-            <p style={{ textAlign: "center", color: "white", fontSize: "35px" }} >You have no any orders</p>
+            <p className={styles.no__orders}>You have no any orders</p>
         )}
         </>
     )

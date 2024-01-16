@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 from user.models import CustomUser
 from django.conf import settings
@@ -8,13 +8,13 @@ from datetime import date
 from .models import *
 import json
 import telebot
-from django.views.generic import ListView
 from .serializer import *
-from rest_framework.response import Response
+from django.views.decorators.cache import cache_page
 
 
 bot = telebot.TeleBot(settings.TELEGRAM_API_TOKEN)
 
+@cache_page(15 * 60)
 def index(request, *args, **kwargs):
     return render(request, "frontend/index.html")
 

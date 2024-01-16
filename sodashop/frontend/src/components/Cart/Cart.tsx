@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { TypeCartProduct } from "../types";
@@ -9,7 +9,7 @@ import { CartProuct } from "./Proudct/Product";
 import styles from "./Cart.module.scss";
 
 
-export const Cart: FC = () => {
+export const CartComponent: any = forwardRef<HTMLDivElement>(function CartComponent(props, ref) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -19,9 +19,10 @@ export const Cart: FC = () => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
     function CloseCart(){
-        $("." + styles.cart).css("right", "-40vw");
-        $("." + styles.cart).css("box-shadow", "0px 0px 0px gray");
-        $("body").css("overflow-y", "auto");
+        const cartElem = document.getElementsByClassName(styles.cart)[0] as HTMLElement;
+        cartElem.style.right = "-40vw";
+        cartElem.style.boxShadow = "0px 0px 0px gray";
+        document.body.style.overflowY = "auto";
     }
 
     const getCart = () => {
@@ -52,7 +53,7 @@ export const Cart: FC = () => {
     }, [cart]);
 
     return (
-        <div className={styles.cart}>
+        <div className={styles.cart} ref={ref}>
             <div className={styles.cart__header}>
                 <p>Your cart</p>
                 <img onClick={CloseCart} className={styles.main__cross} src="https://cdn3.iconfinder.com/data/icons/status/100/close_1-1024.png"/>
@@ -86,4 +87,4 @@ export const Cart: FC = () => {
             }
         </div>
     )
-}
+});

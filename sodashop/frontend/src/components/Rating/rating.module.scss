@@ -1,0 +1,14 @@
+.rate{
+    display: flex;
+    height: 30px;
+    width: 195px;
+    cursor: pointer;
+    
+    p{
+        position: relative;
+        top: -32px;
+        margin-left: 10px;
+        font-size: 2vw;
+        pointer-events: none;
+    }
+}

@@ -1,16 +1,16 @@
 import ReactDOM from 'react-dom';
-import { Catalog } from "./components/Catalog/catalog";
-import { Home } from "./components/Home/Home";
-import { Soda } from "./components/SodaComponent/Soda";
+import { Catalog } from "./pages/Catalog/catalog";
+import { Home } from "./pages/Home/Home";
+import { Soda } from "./pages/Soda/Soda";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Login } from './components/User/login';
-import { ResetPassword } from './components/User/resetPassword';
-import { Register } from './components/User/register';
-import { Confirm } from './components/User/confirm';
-import { Profile } from './components/User/profile';
+import { Login } from './pages/Login/login';
+import { ResetPassword } from './pages/ResetPassword/resetPassword';
+import { Register } from './pages/Register/register';
+import { Confirm } from './pages/Confirm/confirm';
+import { Profile } from './pages/Profile/profile';
 import { PrivateRoute } from "./utils/privateroute";
-import { Page404 } from "./components/404error/notFound";
-import { SendLocation } from './components/orderForm/orderForm'; 
+import { Page404 } from "./pages/404error/notFound";
+import { OrderForm } from './pages/orderForm/orderForm'; 
 import { Provider } from 'react-redux';
 import { store } from "./state/store";
 
@@ -21,7 +21,7 @@ ReactDOM.render((
             <Routes>
                 <Route path="*" element={<Page404 />} />
                 <Route path="/" element={<Home />} />
-                <Route path="/order-form" element={<SendLocation />} />
+                <Route path="/order-form" element={<OrderForm />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/soda/:category/:color" element={<Soda />} />
                 <Route path="/login" element={<Login />}/>

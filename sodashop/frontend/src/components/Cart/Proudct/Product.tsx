@@ -15,7 +15,7 @@ export const CartProuct: FC<TypeCartProductComponent> = ({product}) => {
 
     return (
         <div className={styles.product}>
-            <img className={styles.product__img} src={product.image} />
+            <img className={styles.product__img} src={product.image} alt={product.name}/>
             <div className={styles.product__description}>
                 <div className={styles.container__text}>
                     <a><b>{ product.name }</b></a>

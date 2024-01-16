@@ -1,11 +1,11 @@
-import {FC, useState, useEffect } from "react";
+import {FC, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Badge from '@material-ui/core/Badge';
 import { useSelector } from "react-redux";
 import { getUserInfo } from "../../hooks/useCurrentUser";
 import { RootState } from "../../state/store";
-import stylesCart from "../Cart/Cart.module.scss";
 import styles from "./Topnav.module.scss";
+import { CartComponent } from "../Cart/Cart";
 
 
 type TypeStyles = {
@@ -20,32 +20,32 @@ const stylesTopnav = {
 
 type TypeTopnav = {
     type?: string,
-    color: string,
+    color?: string,
 }
 
-export const Topnav: FC<TypeTopnav> = ({type = "general", color}) => {
+export const Topnav: FC<TypeTopnav> = ({type = "general", color = "white"}) => {
     const [user, setUser] = useState<string>("");
 
     const navigate = useNavigate();
+
+    const cart = useRef<HTMLElement>(null);
 
     const cartLenght = useSelector((state: RootState) => state.cartLenght);
 
     useEffect(() => getUserInfo({setUserName: setUser}), []);
 
-    if (color == "white"){
-        document.body.style.setProperty("--topnav-color", "white");
-    }
-    else{
-        document.body.style.setProperty("--topnav-color", "#2d1344");
-    }
+    document.body.style.setProperty("--topnav-color", color == "white" ? "white" : "#2d1344");
 
     function OpenCart(){
-        $("." + stylesCart.cart).css("right", "0px");
-        $("." + stylesCart.cart).css("box-shadow", "-5px 0px 20px gray");
-        $("body").css("overflow-y", "hidden");
+        if (cart.current != null){
+            cart.current.style.right = "0px";
+            cart.current.style.boxShadow = "-5px 0px 20px gray";
+            document.body.style.overflowY = "hidden";
+        }
     }
 
     return (
+        <>
         <div className={stylesTopnav[type as keyof TypeStyles]}>
             <a onClick={() => navigate("/")}>Home</a>
             <a onClick={() => navigate("/catalog")}>Shop</a>
@@ -68,5 +68,7 @@ export const Topnav: FC<TypeTopnav> = ({type = "general", color}) => {
                 </Badge>
             </div>
         </div>
+        <CartComponent ref={cart}/>
+        </>
     )
 }

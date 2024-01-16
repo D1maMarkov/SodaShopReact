@@ -106,13 +106,13 @@ def confirm_email(request, token, verification_code):
 
 
 def send_new_code(request, token):
-    token_obj = TokenToConfirmEmail.objects.get(token=token)
+    token_obj = TokenToConfirmEmail.objects.filter(token=token)
+    token_obj.update(code=new_code)
     
     new_code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
     
-    token_obj.update(code=new_code)
     
-    send_mail('verification code', new_code, settings.EMAIL_HOST_USER, [token_obj.email])
+    send_mail('verification code', new_code, settings.EMAIL_HOST_USER, [token_obj.first().email])
     
     return HttpResponse(status=200)
 

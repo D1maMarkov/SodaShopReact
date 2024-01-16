@@ -10,14 +10,13 @@ export const Footer:FC = () => {
                     <div className="social">
                         <div className="social__text">
                             <a>Social network</a><br /><br />
-                            <div style={{ height: "20px", marginBottom: "20px" }}>
-                                <img style={{ height: "20px", marginRight: "10px" }} src="/static/frontend/img/index/vk.png" />
-                                <li style={{ padding: "0px", lineHeight: "17px" }} >Vkontakte</li><br />
+                            <div className="container__for__social">
+                                <img src="/static/frontend/img/index/vk.png"/>
+                                <a>Vkontakte</a>
                             </div>
-
-                            <div style={{ height: "20px" }}>
-                            <img style={{ height: "20px", marginRight: "10px" }} src="/static/frontend/img/index/telegram.png" />
-                                <li style={{ padding: "0px", lineHeight: "17px" }}><a style={{ padding: "0px", lineHeight: "17px" }} href="https://t.me/n3foooooor">Telegram</a></li><br />
+                            <div className="container__for__social">
+                                <img src="/static/frontend/img/index/telegram.png"/>
+                                <a href="https://t.me/n3foooooor">Telegram</a>
                             </div>
                         </div>
                     </div>
@@ -51,14 +50,14 @@ export const Footer:FC = () => {
             </footer>
             <div className="bottom">
                 <div className="bottom__imgs" >
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/mir.svg"/></span>
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/visa.svg"/></span>
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/mastercard.svg"/></span>
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/tinkoff.svg"/></span>
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/sberpay.svg"/></span>
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/yapay.svg"/></span>
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/ems.svg"/></span>
-                    <span><img src="https://brandshop.ru/assets/images/footer-icons/cdek.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/mir.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/visa.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/mastercard.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/tinkoff.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/sberpay.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/yapay.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/ems.svg"/></span>
+                    <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/cdek.svg"/></span>
                 </div>
                 <div className="bottom__text">
                     <span><a>Ⓒ SODASTOCK MARKET, 2023</a></span>
