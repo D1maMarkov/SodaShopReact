@@ -1,11 +1,15 @@
+import { FC } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
-import { FC, useEffect } from "react";
-import "./slider.scss";
-import 'swiper/css/navigation';
-import "swiper/swiper-bundle.css";
 import { TypeProduct } from '../../components/types';
+import styles from "./slider.module.scss";
+
+import "swiper/swiper-bundle.css";
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 
 type TypeSlider = {
@@ -15,50 +19,43 @@ type TypeSlider = {
 export const Slider: FC<TypeSlider> = ({slider}) => {
     const navigate = useNavigate();
 
-    let SlidesArray : Element[] = [];
-
-    const length: number = 5;
-
-    function getSlides(){
-        SlidesArray = [...document.getElementsByClassName("swiper-slide")];
-        let currentInd = SlidesArray.indexOf(document.getElementsByClassName("swiper-slide-active")[0]) + Math.floor(length / 2);
-        
-        if (SlidesArray.length > 0){
-            SlidesArray[currentInd - 2].classList.add("edge-swiper-slide");
-            SlidesArray[currentInd - 1].classList.remove("center-swiper-slide");
-            SlidesArray[currentInd - 1].classList.add("middle-swiper-slide");
-            
-            SlidesArray[currentInd].classList.remove("middle-swiper-slide");
-            SlidesArray[currentInd].classList.add("center-swiper-slide");
-            
-            SlidesArray[currentInd + 1].classList.remove("center-swiper-slide");
-            SlidesArray[currentInd + 1].classList.remove("edge-swiper-slide");
-            SlidesArray[currentInd + 1].classList.add("middle-swiper-slide");
-            SlidesArray[currentInd + 2].classList.remove("middle-swiper-slide");
-            SlidesArray[currentInd + 2].classList.add("edge-swiper-slide");
-        }
-    }
-
-    useEffect(getSlides, [SlidesArray]);
-
     return (
-        <div className={"catalog__wrapper"}>
+        <div className={styles.catalog__wrapper}>
             <Swiper
-                spaceBetween={"0px"}
-                modules={[Navigation, Pagination]}
-                slidesPerView={length}
-                pagination={{ clickable: true }}
-                onSlideChange={() => setTimeout(() => getSlides(), 0.1)}
-                onSwiper={() => setTimeout(() => getSlides(), 0.1)}
+                modules={[EffectCoverflow, Navigation, Pagination]}
+                centeredSlides={true}
+                slidesPerView={3}
+                initialSlide={2}
+                style={{ width: '90vw', marginTop: "3vh", height: "85vh" }}
+                effect={"coverflow"}
+                coverflowEffect={{          
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 160,
+                    modifier: 2,          
+                    slideShadows: false,
+                }}  
                 speed={500}
-                navigation
+                pagination={{ el: '.swiper-pagination', clickable: true }}
+                navigation={{
+                    nextEl: '.' + styles.buttonNext,
+                    prevEl: '.' + styles.buttonPrev,
+                }}
                 >
                 {slider.map((image : TypeProduct) =>
-                    <SwiperSlide className={"catalog__soda"} key={image.id}>
-                        <img onClick={() => navigate(`/soda/${image.category}/${image.id}`)} src={image.image}/>
+                    <SwiperSlide className={styles.catalog__soda} key={image.id}>
+                        <img onClick={() => navigate(`/soda/${image.category}/${image.id}`)} src={image.image} alt={image.name}/>
                     </SwiperSlide>
                 )}
             </Swiper>
+
+            <div className="slider-controler">
+                <div className={styles.buttonNext + " swiper-button-next slider-arrow"}></div>
+
+                <div className={styles.buttonPrev + " swiper-button-prev slider-arrow"}></div>
+                
+                <div className="swiper-pagination"></div>
+            </div>
         </div>
     )
 }

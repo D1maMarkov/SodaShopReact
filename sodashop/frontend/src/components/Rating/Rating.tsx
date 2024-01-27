@@ -5,7 +5,7 @@ import styles from "./rating.module.scss";
 
 
 type TypeRating = {
-    productId: Number
+    productId: number
 }
 
 export const ProductRating: FC<TypeRating> = ({productId}) => {
@@ -24,7 +24,6 @@ export const ProductRating: FC<TypeRating> = ({productId}) => {
         setOpenError(false);
     };
 
-
     const handleRating = (rate: number) => {
         if (left){
             setOpenWarning(true);
@@ -40,44 +39,35 @@ export const ProductRating: FC<TypeRating> = ({productId}) => {
     }
 
     function getRates(){
-        let xhttp = new XMLHttpRequest();
-        xhttp.responseType = 'json';
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
+        fetch(`/get-rates/${productId}`)
+            .then(response => response.json())
+            .then(response => {
                 try{
-                    if (xhttp.response.left){
+                    if (response.left){
                         setLeft(true);
-                        setRating(xhttp.response.rate.value);
+                        setRating(response.rate.value);
                     }
                     else{
                         setLeft(false);
                         setRating(0);
                     }
 
-                    setCurrentRate(xhttp.response.rate.value + "(" + xhttp.response.rate.count + ")");
+                    setCurrentRate(response.rate.value + "(" + response.rate.count + ")");
                 }
                 catch{
                     setCurrentRate("0.0(0)");
                 }
             }
-        }
-    
-        xhttp.open("GET", "/get-rates/" + productId);
-        xhttp.send();
+        )
     }
 
-
     function sendFeedback(rate: number){
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4){
-                setOpenSuccess(this.status == 200);
-                setOpenError(!(this.status == 200));
-            }
-        }
-
-        xhttp.open("GET", `/send-feedback/${productId}/${rate}`);
-        xhttp.send();
+        fetch(`/send-feedback/${productId}/${rate}`)
+            .then(response => response.status)
+            .then(status => {
+                setOpenSuccess(status == 200);
+                setOpenError(!(status == 200));
+            })
     }
 
     useEffect(getRates, [rating, productId]);

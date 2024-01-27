@@ -4,7 +4,7 @@ import {getGeocode, getLatLng } from "use-places-autocomplete";
 import { getUserInfo } from "../../hooks/useCurrentUser";
 import styles from "./orderForm.module.scss";
 import usePlacesAutocomplete from "use-places-autocomplete";
-import { FormInput } from "../../components/User/FormInput/formInput";
+import { FormInput } from "../../components/form/formInput/formInput";
 
 
 const libraries: Libraries = ["places"];

@@ -13,3 +13,16 @@ export type TypeProduct = {
 export type TypeCartProduct = TypeProduct & {
     quantity: number
 }
+
+export enum OrderState {
+    pickUp = "At the pick-up point",
+    warehouse = "In the warehouse",
+}
+
+export type TypeOrder = {
+    date: string,
+    id: number,
+    price: number,
+    products: TypeCartProduct[],
+    state: OrderState,
+}

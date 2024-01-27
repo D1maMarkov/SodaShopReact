@@ -1,22 +1,18 @@
-import { FC, useState, useEffect, useRef } from "react";
-import { Blobs } from "../../components/Blobs/Blobs";
+import { FC, useState, useEffect } from "react";
+import { Blobs } from "../../components/global/blobs/blobs";
 import { useNavigate } from "react-router-dom";
-import { Topnav } from "../../components/Topnav/Topnav";
-import { Footer } from "../../components/Footer/footer";
+import { Topnav } from "../../components/global/topnav/topnav";
+import { Footer } from "../../components/global/footer/footer";
 import { validationEmail, validationPhone } from "../../hooks/validations";
 import { getUserInfo } from "../../hooks/useCurrentUser";
-import { Orders } from "../../components/User/Order/Order";
+import { Orders } from "../../components/order/order";
 import Alert from "../../components/Alert";
 import styles from "./profile.module.scss";
-import { ProfileInput } from "../../components/User/ProfileInput/profileInput";
+import { ProfileInput } from "../../components/profileInput/profileInput";
 
 
 export const Profile: FC = () => {
-    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
-
     const navigate = useNavigate();
-
-    const fields = useRef<HTMLDivElement>(null);
 
     const [username, setUsername] = useState<string>("username");
     const [email, setEmail] = useState<string>("email");
@@ -95,12 +91,6 @@ export const Profile: FC = () => {
     useEffect(() => {
         getUserInfo({setUserName: setUsername, setEmail: setEmail, setPhone: setPhone, setAdress: setAdress});
     }, []);
-   
-    useEffect(() => {
-        if (fields.current != null && loading){
-            loading ? fields.current.classList.add(styles.loading) : fields.current.classList.remove(styles.loading);
-        }
-    }, [loading]);
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -115,23 +105,25 @@ export const Profile: FC = () => {
 
         <Alert severity={"success"} handleClose={handleClose} open={open} text={"The changes are saved!"} />
 
-        <div className={styles.profile} >
-            <div className={styles.fields} ref={fields}>
-                <ProfileInput label="Username" value={username} setValue={setUsername} setChanged={setChanged} error={usernameError}/>
-                <ProfileInput label="Email" value={email} setValue={setEmail} setChanged={setChanged} error={emailError}/>
-                <ProfileInput label="Phone number" value={phone} setValue={setPhone} setChanged={setChanged} error={phoneError}/>
-                <ProfileInput label="Adress" value={adress} setValue={setAdress} setChanged={setChanged} error={adressError}/>
+        <div className={styles.wrapper}>
+            <div className={styles.profile} >
+                <div className={styles.fields + " " + (loading ? styles.loading : "")}>
+                    <ProfileInput label="Username" value={username} setValue={setUsername} setChanged={setChanged} error={usernameError}/>
+                    <ProfileInput label="Email" value={email} setValue={setEmail} setChanged={setChanged} error={emailError}/>
+                    <ProfileInput label="Phone number" value={phone} setValue={setPhone} setChanged={setChanged} error={phoneError}/>
+                    <ProfileInput label="Adress" value={adress} setValue={setAdress} setChanged={setChanged} error={adressError}/>
 
-                {changed ? (
-                    <button onClick={confirmAndSave}>confirm and save changes</button>
-                ):( <></> )
-                }
-            </div>
-      
-            <Orders />
+                    {changed ? (
+                        <button onClick={confirmAndSave}>confirm and save changes</button>
+                    ):( <></> )
+                    }
+                </div>
+        
+                <Orders />
 
-            <div className={styles.button__wrapper}>
-                <button onClick={logout}>Log out</button>
+                <div className={styles.button__wrapper}>
+                    <button onClick={logout}>Log out</button>
+                </div>
             </div>
         </div>
 

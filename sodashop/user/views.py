@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from dateutil.tz import tzoffset
 from random import randrange
@@ -30,19 +30,28 @@ def check_confirm_email_token(request, token):
     start_date = datetime.now(tzinfo) - timedelta(hours = 1)
     end_date = datetime.now(tzinfo)
     
-    token_exists = TokenToConfirmEmail.objects.filter(token = token).exists()
+    token_exists = TokenToConfirmEmail.objects.filter(token=token).exists()
     if not token_exists:
-        return HttpResponse(status=202)
-    
+        return HttpResponse(json.dumps({
+            "valid": False,
+            "message": "Incorrect url adress"
+            })
+        )
+
     tokens = TokenToConfirmEmail.objects.filter(created_at__range=[start_date, end_date])
     token_exists = tokens.filter(token=token)
+    
     if not token_exists:
-        return HttpResponse(status=201)
-    
-    token = tokens.get(token = token)
+        return HttpResponse(json.dumps({
+            "valid": False,
+            "message": "You take too long to confirm the email. Try to register again"
+            })
+        )
 
-    return HttpResponse(json.dumps(token.email))
-    
+    return HttpResponse(json.dumps({
+        "valid": True
+        })
+    )
 
 @csrf_exempt
 def register_user(request):
@@ -79,10 +88,9 @@ def change_fields(request):
     current_user.email = request.POST["email"]
     current_user.phone = "+" + request.POST["phone"][1::]
     current_user.adress = request.POST["adress"] if request.POST["adress"] else ""
-    current_user.name = request.POST["username"]
-    
+    current_user.name = request.POST["username"]    
     current_user.save()
-    
+
     return HttpResponse(status=200)
 
 
@@ -111,7 +119,6 @@ def send_new_code(request, token):
     
     new_code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
     
-    
     send_mail('verification code', new_code, settings.EMAIL_HOST_USER, [token_obj.first().email])
     
     return HttpResponse(status=200)
@@ -120,7 +127,7 @@ def send_new_code(request, token):
 def get_reset_token(request, email):
     user_exists = CustomUser.objects.filter(email=email).exists()
     if not user_exists:
-        return HttpResponse(status=202)
+        return HttpResponse(json.dumps("There is no user with such an email"))
     
     current_user = CustomUser.objects.get(email=email)
     
@@ -133,8 +140,7 @@ def get_reset_token(request, email):
     token_exists = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date]).filter(user=current_user).exists()
     
     if token_exists:
-        return HttpResponse(status=201)
-    
+        return HttpResponse(json.dumps("you have already received an email to reset your password"))
     
     token = TokenToResetPassword.objects.create(
         user = current_user,
@@ -149,7 +155,7 @@ def get_reset_token(request, email):
     
     send_mail('password reset link', text, settings.EMAIL_HOST_USER, [current_user.email])
     
-    return HttpResponse(status=200)
+    return HttpResponse(json.dumps("we have sent you an email to recover your password"))
 
 
 @csrf_exempt

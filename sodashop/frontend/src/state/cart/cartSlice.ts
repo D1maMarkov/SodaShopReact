@@ -26,10 +26,10 @@ const cartSlice = createSlice({
         },
         removeQuantity: (state, action: PayloadAction<number>) => {
             let zero:boolean = false;
-            for (let i = 0; i < state.cart.length; i++){
-                if (state.cart[i].id == action.payload){
-                    state.cart[i].quantity--;
-                    if (state.cart[i].quantity == 0){
+            for (let product of state.cart){
+                if (product.id == action.payload){
+                    product.quantity--;
+                    if (product.quantity == 0){
                         zero = true;
                     }
                 }
@@ -41,15 +41,15 @@ const cartSlice = createSlice({
         },
         addQuantity: (state, action: PayloadAction<TypeProduct>) => {
             let added = false;
-            for (let i = 0; i < state.cart.length; i++){
-                if (state.cart[i].id == action.payload.id){
-                    state.cart[i].quantity++;
+            for (let product of state.cart){
+                if (product.id == action.payload.id){
+                    product.quantity++;
                     added = true;
                 }
             }
 
             if (!added){
-                let currProduct: TypeCartProduct = {...action.payload, quantity: 1 }
+                const currProduct: TypeCartProduct = {...action.payload, quantity: 1 }
                 state.cart = [...state.cart, currProduct];
             }
         }

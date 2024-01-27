@@ -1,0 +1,48 @@
+.buttonPrev, .buttonNext{
+    padding: 0px 1px;
+    height: 40vh!important;
+    top: 37vh!important;
+    background-color: transparent;
+    border-radius: 15px;
+    border: 1px solid #2d1344;
+    z-index: 1!important;
+}
+
+.buttonPrev::after, .buttonNext::after{
+    color: #2d1344;
+    font-size: 15px!important;
+}
+
+.buttonPrev:hover, .buttonNext:hover{
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+.catalog__soda{
+    filter: drop-shadow(10px 10px 10px #00124b);
+    display: flex!important;
+    justify-content: center;
+    transition: .5s;
+    height: 75vh!important;
+    touch-action: none;
+
+    img{
+        height: 100%;
+        cursor: pointer;
+        -khtml-user-select: none;
+        -o-user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+
+        &:hover{
+            -webkit-filter: drop-shadow(3px 3px 3px #00124b);
+            filter: drop-shadow(3px 3px 3px #00124b);
+        }
+    }
+}
+
+.wrapper{
+    height: 100vh;
+    background: linear-gradient(45deg, rgb(110, 100, 120), rgb(250, 250, 250));
+}

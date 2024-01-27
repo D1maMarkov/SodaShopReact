@@ -1,9 +1,9 @@
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 from pathlib import Path
 import os
 
 
-#load_dotenv()
+load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'frontend',
     'cart',
-    "user"
+    'user'
 ]
 
 
@@ -142,10 +142,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = 'sodastockonlinestore@gmail.com'
-#EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_HOST_PASSWORD"))
-
-EMAIL_HOST_USER = 'sodastockonlinestore@gmail.com'
-EMAIL_HOST_PASSWORD = 'dvtl rjmi ahrf ufeu'
+EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_HOST_PASSWORD"))
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -160,7 +157,5 @@ STATICFILES_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
-#TELEGRAM_API_TOKEN = str(os.getenv("TELEGRAM_API_TOKEN"))
-#MY_TELEGRAM_ID = int(str(os.getenv('MY_TELEGRAM_ID')))
-TELEGRAM_API_TOKEN = str("fdbfdbgf")
-MY_TELEGRAM_ID = 123456
+TELEGRAM_API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
+MY_TELEGRAM_ID = int(os.getenv('MY_TELEGRAM_ID'))

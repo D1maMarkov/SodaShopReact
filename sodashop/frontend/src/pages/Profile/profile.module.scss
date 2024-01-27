@@ -8,12 +8,9 @@
 }
 
 .profile{
-    position: relative;
     margin-top: 140px;
-    left: 50%;
-    transform: translate(-50%, 0%);
     font-size: 20px;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     text-decoration: none;
     color: white;
     z-index: 1;
@@ -24,14 +21,11 @@
             color: rgb(250, 210, 210);
         }
 
-        
-            button{
-                background-color: #f50057;
-                width: 100%;
-                margin-left: 0px;
-            }
-        
-        
+        button{
+            background-color: #f50057;
+            width: 100%;
+            margin-left: 0px;
+        }
     }
 }
 
@@ -44,4 +38,9 @@
         width: 100%;
         margin-left: 0px
     }
+}
+
+.wrapper{
+    display: flex;
+    justify-content: center;
 }

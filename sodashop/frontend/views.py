@@ -4,7 +4,6 @@ from django.shortcuts import render
 from user.models import CustomUser
 from django.conf import settings
 from cart.cart import Cart
-from datetime import date
 from .models import *
 import json
 import telebot
@@ -34,20 +33,19 @@ def get_orders(request):
     orders_json = OrderSerializer(orders, many=True).data
     
     return HttpResponse(json.dumps(orders_json))
-    
+
 
 def create_order(request, name, phone, delivery, payment, lat, lng, comment):
     cart = Cart(request)
-    
+
     order = Order.objects.create(
         price=cart.get_total_price(), 
         user=CustomUser.objects.get(user=request.user), 
-        date=date.today(),
         delivery=delivery,
         payment=payment,
         comment=(comment if comment != "NoComment" else ""),
-        lat = lat,
-        lng = lng,
+        lat=lat,
+        lng=lng,
     )
     
     message = "На сайте новый заказ"
@@ -68,14 +66,13 @@ def create_order(request, name, phone, delivery, payment, lat, lng, comment):
     cart.clear()
 
     return HttpResponse(status=200)
- 
+
     
 def send_feedback(request, product_id, rate):
     if not request.user.is_authenticated:
         return HttpResponse(status=201)
 
     user = User.objects.get(username=request.user.get_username())
-
     custom_user = CustomUser.objects.get(user=user)
 
     Rate.objects.create(product=Product.objects.get(id=product_id), rate=rate, user=custom_user)
@@ -125,5 +122,3 @@ def get_product(request, category, color):
     products_json = ProductSerializer(products, many=True).data
     
     return HttpResponse(json.dumps(products_json))
-        
-#165 129

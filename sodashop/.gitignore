@@ -1,2 +1,5 @@
-dump.json
-db.sqlite3
+/dump.json
+/db.sqlite3
+/.env
+/frontend/node_modules/
+/frontend/node_modules

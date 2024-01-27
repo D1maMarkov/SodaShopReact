@@ -42,9 +42,7 @@ export const MyButton: FC<TypeButton> = ({product}) => {
 
     return (
         <>
-        <div onClick={addToCart} className={styles.container__cartbutton}>
-            <input type="submit" value="Add to cart" />
-        </div>
+        <input className={styles.button} type="button" onClick={addToCart} value="Add to cart" />
 
         <Alert severity={"success"} handleClose={handleClose} open={open} text={"Product added to cart!"} />
         <Alert severity={"error"} handleClose={handleClose} open={openError} text={"Something went wrong!"} />

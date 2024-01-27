@@ -6,19 +6,18 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import "swiper/swiper-bundle.css";
-import { Blobs } from "../../components/Blobs/Blobs";
+import { Blobs } from "../../components/global/blobs/blobs";
 import Alert from "../../components/Alert";
 import { validationPhone } from "../../hooks/validations";
 import { getUserInfo } from "../../hooks/useCurrentUser";
 import { RootState } from "../../state/store";
 import { initialValue } from '../../state/cart/cartSlice';
 import { TypeCartProduct } from "../../components/types";
-import styles from "./orderForm.module.scss";
 import { Autocomplite, TypeCords } from './autocomplite';
-import { FormInput } from '../../components/User/FormInput/formInput';
-import { CartDemo } from '../../components/CartDemo/cartDemo';
-import { Topnav } from '../../components/Topnav/Topnav';
+import { FormInput } from '../../components/form/formInput/formInput';
+import { CartDemo } from '../../components/cartDemo/cartDemo';
+import { Topnav } from '../../components/global/topnav/topnav';
+import styles from "./orderForm.module.scss";
 
 
 const defaultCenter = {
@@ -27,7 +26,7 @@ const defaultCenter = {
 };
 
 export const OrderForm: FC = () => {
-    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
+    document.body.style.overflowY = "auto";
 
     const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -65,20 +64,14 @@ export const OrderForm: FC = () => {
 
       if (name.length > 0 && phone.length > 0 && errorPhone.length == 0 && delivery.length > 0 && payment.length > 0 && adressValid){
         setLoading(true);
-        let xhttp = new XMLHttpRequest();
+        const currentComment: string = comment.length > 0 ? comment : "NoComment"
 
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
+        fetch(`/create-order/${name}/${phone}/${delivery}/${payment}/${center.lat}/${center.lng}/${currentComment}`)
+            .then(() => {
                 setOpenSuccess(true);
                 setTimeout(() => {navigate("/"); dispatch(initialValue([]))}, 2100);
-            }
+            })
         }
-
-        let currentComment: string = comment.length > 0 ? comment : "NoComment";
-
-        xhttp.open("GET", `/create-order/${name}/${phone}/${delivery}/${payment}/${center.lat}/${center.lng}/${currentComment}`);
-        xhttp.send();
-      }
     }
 
     useEffect(() => {
@@ -123,7 +116,7 @@ export const OrderForm: FC = () => {
                     
                     <Autocomplite center={center} setCenter={setCenter} setAdressValid={setAdressValid}/>
 
-                    <div style={{ display: "flex", justifyContent: "space-between", width: "84%", marginLeft: "8%", marginTop: "40px" }} >
+                    <div className={styles.select__wrapper}>
                         <FormControl className={styles.select} variant="filled" sx={{ m: 1, minWidth: 120 }}>
                             <InputLabel id="select-payment">Payment</InputLabel>
                             <Select

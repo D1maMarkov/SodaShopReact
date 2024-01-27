@@ -1,16 +1,14 @@
 import { useState, useEffect, FC } from "react";
 import { validationEmail } from "../../hooks/validations";
 import { useNavigate } from "react-router-dom";
-import { FormInput } from "../../components/User/FormInput/formInput";
-import { Topnav } from "../../components/Topnav/Topnav";
-import { Blobs } from "../../components/Blobs/Blobs";
-import { Form } from "../../components/User/Form/form";
-import { Title } from "../../components/User/FormTitle/formTitle";
+import { FormInput } from "../../components/form/formInput/formInput";
+import { Topnav } from "../../components/global/topnav/topnav";
+import { Blobs } from "../../components/global/blobs/blobs";
+import { Form } from "../../components/form/form";
+import { Title } from "../../components/form/formTitle/formTitle";
 
 
 export const Register:FC = () => {
-    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
-
     const navigate = useNavigate();
 
     const [username, setUser] = useState<string>("");

@@ -37,6 +37,7 @@
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "css-loader": "^6.8.1",
+    "moment": "^2.30.1",
     "node-sass": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

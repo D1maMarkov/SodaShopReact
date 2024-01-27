@@ -1,16 +1,14 @@
 import { useState, useEffect, FC } from "react";
-import { Blobs } from "../../components/Blobs/Blobs";
-import { Topnav } from "../../components/Topnav/Topnav";
+import { Blobs } from "../../components/global/blobs/blobs";
+import { Topnav } from "../../components/global/topnav/topnav";
 import { useNavigate, useParams } from "react-router-dom";
-import { Form } from "../../components/User/Form/form";
-import { FormInput } from "../../components/User/FormInput/formInput";
+import { Form } from "../../components/form/form";
+import { FormInput } from "../../components/form/formInput/formInput";
 import Alert from "../../components/Alert";
 import styles from "./resetPassword.module.scss";
 
 
 export const ResetPassword:FC = () => {
-    document.body.style.background = "linear-gradient(45deg, #d13381, #ffe88c) no-repeat";
-
     const navigate = useNavigate();
     const params = useParams();
 
