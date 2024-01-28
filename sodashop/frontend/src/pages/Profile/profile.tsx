@@ -28,16 +28,10 @@ export const Profile: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     function logout(){
-        let xhttp = new XMLHttpRequest();
-        xhttp.responseType = 'json';
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
+        fetch("/user/logout")
+            .then(response => {
                 navigate("/");
-            }
-        }
-    
-        xhttp.open("GET", "/user/logout");
-        xhttp.send();
+            })
     }
 
     function confirmAndSave(){

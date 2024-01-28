@@ -197,7 +197,7 @@ def reset_password(request):
 @csrf_exempt
 def get_user_info(request):  
     if not request.user.is_authenticated:
-        return HttpResponse(status=202)
+        return HttpResponse(json.dumps("not autorized"))
 
     current_user =  CustomUser.objects.get(user=request.user)
     

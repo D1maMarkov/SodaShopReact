@@ -8,28 +8,30 @@ type TypeUserInfo = {
     setAdress?: Dispatch<string>,
 }
 
-
 export const getUserInfo = ({setUserName, setEmail, setPhone, setAdress} : TypeUserInfo) => {
-    let xhttp = new XMLHttpRequest();
-    xhttp.responseType = 'json';
-    xhttp.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200){
-            if (setUserName){
-                setUserName(xhttp.response.username);
-            }
-            if (setEmail){
-                setEmail(xhttp.response.email);
-            }
-            if (setPhone){
-                setPhone(xhttp.response.phone);
-            }
-            if (setAdress){
-                setAdress(xhttp.response.adress);
+    fetch("/user/get-user-info", {
+        method: "post",
+        headers: {
+            'Accept': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }})
+        .then(response => response.json())
+        .then(response => {
+            if (response != "not autorized"){
+                if (setUserName){
+                    setUserName(response.username);
+                }
+                if (setEmail){
+                    setEmail(response.email);
+                }
+                if (setPhone){
+                    setPhone(response.phone);
+                }
+                if (setAdress){
+                    setAdress(response.adress);
+                }
             }
         }
-    }
-   
-    xhttp.open("POST", "/user/get-user-info", true);
-    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhttp.send();
+    )
 }
+

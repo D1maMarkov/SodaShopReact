@@ -25,14 +25,19 @@ export const Register:FC = () => {
     function register(){
         if (error2.length == 0){
             setLoading(true);
-            let xhttp = new XMLHttpRequest();
-            xhttp.responseType = 'json';
-            xhttp.onreadystatechange = function(){
-                if (this.readyState == 4){
+
+            fetch("/user/register-user", {
+                method: "post",
+                body: `username=${username}&password=${password}&email=${email}`,
+                headers: {
+                    'Accept': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }})
+                .then(response => {
                     setLoading(false);
-                    switch(this.status){
+                    switch(response.status){
                         case 200:
-                            const token = xhttp.response;
+                            const token = response.json();
                             navigate(`/confirm/${token}`);
                             break;
                         case 202:
@@ -45,20 +50,13 @@ export const Register:FC = () => {
                             setError2("apparently you entered an incorrect email address");
                             break;
                     }
-                }
-            }
-
-            let params = `username=${username}&password=${password}&email=${email}`;
-        
-            xhttp.open("POST", "/user/register-user", true);
-            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhttp.send(params);
+                })
         }
     }
 
     function handleEmail(email: string){
         setEmail(email);
-        validationEmail(email) ? setError2("") : setError2("invalid email address");
+        setError2(validationEmail(email) ? "" : "invalid email address");
     }
 
     useEffect(() =>{

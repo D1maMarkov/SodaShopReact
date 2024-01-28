@@ -1,17 +1,11 @@
 export function addQuantitySession(product: number){
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `/cart/add/${product}`);
-    xhttp.send();
+    fetch(`/cart/add/${product}`);
 }
 
 export function removeFromCartSession(product: number){
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `/cart/remove/${product}`);
-    xhttp.send();
+    fetch(`/cart/remove/${product}`);
 }
 
 export function removeQuantitySession(product: number){
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `/cart/low-quantity/${product}`);
-    xhttp.send();
+    fetch(`/cart/low-quantity/${product}`);
 }

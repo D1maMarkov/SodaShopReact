@@ -24,16 +24,11 @@ export const Cart: FC<TypeCart> = ({opened, setOpen}) => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
     const getCart = () => {
-        let xhttp = new XMLHttpRequest();
-        xhttp.responseType = 'json';
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                dispatch(initialValue(xhttp.response));
-            }
-        }
-    
-        xhttp.open("GET", "/cart/get");
-        xhttp.send();
+        fetch("/cart/get")
+        .then(response => response.json())
+        .then(response => {
+            dispatch(initialValue(response));
+        })
     }
 
     useEffect(() => {

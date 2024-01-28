@@ -7,20 +7,11 @@ export const PrivateRoute = () => {
     const [loading, setLoading] = useState(true);
 
     function getAuth(){
-        let xhttp = new XMLHttpRequest();
-        xhttp.responseType = 'json';
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
+        fetch("/user/get-current-user")
+            .then(response => {
                 setLoading(false);
                 setAuth(true);
-            }
-            else{
-                setLoading(false);
-            }
-        }
-    
-        xhttp.open("GET", "/user/get-current-user");
-        xhttp.send();
+            })
     }
 
     useEffect(getAuth, []);
