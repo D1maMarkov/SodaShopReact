@@ -36,45 +36,38 @@ export const ResetPassword:FC = () => {
         }
         else{
             setLoading(true);
-            let xhttp = new XMLHttpRequest();
-      
-            xhttp.onreadystatechange = function(){
-                if (this.readyState == 4 && this.status == 200){
+            fetch("/user/reset-password", {
+                method: "post",
+                body: `username=${username}&password=${password1}`,
+                headers: {
+                    'Accept': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }})
+                .then(response => {
                     setOpen(true);
                     setTimeout(() => navigate("/profile"), 1500);
-                }
-            }
-        
-            let params = `username=${username}&password=${password1}`;
-        
-            xhttp.open("POST", "/user/reset-password", true);
-            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhttp.send(params);
+                })
         }
     }
 
     function CheckToken(){
-        let xhttp = new XMLHttpRequest();
-      
-        xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200){
-                setUsername(xhttp.response);
-            }
-            else if (this.readyState == 4 && this.status == 202){
-                setLink(false);
-                setMessage("the password reset link is invalid");
-            }
-            else if (this.readyState == 4 && this.status == 201){
-                setLink(false);
-                setMessage("The link has expired for 1 hour. Try to request password recovery again");
-            }
-        }
-       
-        let params = `token=${token}`;
-      
-        xhttp.open("POST", "/user/check-token", true);
-        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhttp.send(params);
+        fetch("/user/check-token", {
+            method: "post",
+                body: `token=${token}`,
+                headers: {
+                    'Accept': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }})
+                .then(response => response.json())
+                .then(response =>{
+                    if (response.valid){
+                        setUsername(response.message);
+                    }
+                    else{
+                        setLink(false);
+                        setMessage(response.message);
+                    }
+                })
     }
 
     useEffect(CheckToken, []);

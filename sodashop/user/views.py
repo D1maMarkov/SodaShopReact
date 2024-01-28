@@ -165,28 +165,40 @@ def check_token(request):
     
     token_exists = TokenToResetPassword.objects.filter(token = request.POST["token"]).exists()
     if not token_exists:
-        return HttpResponse(status=202)
+        return HttpResponse(json.dumps({
+            "valid": False,
+            "message": "the password reset link is invalid"
+            })
+        )
     
     tokens = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date])
     token_exists = tokens.filter(token = request.POST["token"])
     if not token_exists:
-        return HttpResponse(status=201)
+        return HttpResponse(json.dumps({
+            "valid": False,
+            "message": "The link has expired for 1 hour. Try to request password recovery again"
+            })
+        )
     
     token = tokens.get(token = request.POST["token"])
 
-    return HttpResponse(json.dumps(token.user.user.username))
+    return HttpResponse(json.dumps({
+        "valid": True,
+        "message": token.user.user.username
+        })
+    )
 
 
 @csrf_exempt
 def reset_password(request):
-    username = request.POST["username"][1:-1]
+    username = request.POST["username"]
     
-    user = User.objects.get(username = username)
+    user = User.objects.filter(username=username)
     user.update(password=make_password(request.POST["password"]))
     
     user = authenticate(username=username, password=request.POST["password"])
     
-    token = TokenToResetPassword.objects.get(user = CustomUser.objects.get(user=user))
+    token = TokenToResetPassword.objects.get(user=CustomUser.objects.get(user=user))
     token.delete()
     
     login(request, user)

@@ -65,20 +65,17 @@ export const Profile: FC = () => {
             setChanged(false);
             setLoading(true);
 
-            let xhttp = new XMLHttpRequest();
-      
-            xhttp.onreadystatechange = function(){
-                if (this.readyState == 4 && this.status == 200){
+            fetch("/user/change-fields", {
+                method: "post",
+                body: `username=${username}&email=${email}&adress=${adress}&phone=${phone}`,
+                headers: {
+                    'Accept': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }})
+                .then(response => {
                     setLoading(false);
                     setOpen(true);
-                }
-            }
-        
-            let params = `username=${username}&email=${email}&adress=${adress}&phone=${phone}`;
-   
-            xhttp.open("POST", "/user/change-fields", true);
-            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhttp.send(params);
+                })
         }
     }
 
@@ -125,4 +122,3 @@ export const Profile: FC = () => {
         </>
     )
 }
-// 157
