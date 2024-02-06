@@ -5,8 +5,7 @@ import { Form } from "../../components/form/form";
 import { FormInput } from "../../components/form/formInput/formInput";
 import styles from "./confirm.module.scss";
 
-
-export const Confirm:FC = () => {
+const Confirm:FC = () => {
     const navigate = useNavigate();
 
     const params = useParams();
@@ -94,3 +93,5 @@ export const Confirm:FC = () => {
         </>
     )
 }
+
+export default Confirm;

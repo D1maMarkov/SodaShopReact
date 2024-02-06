@@ -1,4 +1,4 @@
-nav{
+header{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,10 +11,10 @@ nav{
     cursor: pointer;
     padding: 10px;
     border-radius: 15px;
+    transition: .1s;
 
     &:hover{
         background-color: rgba(150, 150, 150, 0.3);
-        transition: .1s;
     }
 }
 
@@ -60,10 +60,10 @@ nav{
         cursor: pointer;
         padding: 5px 15px;
         border-radius: 19px;
+        transition: .1s;
     
         &:hover{
             background-color: rgba(140, 140, 140, 0.3);
-            transition: .1s;
         }
     }
 }

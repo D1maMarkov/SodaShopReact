@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { TypeProduct } from "../../components/types";
 import { Footer } from "../../components/global/footer/footer";
 import { getPopularProduct } from "./getPopularProducts";
-import styles from "./home.module.scss";
 import { Topnav } from "../../components/global/topnav/topnav";
 import { Blobs } from "../../components/global/blobs/blobs";
+import styles from "./home.module.scss";
 
 
-export const Home: FC = () => {
+const Home: FC = () => {
     const popularProducts = getPopularProduct();
     const navigate = useNavigate();
 
@@ -71,3 +71,5 @@ export const Home: FC = () => {
         </>
     )
 }
+
+export default Home

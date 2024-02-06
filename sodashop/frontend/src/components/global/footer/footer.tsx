@@ -4,8 +4,8 @@ import "./footer.scss";
 
 export const Footer:FC = () => {
     return (
-        <div>
-            <footer>
+        <footer>
+            <div className="footer">
                 <div className="footer__text">
                     <div className="social">
                         <div className="social__text">
@@ -47,7 +47,7 @@ export const Footer:FC = () => {
                         </div>
                     </div>
                 </div>
-            </footer>
+            </div>
             <div className="bottom">
                 <div className="bottom__imgs" >
                     <span><img loading="lazy" src="https://brandshop.ru/assets/images/footer-icons/mir.svg"/></span>
@@ -66,6 +66,6 @@ export const Footer:FC = () => {
                     <a>Site map</a>
                 </div>
             </div>
-        </div>
+        </footer>
     )
 }

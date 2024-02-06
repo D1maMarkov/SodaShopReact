@@ -6,7 +6,7 @@ import { getProducts } from "./getProducts";
 import styles from "./slider.module.scss";
 
 
-export const Catalog:FC = () => {
+const Catalog:FC = () => {
     const products = getProducts();
 
     return (
@@ -17,3 +17,5 @@ export const Catalog:FC = () => {
         </div>
     );
 }
+
+export default Catalog;

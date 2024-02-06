@@ -25,7 +25,7 @@ const defaultCenter = {
     lng: -38.523
 };
 
-export const OrderForm: FC = () => {
+const OrderForm: FC = () => {
     document.body.style.overflowY = "auto";
 
     const dispatch = useDispatch();
@@ -192,3 +192,5 @@ export const OrderForm: FC = () => {
         </>
 	);
 };
+
+export default OrderForm;

@@ -1,4 +1,4 @@
-import {FC, useState, useEffect, Dispatch } from "react";
+import {FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Badge from '@material-ui/core/Badge';
 import { useSelector } from "react-redux";
@@ -40,10 +40,10 @@ export const Topnav: FC<TypeTopnav> = ({type="general", color="white"}) => {
 
     return (
         <>
-        <nav className={stylesTopnav[type as keyof TypeStyles]}>
+        <header className={stylesTopnav[type as keyof TypeStyles]}>
             <div>
-                <a onClick={() => navigate("/")}>Home</a>
-                <a onClick={() => navigate("/catalog")}>Shop</a>
+                <a href="/">Home</a>
+                <a href="/catalog">Shop</a>
             </div>
 
             <div>
@@ -59,7 +59,7 @@ export const Topnav: FC<TypeTopnav> = ({type="general", color="white"}) => {
                     <img onClick={() => setOpenCart(true)} className={styles.topnav__img} src={"/static/frontend/img/" + color + "topnav/basket.png"}/>
                 </Badge>
             </div>
-        </nav>
+        </header>
 
         <Cart opened={openCart} setOpen={setOpenCart}/>
         </>

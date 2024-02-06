@@ -10,7 +10,7 @@ import { Title } from "../../components/form/formTitle/formTitle";
 import { resetPassword } from "./reset";
 
 
-export const Login:FC = () => {
+const Login:FC = () => {
     const navigate = useNavigate();
 
     const [username, setUser] = useState<string>("");
@@ -77,3 +77,5 @@ export const Login:FC = () => {
         </>
     )
 }
+
+export default Login;

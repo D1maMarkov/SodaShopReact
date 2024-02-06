@@ -11,7 +11,7 @@ import styles from "./profile.module.scss";
 import { ProfileInput } from "../../components/profileInput/profileInput";
 
 
-export const Profile: FC = () => {
+const Profile: FC = () => {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState<string>("username");
@@ -122,3 +122,5 @@ export const Profile: FC = () => {
         </>
     )
 }
+
+export default Profile;

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { Blobs } from "../../components/global/blobs/blobs";
 import { Topnav } from "../../components/global/topnav/topnav";
 import { RotateSoda } from "./rotate";
@@ -8,13 +8,19 @@ import { getProducts } from "./getProducts";
 import styles from "./soda.module.scss";
 
 
-export const Soda:FC = () => {    
+const Soda:FC = () => {    
     const Products = getProducts();
 
     const [color, setColor] = useState<number>(0);
     const [anim, setAnim] = useState<boolean>(false);
     const [gradient1, setGradient1] = useState<string>("");
     const [gradient2, setGradient2] = useState<string>("");
+
+    useEffect(() => {
+        if (Products[color] !== undefined){
+            document.title = Products[color].name + " | " + Products[color].description;
+        }
+    }, [color, Products])
 
     return (
         Products.length > 0 ? (
@@ -25,14 +31,14 @@ export const Soda:FC = () => {
             <div style={{ background: gradient1}} className={styles.bodyafter}></div>
             <div style={{ background: gradient2, zIndex: "-1" }} className={styles.bodyafter + " " + (anim ? styles.animcontainer : "")}>
             </div>
-            <div className={styles.description}>
+            <section className={styles.description}>
                 <div title="send feedback">
                     <ProductRating productId={Products[color].id}/>
                 </div>
-                <p>{Products[color].name}</p>
+                <p>{ Products[color].name }</p>
                 <a>Carbonated soft drink produced by Coca-Cola. Originally marketed as a drink to replace alcohol and intended as a patent medicine, it was invented in the late 19th century by John Stith Pemberton and was bought out by businessman Asa Griggs Candler, whose marketing tactics led Coca-Cola to dominate the global soft drinks market throughout the twentieth century.</a>
                 <MyButton product={Products[color]} />
-            </div>
+            </section>
             <RotateSoda 
                 Products={Products} 
                 color={color} 
@@ -49,3 +55,5 @@ export const Soda:FC = () => {
         )
     )
 }
+
+export default Soda;

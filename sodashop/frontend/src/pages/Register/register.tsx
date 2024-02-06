@@ -8,7 +8,7 @@ import { Form } from "../../components/form/form";
 import { Title } from "../../components/form/formTitle/formTitle";
 
 
-export const Register:FC = () => {
+const Register:FC = () => {
     const navigate = useNavigate();
 
     const [username, setUser] = useState<string>("");
@@ -91,3 +91,5 @@ export const Register:FC = () => {
         </>
     )
 }
+
+export default Register;

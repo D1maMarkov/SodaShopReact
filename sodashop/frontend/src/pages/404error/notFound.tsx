@@ -4,7 +4,7 @@ import { Blobs } from "../../components/global/blobs/blobs";
 import styles from "./notFound.module.scss";
 
 
-export const Page404:FC = () => {
+const Page404:FC = () => {
     return(
         <>
         <Topnav />
@@ -13,3 +13,5 @@ export const Page404:FC = () => {
         </>
     )
 }
+
+export default Page404;

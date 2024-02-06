@@ -6,9 +6,10 @@ import { Form } from "../../components/form/form";
 import { FormInput } from "../../components/form/formInput/formInput";
 import Alert from "../../components/Alert";
 import styles from "./resetPassword.module.scss";
+import { resetPassword } from "../login/reset";
 
 
-export const ResetPassword:FC = () => {
+const ResetPassword:FC = () => {
     const navigate = useNavigate();
     const params = useParams();
 
@@ -92,3 +93,5 @@ export const ResetPassword:FC = () => {
         </>
     )
 }
+
+export default ResetPassword;

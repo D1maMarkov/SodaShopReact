@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 
-export const PrivateRoute = () => {
+const PrivateRoute = () => {
     const [auth, setAuth] = useState(true);
     const [loading, setLoading] = useState(true);
 
@@ -26,3 +26,5 @@ export const PrivateRoute = () => {
         </>
     )
 }
+
+export default PrivateRoute;

@@ -1,0 +1,13 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+    overflow-x: hidden;
+    font-family: 'Bebas Neue', sans-serif;
+    min-width: 100vw;
+    min-height: 100vh;
+    --topnav-color: white;
+    background: linear-gradient(45deg, #d13381, #ffe88c);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&display=swap');
