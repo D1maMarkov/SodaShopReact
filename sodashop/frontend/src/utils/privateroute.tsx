@@ -8,7 +8,7 @@ const PrivateRoute = () => {
 
     function getAuth(){
         fetch("/user/get-current-user")
-            .then(response => {
+            .then(() => {
                 setLoading(false);
                 setAuth(true);
             })

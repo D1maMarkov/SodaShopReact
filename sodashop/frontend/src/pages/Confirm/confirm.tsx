@@ -23,7 +23,7 @@ const Confirm:FC = () => {
         fetch(`/user/check-confirm-email-token/${token}`)
             .then(response => response.json())
             .then(response => {
-                if (response.valid){
+                if (response.status === "valid"){
                     setValid(true);
                 }
                 else{
@@ -34,13 +34,13 @@ const Confirm:FC = () => {
 
     function confirmEmail(){
         fetch(`/user/confirm-email/${token}/${code}`)
-            .then(response => response.status)
-            .then(status => {
-                if (status == 200){
+            .then(response => response.json())
+            .then(response => {
+                if (response.status === "valid"){
                     navigate("/profile");
                 }
-                else if (status == 202){
-                    setError("incorrect code");
+                else{
+                    setError(response.message);
                 }
             }
         )

@@ -1,5 +1,6 @@
 from django.urls import path, re_path
-from .views import *
+from .views.main_page_views import *
+from .views.products_views import *
 
 
 urlpatterns = [
@@ -10,13 +11,11 @@ urlpatterns = [
     path("profile", index),
     path('register', index),
     path('order-form', index),
-    path('soda/<category>/<color>', index),
+    path('soda/<str:category>/<int:color>', index),
     path('get-rates/<int:product_id>', get_rates),
     path('send-feedback/<int:product_id>/<int:rate>', send_feedback),
     path("get-products", get_products),
-    path("get-product/<category>/<int:color>", get_product),
-    path('get-orders', get_orders),
+    path("get-product/<str:category>/<int:color>", get_product),
     path("get-popular-products", get_popular_products),
-    path('create-order/<name>/<phone>/<delivery>/<payment>/<lat>/<lng>/<comment>', create_order),
     re_path(r'.*/', index),
 ]

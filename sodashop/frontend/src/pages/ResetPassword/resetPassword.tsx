@@ -6,7 +6,6 @@ import { Form } from "../../components/form/form";
 import { FormInput } from "../../components/form/formInput/formInput";
 import Alert from "../../components/Alert";
 import styles from "./resetPassword.module.scss";
-import { resetPassword } from "../login/reset";
 
 
 const ResetPassword:FC = () => {
@@ -61,7 +60,7 @@ const ResetPassword:FC = () => {
                 }})
                 .then(response => response.json())
                 .then(response =>{
-                    if (response.valid){
+                    if (response.status === "valid"){
                         setUsername(response.message);
                     }
                     else{

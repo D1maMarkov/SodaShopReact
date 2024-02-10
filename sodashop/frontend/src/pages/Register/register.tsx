@@ -33,22 +33,17 @@ const Register:FC = () => {
                     'Accept': 'application/x-www-form-urlencoded',
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }})
+                .then(response => response.json())
                 .then(response => {
                     setLoading(false);
-                    switch(response.status){
-                        case 200:
-                            const token = response.json();
-                            navigate(`/confirm/${token}`);
-                            break;
-                        case 202:
-                            setError1("a user with this username already exists");
-                            break;
-                        case 201:
-                            setError2("a user with this email already exists");
-                            break;
-                        case 203:
-                            setError2("apparently you entered an incorrect email address");
-                            break;
+                    if(response.status === "valid"){
+                        const token = response.message;
+                        navigate(`/confirm/${token}`);
+                    }
+                    else{
+                        setError1(response.errors.username[0]);
+                        setError2(response.errors.email[0]);
+                        setError3(response.errors.password[0]);
                     }
                 })
         }

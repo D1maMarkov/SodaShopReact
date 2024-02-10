@@ -63,10 +63,10 @@ export const ProductRating: FC<TypeRating> = ({productId}) => {
 
     function sendFeedback(rate: number){
         fetch(`/send-feedback/${productId}/${rate}`)
-            .then(response => response.status)
-            .then(status => {
-                setOpenSuccess(status == 200);
-                setOpenError(!(status == 200));
+            .then(response => response.json())
+            .then(response => {
+                setOpenSuccess(response.status === "valid");
+                setOpenError(!(response.status === "valid"));
             })
     }
 

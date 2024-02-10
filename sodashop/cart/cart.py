@@ -1,6 +1,6 @@
 from django.conf import settings
 from frontend.models import Product
-from frontend.serializer import CartProductSerializer
+from .serializer import CartProductSerializer
 
 
 class Cart(object):

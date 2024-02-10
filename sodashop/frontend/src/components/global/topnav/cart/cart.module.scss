@@ -54,6 +54,7 @@
     font-size: 30px;
     margin-left: 10%;
     margin-bottom: 50px;
+    cursor: pointer;
 
     &:hover{
         opacity: .7;
@@ -63,5 +64,4 @@
 .opened{
     right: 0px;
     box-shadow: -5px 0px 20px gray;
-  /*  overflow-y: hidden;*/
 }

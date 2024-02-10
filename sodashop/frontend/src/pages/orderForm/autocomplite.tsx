@@ -85,7 +85,6 @@ export const Autocomplite:FC<TypeAutocomplite> = ({setCenter, center, setAdressV
     const handleInput = (value: string) => {
         setValue(value);
         setErrorAdress(value.length > 0 ? "" : "write correct adress");
-        value.length > 0 ? setAdressValid(true) : setAdressValid(false);
     };
 
     const handleSelect = ({ description } : TypeHandle) => () => {
@@ -126,6 +125,9 @@ export const Autocomplite:FC<TypeAutocomplite> = ({setCenter, center, setAdressV
 
     useEffect(getUserLocation, []);
     useEffect(() => getUserInfo({setAdress: setValue}), []);
+    useEffect(() => {
+        setAdressValid(value.length > 0);
+    }, [value]);
 
     return (
         <>

@@ -29,7 +29,7 @@ const Profile: FC = () => {
 
     function logout(){
         fetch("/user/logout")
-            .then(response => {
+            .then(() => {
                 navigate("/");
             })
     }

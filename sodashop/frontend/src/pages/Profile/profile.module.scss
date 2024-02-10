@@ -43,7 +43,12 @@
         margin: 20px;
         background-color: rgb(245, 0, 87);
         width: 100%;
-        margin-left: 0px
+        margin-left: 0px;
+        cursor: pointer;
+
+        &:hover{
+            opacity: .7;
+        }
     }
 }
 

@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 class CustomUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.CharField(max_length=255)
-    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=50, unique=True)
     phone = models.CharField(max_length=50)
     adress = models.CharField(max_length=500)
     

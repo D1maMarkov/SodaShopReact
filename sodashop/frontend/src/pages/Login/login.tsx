@@ -34,15 +34,14 @@ const Login:FC = () => {
                 'Accept': 'application/x-www-form-urlencoded',
                 'Content-Type': 'application/x-www-form-urlencoded'
             }})
-            .then(response => response.status)
-            .then(status =>  {
-                if (status == 200){
-                    setLoading(false);
+            .then(response => response.json())
+            .then(response =>  {
+                setLoading(false);
+                if (response.status === "valid"){
                     navigate("/profile");
                 }
-                else if (status == 202){
-                    setLoading(false);
-                    setError("the username or password is incorrect");
+                else{
+                    setError(response.errors.username[0]);
                 }
         });
     }

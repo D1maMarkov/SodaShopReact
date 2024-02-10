@@ -6,7 +6,7 @@ import { initialValue } from "../../../../state/cart/cartSlice";
 import { RootState } from "../../../../state/store";
 import { updateLenght } from "../../../../state/cart/cartLenSlice";
 import { CartProuct } from "./proudct/product";
-import styles from "./Cart.module.scss";
+import styles from "./cart.module.scss";
 
 
 type TypeCart = {

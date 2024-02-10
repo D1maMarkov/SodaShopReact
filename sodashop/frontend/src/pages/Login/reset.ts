@@ -11,7 +11,7 @@ export function resetPassword(email : string, setLoading : Dispatch<boolean>, se
             .then(response => response.json())
             .then(response => {
                     setLoading(false);
-                    setResetText(response);
+                    setResetText(response.message);
                 }
             )
     }

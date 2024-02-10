@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from "react-redux";
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,12 +9,11 @@ import { Blobs } from "../../components/global/blobs/blobs";
 import Alert from "../../components/Alert";
 import { validationPhone } from "../../hooks/validations";
 import { getUserInfo } from "../../hooks/useCurrentUser";
-import { RootState } from "../../state/store";
 import { initialValue } from '../../state/cart/cartSlice';
-import { TypeCartProduct } from "../../components/types";
+import { useDispatch } from 'react-redux';
 import { Autocomplite, TypeCords } from './autocomplite';
 import { FormInput } from '../../components/form/formInput/formInput';
-import { CartDemo } from '../../components/cartDemo/cartDemo';
+import { ProductsForm } from './productsForm';
 import { Topnav } from '../../components/global/topnav/topnav';
 import styles from "./orderForm.module.scss";
 
@@ -26,8 +24,6 @@ const defaultCenter = {
 };
 
 const OrderForm: FC = () => {
-    document.body.style.overflowY = "auto";
-
     const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -44,7 +40,6 @@ const OrderForm: FC = () => {
     const [errorPayment, setErrorPayment] = useState<string>("");
     const [errorDelivery, setErrorDelivery] = useState<string>("");
 
-    const [totalPrice, setTotalPrice] = useState<number>(0);
     const [deliveryPrice, setDeliveryPrice] = useState<number>(0);
 
     const [adressValid, setAdressValid] = useState<boolean>(false);
@@ -53,8 +48,6 @@ const OrderForm: FC = () => {
     const [openSuccess, setOpenSuccess] = useState<boolean>(false);
 
     const [center, setCenter] = useState<TypeCords>(defaultCenter);
-
-    const cart = useSelector((state: RootState) => state.cart.cart);
 
     function getForm(){
       setErrorName(name.length == 0 ? "Write your name" : "");
@@ -65,11 +58,13 @@ const OrderForm: FC = () => {
       if (name.length > 0 && phone.length > 0 && errorPhone.length == 0 && delivery.length > 0 && payment.length > 0 && adressValid){
         setLoading(true);
         const currentComment: string = comment.length > 0 ? comment : "NoComment"
-
-        fetch(`/create-order/${name}/${phone}/${delivery}/${payment}/${center.lat}/${center.lng}/${currentComment}`)
+        fetch(`/cart/create-order/${name}/${phone}/${delivery}/${payment}/${center.lat}/${center.lng}/${currentComment}`)
             .then(() => {
                 setOpenSuccess(true);
-                setTimeout(() => {navigate("/"); dispatch(initialValue([]))}, 2100);
+                setTimeout(() => {
+                    navigate("/"); 
+                    dispatch(initialValue([]))
+                }, 2100);
             })
         }
     }
@@ -78,17 +73,11 @@ const OrderForm: FC = () => {
       setErrorPhone(validationPhone(phone) ? "" : "Write correct phone number");
     }, [phone]);
 
-    useEffect(() => {
-      setTotalPrice(cart.map((product: TypeCartProduct) => 
-          product.price * product.quantity 
-      ).reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0));
-    }, [cart]);
-
     useEffect(() => getUserInfo({setUserName: setName, setPhone: setPhone}), []);
 
     const changeDeliveryMethod = (value: string) =>{
       setDelivery(value);
-      if (value == "courier"){
+      if (value === "Courier"){
         setDeliveryPrice(5);
       }
       else{
@@ -105,7 +94,12 @@ const OrderForm: FC = () => {
             <Topnav />
             <Blobs overflow=""/>
         
-            <Alert severity={"success"} handleClose={handleCloseSuccess} open={openSuccess} text={"The order has been successfully placed"} />
+            <Alert 
+                severity={"success"} 
+                handleClose={handleCloseSuccess} 
+                open={openSuccess} 
+                text={"The order has been successfully placed"} 
+            />
 
             <div className={styles.main}>
                 <div className={styles.form} style={{ borderRight: "1px solid rgb(150, 150, 150)" }} >
@@ -159,35 +153,11 @@ const OrderForm: FC = () => {
                     />
                 </div>
 
-                <div className={styles.form}>
-                    <div style={{ marginLeft: "5%", width: "90%" }}>
-                        <div className={styles.space__beetween}>
-                            <p>products</p>
-                        </div>
-
-                        <CartDemo cart={cart}></CartDemo>
-
-                        <div className={styles.space__beetween}>
-                            <p>Delivery</p>
-                            <p>{deliveryPrice}$</p>
-                        </div>
-
-                        <div className={styles.space__beetween}>
-                            <p>Price</p>
-                            <p>{totalPrice}$</p>
-                        </div>
-
-                        <div style={{ textAlign: "right" }}>
-                            <p>total:  {totalPrice + deliveryPrice} $</p>
-                        </div>
-
-                        {loading || cart.length == 0 ? (
-                            <button style={{cursor: "not-allowed"}} disabled className={styles.order__form__butt}>Buy</button>
-                        ):(
-                            <button onClick={getForm} className={styles.order__form__butt}>Buy</button>
-                        )}
-                    </div>
-                </div>
+                <ProductsForm 
+                    loading={loading} 
+                    deliveryPrice={deliveryPrice} 
+                    getForm={getForm}
+                />
             </div>
         </>
 	);

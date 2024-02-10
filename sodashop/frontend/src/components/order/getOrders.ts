@@ -6,7 +6,7 @@ export function getOrders(){
     const [orders, setOrders] = useState<TypeOrder[]>([]);
 
     useEffect(() => {
-        fetch("/get-orders")
+        fetch("/cart/get-orders")
             .then(response => response.json())
             .then(response => {
                 setOrders(response);
