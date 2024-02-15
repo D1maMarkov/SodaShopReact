@@ -1,6 +1,8 @@
 from django.conf import settings
 from frontend.models import Product
 from .serializer import CartProductSerializer
+from .models.models import CartProduct
+from frontend.serializer import BaseProductSerializer
 
 
 class Cart(object):
@@ -12,7 +14,7 @@ class Cart(object):
 
         #cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
-        
+  
     def __iter__(self):
         cart = self.cart.copy()
       
@@ -22,15 +24,15 @@ class Cart(object):
     def all(self):
         return list(self.cart.values())
 
-    def add(self, product_id):  
+    def add(self, product_id):
         product = CartProductSerializer(Product.objects.get(id=product_id)).data
-       
+
         if product_id not in self.cart:
             self.cart[product_id] = product
-            
+
         else:
             self.cart[product_id]['quantity'] += 1
-      
+
         self.save()
 
     def remove(self, product_id):

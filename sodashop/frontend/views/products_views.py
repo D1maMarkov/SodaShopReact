@@ -1,11 +1,11 @@
-from django.contrib.auth.models import User
+from user.models.custum_user_model import CustomUser
 from django.http import HttpResponse, JsonResponse
-from user.models import CustomUser
-from frontend.models import *
+from django.contrib.auth.models import User
 from frontend.serializer import *
+from frontend.models import *
 import json
 
- 
+
 def send_feedback(request, product_id, rate):
     if not request.user.is_authenticated:
         return JsonResponse({
@@ -56,7 +56,7 @@ def get_product(request, category, color):
         if products[i].id == color:
             products = products[i::] + products[0: i]
             break
-        
+
     if len(products) < 4:
         products *= 4
         products = products[0:4]

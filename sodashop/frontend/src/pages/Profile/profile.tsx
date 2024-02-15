@@ -3,7 +3,6 @@ import { Blobs } from "../../components/global/blobs/blobs";
 import { useNavigate } from "react-router-dom";
 import { Topnav } from "../../components/global/topnav/topnav";
 import { Footer } from "../../components/global/footer/footer";
-import { validationEmail, validationPhone } from "../../hooks/validations";
 import { getUserInfo } from "../../hooks/useCurrentUser";
 import { Orders } from "../../components/order/order";
 import Alert from "../../components/Alert";
@@ -14,8 +13,8 @@ import { ProfileInput } from "../../components/profileInput/profileInput";
 const Profile: FC = () => {
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState<string>("username");
-    const [email, setEmail] = useState<string>("email");
+    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
     const [adress, setAdress] = useState<string>("");
 
@@ -35,48 +34,32 @@ const Profile: FC = () => {
     }
 
     function confirmAndSave(){
-        let valid: boolean = true;
+        setChanged(false);
+        setLoading(true);
 
-        if (username.length == 0){
-            valid = false;
-            setUsernameError("write non empty username");
-        }
-        else{
-            setUsernameError("");
-        }
-
-        if (!validationEmail(email)){
-            valid = false;
-            setEmailError("write correct email");
-        }
-        else{
-            setEmailError("");
-        }
-
-        if (!validationPhone(phone)){
-            valid = false;
-            setPhoneError("write correct phone number");
-        }
-        else{
-            setPhoneError("");
-        }
-
-        if (valid){
-            setChanged(false);
-            setLoading(true);
-
-            fetch("/user/change-fields", {
-                method: "post",
-                body: `username=${username}&email=${email}&adress=${adress}&phone=${phone}`,
-                headers: {
-                    'Accept': 'application/x-www-form-urlencoded',
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }})
-                .then(response => {
-                    setLoading(false);
+        fetch("/user/change-fields", {
+            method: "post",
+            body: `username=${username}&email=${email}&adress=${adress}&phone=${phone}`,
+            headers: {
+                'Accept': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }})
+            .then(response => response.json())
+            .then(response => {
+                setLoading(false);
+                if (response.status === "valid"){
+                    setUsernameError("");
+                    setEmailError("");
+                    setPhoneError("");
                     setOpen(true);
-                })
-        }
+                }
+                else{
+                    const errors = response.errors;
+                    setUsernameError(errors.username[0]);            
+                    setEmailError(errors.email[0]);
+                    setPhoneError(errors.phone[0]);
+                }
+            })
     }
 
     useEffect(() => {
@@ -105,15 +88,14 @@ const Profile: FC = () => {
                     <ProfileInput label="Adress" value={adress} setValue={setAdress} setChanged={setChanged} error={adressError}/>
 
                     {changed ? (
-                        <button onClick={confirmAndSave}>confirm and save changes</button>
-                    ):( <></> )
-                    }
+                        <button className={styles.button} onClick={confirmAndSave}>confirm and save changes</button>
+                    ):( <></> )}
                 </div>
-        
+
                 <Orders />
 
                 <div className={styles.button__wrapper}>
-                    <button onClick={logout}>Log out</button>
+                    <button className={styles.button} onClick={logout}>Log out</button>
                 </div>
             </div>
         </div>

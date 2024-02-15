@@ -25,7 +25,7 @@ const cartSlice = createSlice({
             state.cart = state.cart.filter((item : TypeCartProduct) => item.id != action.payload);
         },
         removeQuantity: (state, action: PayloadAction<number>) => {
-            let zero:boolean = false;
+            let zero: boolean = false;
             for (let product of state.cart){
                 if (product.id == action.payload){
                     product.quantity--;

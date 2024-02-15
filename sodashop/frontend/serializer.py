@@ -11,8 +11,8 @@ class BaseProductSerializer(serializers.ModelSerializer):
 
     def get_image(self, product):
         return product.image.url
-    
-        
+
+
 class ProductSerializer(BaseProductSerializer):
     class Meta:
         model = Product

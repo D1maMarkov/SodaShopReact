@@ -1,15 +1,13 @@
+from ..forms import RegistrationForm, LoginForm, ResetPasswordForm, ChangeProfileFieldsForm, PasswordResetRequestForm
+from ..models.token_models import TokenToConfirmEmail, TokenToResetPassword
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
-from ..forms import RegistrationForm, LoginForm
+from ..models.custum_user_model import CustomUser
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from utils.user_errors import errors
 from django.conf import settings
 from random import randrange
-from ..models import *
-import json
 
 
 @csrf_exempt
@@ -33,7 +31,7 @@ def login_user(request):
                 "status": "invalid",
                 'errors': form.errors
             })
-    
+
 
 @csrf_exempt
 def register_user(request):
@@ -69,37 +67,60 @@ def register_user(request):
 
 @csrf_exempt
 def change_fields(request):
-    current_user =  CustomUser.objects.get(user=request.user)
-    current_user.email = request.POST["email"]
-    current_user.phone = "+" + request.POST["phone"][1::]
-    current_user.adress = request.POST["adress"] if request.POST["adress"] else ""
-    current_user.name = request.POST["username"]    
-    current_user.save()
+    if request.method == 'POST':
+        form = ChangeProfileFieldsForm(request.POST)
+        if form.is_valid():
+            current_user =  CustomUser.objects.get(user=request.user)
+            current_user.set_email(form.cleaned_data["email"])
+            current_user.set_phone(form.cleaned_data["phone"])
+            current_user.set_adress(form.cleaned_data["adress"])
+            current_user.set_name(form.cleaned_data["username"])
 
-    return HttpResponse(status=200)
+            return JsonResponse({
+                "status": "valid"
+            })
+
+        else:
+            return JsonResponse({
+                "status": "invalid",
+                'errors': form.errors
+            })
 
 
 @csrf_exempt
 def reset_password(request):
-    username = request.POST["username"]
-    
-    user = User.objects.filter(username=username)
-    user.update(password=make_password(request.POST["password"]))
-    
-    user = authenticate(username=username, password=request.POST["password"])
-    
-    token = TokenToResetPassword.objects.get(user=CustomUser.objects.get(user=user))
-    token.delete()
-    
-    login(request, user)
-    
-    return HttpResponse(status=200)
-    
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password1"]
+            
+            user = User.objects.get(username=username)
+            user = CustomUser.objects.get(user=user)
+            
+            user.set_password(password)
+            TokenToResetPassword.objects.get(user=user).delete()
+
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            
+            return JsonResponse({
+                "status": "valid",
+            })
+
+        else:
+            return JsonResponse({
+                "status": "invalid",
+                'errors': form.errors
+            })
+
 
 @csrf_exempt
 def get_user_info(request):  
     if not request.user.is_authenticated:
-        return HttpResponse(json.dumps("not autorized"))
+        return JsonResponse({
+            "status": "invalid"
+        })
 
     current_user =  CustomUser.objects.get(user=request.user)
     
@@ -110,7 +131,10 @@ def get_user_info(request):
         "adress": current_user.adress if current_user.adress != None else "",
     }
     
-    return HttpResponse(json.dumps(info))
+    return JsonResponse({
+        "status": "valid",
+        "info": info
+    })
 
 
 def logout_user(request):

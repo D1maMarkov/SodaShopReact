@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import *
+from .models.custum_user_model import *
+from .models.token_models import TokenToConfirmEmail, TokenToResetPassword
 
 
 @admin.register(CustomUser)

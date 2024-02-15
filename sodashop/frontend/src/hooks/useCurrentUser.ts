@@ -17,21 +17,21 @@ export const getUserInfo = ({setUserName, setEmail, setPhone, setAdress} : TypeU
         }})
         .then(response => response.json())
         .then(response => {
-            if (response != "not autorized"){
+            if (response.status === "valid"){
+                const info = response.info;
                 if (setUserName){
-                    setUserName(response.username);
+                    setUserName(info.username);
                 }
                 if (setEmail){
-                    setEmail(response.email);
+                    setEmail(info.email);
                 }
                 if (setPhone){
-                    setPhone(response.phone);
+                    setPhone(info.phone);
                 }
                 if (setAdress){
-                    setAdress(response.adress);
+                    setAdress(info.adress);
                 }
             }
         }
     )
 }
-

@@ -13,7 +13,7 @@ export const Title: FC<TypeTitle> = ({type}) => {
     return (
         <>
         <div className={styles.title}>
-            <p onClick={() => navigate('/login') }>{type === "login" ? <b>Login</b> : <>Loading</>}</p>
+            <p onClick={() => navigate('/login') }>{type === "login" ? <b>Login</b> : <>Login</>}</p>
             <p onClick={() => navigate('/register')} >{type === "register" ? <b>Registration</b> : <>Registration</>}</p>
         </div>
 

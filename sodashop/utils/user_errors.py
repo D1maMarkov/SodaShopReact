@@ -9,4 +9,11 @@ errors = {
     "reset_link_already_sent": "you have already received an email to reset your password",
     "confirm_email_incorrect_url": "Incorrect url adress",
     "confirm_link_expired": "You take too long to confirm the email. Try to register again",
+    "empty_username": "Write your name",
+    "incorrect_phone": "Write correct phone number",
+    "incorrect_adress": "Write correct adress",
+    "incorrect_email": "write correct email",
+    "empty_payment_method": "Chose payment method",
+    "empty_delivery_method": "Chose delivery method",
+    "different_passwords": "the entered passwords do not match"
 }

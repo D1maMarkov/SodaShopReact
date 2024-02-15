@@ -1,6 +1,9 @@
+from user.models.token_models import TokenToConfirmEmail, TokenToResetPassword
+from user.models.custum_user_model import CustomUser
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, JsonResponse
+from user.forms import PasswordResetRequestForm
 from utils.user_success_mesages import *
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
@@ -41,44 +44,59 @@ def check_confirm_email_token(request, token):
     })
 
 
-def get_reset_token(request, email):
-    user_exists = CustomUser.objects.filter(email=email).exists()
-    if not user_exists:
-        return JsonResponse({
-            "message": errors["users_email_not_exist"]
-        })
-    
-    current_user = CustomUser.objects.get(email=email)
-    
-    start_date = datetime.now(tzinfo) - timedelta(hours = 1)
-    end_date = datetime.now(tzinfo)
-    
-    if TokenToResetPassword.objects.exclude(created_at__range=[start_date, end_date]).filter(user=current_user).exists():
-        TokenToResetPassword.objects.exclude(created_at__range=[start_date, end_date]).get(user=current_user).delete()
-        
-    token_exists = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date]).filter(user=current_user).exists()
-    
-    if token_exists:
-        return JsonResponse({
-            "message": errors["reset_link_already_sent"]
-        })
-    
-    token = TokenToResetPassword.objects.create(
-        user = current_user,
-        token = "".join([chr(randrange(97, 123)) for i in range(32)])
-    )
-    
-    text = f'''
-    password reset link\n
-    http://127.0.0.1:8000/reset-password/{token.token} \n
-    A password reset request has been sent to your email from the SodaStockOnlineStore website. If it wasn't you, please ignore this email
-    '''
+@csrf_exempt
+def get_reset_token(request):
+    if request.method == "POST":
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            user_exists = CustomUser.objects.filter(email=email).exists()
+            if not user_exists:
+                return JsonResponse({
+                    "status": "invalid",
+                    "errors": {
+                        "email": [errors["users_email_not_exist"]]
+                    }
+                })
 
-    send_mail('password reset link', text, settings.EMAIL_HOST_USER, [current_user.email])
-    
-    return JsonResponse({
-        "message": success_messages["reset_sent"]
-    })
+            current_user = CustomUser.objects.get(email=email)
+
+            start_date = datetime.now(tzinfo) - timedelta(hours = 1)
+            end_date = datetime.now(tzinfo)
+
+            if TokenToResetPassword.objects.exclude(created_at__range=[start_date, end_date]).filter(user=current_user).exists():
+                TokenToResetPassword.objects.exclude(created_at__range=[start_date, end_date]).get(user=current_user).delete()
+
+            token_exists = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date]).filter(user=current_user).exists()
+
+            if token_exists:
+                return JsonResponse({
+                    "status": "valid",
+                    "message": errors["reset_link_already_sent"]
+                })
+
+            token = TokenToResetPassword.objects.create(
+                user = current_user,
+                token = "".join([chr(randrange(97, 123)) for i in range(32)])
+            )
+
+            text = f'''
+            password reset link\n
+            http://127.0.0.1:8000/reset-password/{token.token} \n
+            A password reset request has been sent to your email from the SodaStockOnlineStore website. If it wasn't you, please ignore this email
+            '''
+
+            send_mail('password reset link', text, settings.EMAIL_HOST_USER, [current_user.email])
+
+            return JsonResponse({
+                "status": "valid",
+                "message": success_messages["reset_sent"]
+            })
+        else:
+            return JsonResponse({
+                "status": "invalid",
+                "errors": form.errors
+            })
 
 
 @csrf_exempt

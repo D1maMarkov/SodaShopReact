@@ -51,20 +51,18 @@ export const Cart: FC<TypeCart> = ({opened, setOpen}) => {
                 <p>Your cart</p>
                 <img onClick={() => setOpen(false)} className={styles.main__cross} src="https://cdn3.iconfinder.com/data/icons/status/100/close_1-1024.png"/>
             </div>
-            {cart != undefined && cart.length == 0 ? (
-                <>                
-                    <p style={{ fontSize: "20px", marginLeft: "50px" }}>The basket is empty. Add at least one product to the cart</p>
-                </>
+            {cart != undefined && cart.length == 0 ? (  
+                <p style={{ fontSize: "20px", marginLeft: "50px" }}>The basket is empty. Add at least one product to the cart</p>
             ):(<></>)}
             
-                <hr />
-                {cart.map((product: TypeCartProduct) =>
-                    <CartProuct product={product} />
-                )}
+            <hr />
+            {cart.map((cartProduct: TypeCartProduct) =>
+                <CartProuct product={cartProduct} />
+            )}
 
-                {cart != undefined && cart.length != 0 ? (
-                    <hr id={styles.endhr} />
-                ):(<></>)}
+            {cart != undefined && cart.length != 0 ? (
+                <hr id={styles.endhr} />
+            ):(<></>)}
            
             <div style={{ float: "right", marginRight: "5vw", fontSize: "25px" }}>
                 <a>Total: </a>

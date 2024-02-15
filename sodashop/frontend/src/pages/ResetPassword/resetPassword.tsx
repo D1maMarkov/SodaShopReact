@@ -31,23 +31,25 @@ const ResetPassword:FC = () => {
     };
 
     function resetPassword(){
-        if (password1 != password2){
-            setError("the entered passwords do not match");
-        }
-        else{
-            setLoading(true);
-            fetch("/user/reset-password", {
-                method: "post",
-                body: `username=${username}&password=${password1}`,
-                headers: {
-                    'Accept': 'application/x-www-form-urlencoded',
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }})
-                .then(response => {
+        setLoading(true);
+        fetch("/user/reset-password", {
+            method: "post",
+            body: `username=${username}&password1=${password1}&password2=${password2}`,
+            headers: {
+                'Accept': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }})
+            .then(response => response.json())
+            .then(response => {
+                if (response.status === "valid"){
                     setOpen(true);
                     setTimeout(() => navigate("/profile"), 1500);
-                })
-        }
+                }
+                else{
+                    setError(response.errors.password1);
+                    setLoading(false);
+                }
+            })
     }
 
     function CheckToken(){
@@ -77,7 +79,7 @@ const ResetPassword:FC = () => {
         <Topnav />
         <Blobs />
 
-        <Alert severity={"success"} handleClose={handleClose} open={open} text={"The password has been saved successfully!"} />
+        <Alert severity={"success"} handleClose={handleClose} open={open} text={"The password has been saved successfully!"}/>
 
         {validLink ? (
             <Form loading={loading}>

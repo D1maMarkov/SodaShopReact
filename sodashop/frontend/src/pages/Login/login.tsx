@@ -1,6 +1,5 @@
 import { useEffect, useState, FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { validationEmail } from "../../hooks/validations";
 import { Topnav } from "../../components/global/topnav/topnav";
 import { Blobs } from "../../components/global/blobs/blobs";
 import { Form } from "../../components/form/form";
@@ -46,10 +45,6 @@ const Login:FC = () => {
         });
     }
 
-    useEffect(() => {
-        setEmailError(validationEmail(email) ? "" : "Write correct email");
-    }, [email]);
-
     return (
         <>
         <Topnav />
@@ -60,9 +55,9 @@ const Login:FC = () => {
             
             {reset ? (
                 <>
-                <FormInput label="email" value={email} setValue={setEmail} error={emailError}/>
+                <FormInput type="email" label="email" value={email} setValue={setEmail} error={emailError}/>
                 <div className={styles.reset__mail}>{ resetText }</div>
-                <button onClick={() => resetPassword(email, setLoading, setResetText)}>Send mail to reset password</button>
+                <button onClick={() => resetPassword(email, setLoading, setEmailError, setResetText)}>Send mail to reset password</button>
                 </>
             ):(
                 <>

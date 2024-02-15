@@ -7,21 +7,22 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { Blobs } from "../../components/global/blobs/blobs";
 import Alert from "../../components/Alert";
-import { validationPhone } from "../../hooks/validations";
-import { getUserInfo } from "../../hooks/useCurrentUser";
 import { initialValue } from '../../state/cart/cartSlice';
 import { useDispatch } from 'react-redux';
-import { Autocomplite, TypeCords } from './autocomplite';
-import { FormInput } from '../../components/form/formInput/formInput';
 import { ProductsForm } from './productsForm';
 import { Topnav } from '../../components/global/topnav/topnav';
+import { Libraries, useJsApiLoader } from "@react-google-maps/api";
+import { getUserInfo } from "../../hooks/useCurrentUser";
+import usePlacesAutocomplete from "use-places-autocomplete";
+import { FormInput } from "../../components/form/formInput/formInput";
 import styles from "./orderForm.module.scss";
 
 
-const defaultCenter = {
-    lat: -3.745,
-    lng: -38.523
-};
+const libraries: Libraries = ["places"];
+
+type TypeHandle = {
+    description: string
+}
 
 const OrderForm: FC = () => {
     const dispatch = useDispatch();
@@ -42,52 +43,103 @@ const OrderForm: FC = () => {
 
     const [deliveryPrice, setDeliveryPrice] = useState<number>(0);
 
-    const [adressValid, setAdressValid] = useState<boolean>(false);
+    const [errorAdress, setErrorAdress] = useState<string>("");
 
     const [loading, setLoading] = useState<boolean>(false); 
     const [openSuccess, setOpenSuccess] = useState<boolean>(false);
 
-    const [center, setCenter] = useState<TypeCords>(defaultCenter);
-
     function getForm(){
-      setErrorName(name.length == 0 ? "Write your name" : "");
-      setErrorPhone(validationPhone(phone) ? "" : "Write correct phone number");
-      setErrorPayment(payment.length == 0 ? "Chose payment method" : "");
-      setErrorDelivery(delivery.length == 0 ? "Chose delivery method" : "");
-
-      if (name.length > 0 && phone.length > 0 && errorPhone.length == 0 && delivery.length > 0 && payment.length > 0 && adressValid){
         setLoading(true);
-        const currentComment: string = comment.length > 0 ? comment : "NoComment"
-        fetch(`/cart/create-order/${name}/${phone}/${delivery}/${payment}/${center.lat}/${center.lng}/${currentComment}`)
-            .then(() => {
-                setOpenSuccess(true);
-                setTimeout(() => {
-                    navigate("/"); 
-                    dispatch(initialValue([]))
-                }, 2100);
+        fetch("/cart/create-order", {
+            method: "post",
+            body: `name=${name}&phone=${phone}&delivery=${delivery}&payment=${payment}&adress=${value}&comment=${comment}`,
+            headers: {
+                'Accept': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }})
+            .then(response => response.json())
+            .then(response => {
+                setLoading(false);
+                if (response.status === "valid"){
+                    setOpenSuccess(true);
+                    setTimeout(() => {
+                        navigate("/"); 
+                        dispatch(initialValue([]))
+                    }, 2100);
+                }
+                else{
+                    setErrorName(response.errors.name[0]);
+                    setErrorPhone(response.errors.phone[0]);
+                    setErrorPayment(response.errors.payment[0]);
+                    setErrorAdress(response.errors.adress[0]);
+                    setErrorDelivery(response.errors.delivery[0]);
+                }
             })
-        }
     }
 
-    useEffect(() => {
-      setErrorPhone(validationPhone(phone) ? "" : "Write correct phone number");
-    }, [phone]);
+    useEffect(() => getUserInfo({setUserName: setName, setPhone: setPhone, setAdress: setValue}), []);
 
-    useEffect(() => getUserInfo({setUserName: setName, setPhone: setPhone}), []);
-
-    const changeDeliveryMethod = (value: string) =>{
+    const changeDeliveryMethod = (value: string) => {
       setDelivery(value);
-      if (value === "Courier"){
-        setDeliveryPrice(5);
-      }
-      else{
-        setDeliveryPrice(2);
-      }
+      setDeliveryPrice(value === "Courier" ? 5 : 2);
     }
 
     const handleCloseSuccess = () => {
         setOpenSuccess(false);
     }
+
+    const {
+        ready,
+        value,
+        suggestions: {status, data},
+        setValue,
+        init,
+        clearSuggestions,
+    } = usePlacesAutocomplete({
+        initOnMount: false,
+        debounce: 300,
+    });
+    
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: "AIzaSyDOd9Bx2sWmTLhVjR07Df89bmk4W2K-x5M",
+        libraries
+    })
+
+    const renderSuggestions = () =>
+        data.map((suggestion) => {
+          const {
+            place_id,
+            structured_formatting: { main_text, secondary_text },
+          } = suggestion;
+    
+          return (
+            <li key={place_id} className={styles.li} onClick={handleSelect(suggestion)}>
+                <svg
+                  className={styles.svg}
+                  viewBox="0 0 22 21"
+                  fill="none">
+                  <path
+                    d="M2.15855 10.7706C1.25539 10.5015 1.26005 9.37172 1.93487 9.05089L18.9069 0.981837C19.6873 0.610843 20.5521 1.47573 20.1811 2.25606L12.1121 19.2281C11.7912 19.9029 10.6615 19.9076 10.3924 19.0044L9.0223 14.406C8.6989 13.3205 7.84246 12.4641 6.75699 12.1407L2.15855 10.7706Z"
+                    stroke="#B7B7B7"
+                    stroke-width="1.5"
+                  />
+				</svg>
+              <span>{main_text}, {secondary_text}</span>
+            </li>
+          );
+    });
+
+    useEffect(() => {
+      if (isLoaded){
+          init();
+      }
+    }, [isLoaded, init]);
+
+    const handleSelect = ({ description } : TypeHandle) => () => {
+        setValue(description, false);
+        clearSuggestions();
+    };
 
 	return (
         <>
@@ -108,7 +160,8 @@ const OrderForm: FC = () => {
                     <FormInput label="recipient's name*" value={name} setValue={setName} error={errorName} />
                     <FormInput label="phone number (+)*" value={phone} setValue={setPhone} error={errorPhone} />
                     
-                    <Autocomplite center={center} setCenter={setCenter} setAdressValid={setAdressValid}/>
+                    <FormInput label="adress*" value={value} setValue={setValue} error={errorAdress} />
+                    {status === "OK" && <ul className={styles.hint} >{renderSuggestions()}</ul>} 
 
                     <div className={styles.select__wrapper}>
                         <FormControl className={styles.select} variant="filled" sx={{ m: 1, minWidth: 120 }}>
