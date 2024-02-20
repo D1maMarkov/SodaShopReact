@@ -4,15 +4,15 @@ from .views.user_views import *
 
 
 urlpatterns = [
-    path('login-user', login_user),
-    path('register-user', register_user),
-    path("send-new-code/<str:token>", send_new_code),
-    path("confirm-email/<str:token>/<int:verification_code>", confirm_email),
-    path("get-user-info", get_user_info),
-    path("change-fields", change_fields),
-    path("logout", logout_user),
-    path("get-reset-token", get_reset_token),
-    path("check-token", check_token_to_reset_password),
-    path("reset-password", reset_password),
-    path("check-confirm-email-token/<str:token>", check_confirm_email_token),
+    path('login-user', LoginUser.as_view()),
+    path('register-user', RegisterUser.as_view()),
+    path("send-new-code/<str:token>", SendNewCode.as_view()),
+    path("confirm-email/<str:token>/<int:verification_code>", ConfirmEmail.as_view()),
+    path("get-user-info", GetUserInfo.as_view()),
+    path("change-fields", ChangeFields.as_view()),
+    path("logout", LogoutUser.as_view()),
+    path("get-reset-token", GetResetToken.as_view()),
+    path("check-token", CheckTokenToResetPassword.as_view()),
+    path("reset-password", ResetPassword.as_view()),
+    path("check-confirm-email-token/<str:token>", CheckConfirmEmailToken.as_view()),
 ]

@@ -1,7 +1,9 @@
 from user.models.custum_user_model import CustomUser
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.http import HttpResponse, JsonResponse
 from frontend.models import PopularProduct
+from django.views.generic import View
 from frontend.models import Product
 from django.conf import settings
 from cart.cart import Cart
@@ -13,19 +15,19 @@ import json
 
 bot = telebot.TeleBot(settings.TELEGRAM_API_TOKEN)
 
-def get_orders(request):
-    user = request.user
-    current_user = CustomUser.objects.get(user=user)
+class GetOrders(View):
+    def get(self, request):
+        user = request.user
+        current_user = CustomUser.objects.get(user=user)
 
-    orders = Order.objects.filter(user=current_user)
-    orders_json = OrderSerializer(orders, many=True).data
-    
-    return HttpResponse(json.dumps(orders_json))
+        orders = Order.objects.filter(user=current_user)
+        orders_json = OrderSerializer(orders, many=True).data
+        
+        return HttpResponse(json.dumps(orders_json))
 
-
-@csrf_exempt
-def create_order(request):
-    if request.method == 'POST':
+@method_decorator(csrf_exempt, name='dispatch')
+class CreateOrder(View):
+    def post(self, request):
         form = OrderForm(request.POST)
 
         if form.is_valid():

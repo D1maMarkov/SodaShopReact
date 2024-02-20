@@ -1,12 +1,15 @@
 from user.models.token_models import TokenToConfirmEmail, TokenToResetPassword
 from user.models.custum_user_model import CustomUser
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, JsonResponse
 from user.forms import PasswordResetRequestForm
+from django.contrib.auth.models import User
 from utils.user_success_mesages import *
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
+from django.views.generic import View
 from dateutil.tz import tzoffset
 from django.conf import settings
 from utils.user_errors import *
@@ -18,35 +21,36 @@ import json
 timezone_offset = -8.0  # Pacific Standard Time (UTC−08:00)
 tzinfo = tzoffset(None, timezone_offset * 3600)  # offset in seconds
 
-def check_confirm_email_token(request, token):
-    start_date = datetime.now(tzinfo) - timedelta(hours = 1)
-    end_date = datetime.now(tzinfo)
-    
-    token_exists = TokenToConfirmEmail.objects.filter(token=token).exists()
-    if not token_exists:
-        return JsonResponse({
-            "status": "invalid",
-            "message": errors["confirm_email_incorrect_url"]
-        })
+class CheckConfirmEmailToken(View):
+    def get(self, request, token):
+        start_date = datetime.now(tzinfo) - timedelta(hours = 1)
+        end_date = datetime.now(tzinfo)
         
+        token_exists = TokenToConfirmEmail.objects.filter(token=token).exists()
+        if not token_exists:
+            return JsonResponse({
+                "status": "invalid",
+                "message": errors["confirm_email_incorrect_url"]
+            })
+            
 
-    tokens = TokenToConfirmEmail.objects.filter(created_at__range=[start_date, end_date])
-    token_exists = tokens.filter(token=token)
-    
-    if not token_exists:
+        tokens = TokenToConfirmEmail.objects.filter(created_at__range=[start_date, end_date])
+        token_exists = tokens.filter(token=token)
+        
+        if not token_exists:
+            return JsonResponse({
+                "status": "invalid",
+                "message": errors["confirm_link_expired"],
+            })
+
         return JsonResponse({
-            "status": "invalid",
-            "message": errors["confirm_link_expired"],
+            "status": "valid"
         })
 
-    return JsonResponse({
-        "status": "valid"
-    })
 
-
-@csrf_exempt
-def get_reset_token(request):
-    if request.method == "POST":
+@method_decorator(csrf_exempt, name='dispatch')
+class GetResetToken(View):
+    def post(self, request):
         form = PasswordResetRequestForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data["email"]
@@ -99,67 +103,69 @@ def get_reset_token(request):
             })
 
 
-@csrf_exempt
-def check_token_to_reset_password(request):    
-    start_date = datetime.now(tzinfo) - timedelta(hours = 1)
-    end_date = datetime.now(tzinfo)
-    
-    token_exists = TokenToResetPassword.objects.filter(token = request.POST["token"]).exists()
-    if not token_exists:
-        return JsonResponse(json.dumps({
-            "status": "invalid",
-            "message": errors["reset_link_invalid"]
-            })
-        )
-    
-    tokens = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date])
-    token_exists = tokens.filter(token = request.POST["token"])
-    if not token_exists:
-        return JsonResponse(json.dumps({
-            "status": "invalid",
-            "message": errors["reset_link_expired"]
-            })
-        )
-    
-    token = tokens.get(token = request.POST["token"])
+@method_decorator(csrf_exempt, name='dispatch')
+class CheckTokenToResetPassword(View):
+    def post(self, request):    
+        start_date = datetime.now(tzinfo) - timedelta(hours = 1)
+        end_date = datetime.now(tzinfo)
+        
+        token_exists = TokenToResetPassword.objects.filter(token = request.POST["token"]).exists()
+        if not token_exists:
+            return JsonResponse(json.dumps({
+                "status": "invalid",
+                "message": errors["reset_link_invalid"]
+                })
+            )
+        
+        tokens = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date])
+        token_exists = tokens.filter(token = request.POST["token"])
+        if not token_exists:
+            return JsonResponse(json.dumps({
+                "status": "invalid",
+                "message": errors["reset_link_expired"]
+                })
+            )
+        
+        token = tokens.get(token = request.POST["token"])
 
-    return JsonResponse({
-        "status": "valid",
-        "message": token.user.user.username
-    })
-    
-
-def confirm_email(request, token, verification_code):
-    token_obj = TokenToConfirmEmail.objects.get(token=token)
-    code = token_obj.code
-    
-    if code == verification_code:
-        user = User.objects.create_user(username=token_obj.username, password=token_obj.password)
-        
-        CustomUser.objects.create(name=user.username, user=user, email=token_obj.email)
-        
-        user = authenticate(username=token_obj.username, password=token_obj.password)
-        login(request, user)
-        
-        token_obj.delete()
-        
         return JsonResponse({
-            "status": "valid"
+            "status": "valid",
+            "message": token.user.user.username
         })
-    else:
-        return JsonResponse({
-            "status": "invalid",
-            "message": errors["incorrect_emial_code"]
-            }
-        )
+    
+
+class ConfirmEmail(View):
+    def get(self, request, token, verification_code):
+        token_obj = TokenToConfirmEmail.objects.get(token=token)
+        code = token_obj.code
+        
+        if code == verification_code:
+            user = User.objects.create_user(username=token_obj.username, password=token_obj.password)
+            CustomUser.objects.create(name=user.username, user=user, email=token_obj.email)
+            
+            user = authenticate(username=token_obj.username, password=token_obj.password)
+            login(request, user)
+            
+            token_obj.delete()
+            
+            return JsonResponse({
+                "status": "valid"
+            })
+        else:
+            return JsonResponse({
+                "status": "invalid",
+                "message": errors["incorrect_emial_code"]
+                }
+            )
 
 
-def send_new_code(request, token):
-    new_code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
-    
-    token_obj = TokenToConfirmEmail.objects.filter(token=token)
-    token_obj.update(code=new_code)
-    
-    send_mail('verification code', new_code, settings.EMAIL_HOST_USER, [token_obj.first().email])
-    
-    return HttpResponse(status=200)
+class SendNewCode(View):
+    def get(self, request, token):
+        new_code = ''.join(map(str, [randrange(0, 10) for i in range(6)]))
+
+        token_obj = TokenToConfirmEmail.objects.filter(token=token)
+        token_obj.update(code=new_code)
+
+        send_mail('verification code', new_code, settings.EMAIL_HOST_USER, [token_obj.first().email])
+
+        return HttpResponse(status=200)
