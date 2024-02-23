@@ -28,7 +28,7 @@ class RegistrationForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput)
-    
+
     def clean(self):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
@@ -57,17 +57,20 @@ class ResetPasswordForm(forms.Form):
 
         if password1 != password2:
             self.add_error("password1", user_errors["different_passwords"])
-            
 
-class ChangeProfileFieldsForm(forms.Form):
-    username = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    phone = forms.CharField(max_length=100, required=False)
-    adress = forms.CharField(max_length=120, required=False)
-    
+
+class ChangeProfileFieldsForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'adress', 'phone']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].error_messages = {'required': user_errors["empty_username"]}
+        self.fields['phone'].error_messages = {
+            'invalid': user_errors["incorrect_phone"], 
+            'max_length': user_errors["incorrect_phone"]
+        }
         self.fields['email'].error_messages = {
             'required': user_errors["incorrect_email"], 
             'invalid': user_errors["incorrect_email"]
@@ -75,7 +78,7 @@ class ChangeProfileFieldsForm(forms.Form):
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
-
+        print(phone)
         if not is_valid_phone(phone):
             self.add_error("phone", user_errors["incorrect_phone"])
             

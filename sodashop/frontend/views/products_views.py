@@ -1,11 +1,11 @@
 from django.http import HttpResponse, JsonResponse
-from django.views.generic import View
+from django.views.generic import View, CreateView
 from frontend.serializer import *
 from frontend.models import *
 import json
 
 
-class SendFeedback(View):
+class SendFeedback(CreateView):
     def get(self, request, product_id, rate):
         if not request.user.is_authenticated:
             return JsonResponse({
@@ -29,7 +29,7 @@ class GetRates(View):
 
         if request.user.is_authenticated:
             user = request.user
-            rate_exists = Product.objects.get(id=product_id).rate_set.all().filter(user=user).exists()
+            rate_exists = Product.objects.get(id=product_id).rate_set.filter(user=user).exists()
 
             if rate_exists:
                 feedback_left = True
@@ -49,7 +49,7 @@ class GetRates(View):
 
 
 class GetProducts(View):
-    def get(self, request):
+    def get(self):
         products = BaseProductSerializer(Product.objects.all(), many=True).data
 
         return HttpResponse(json.dumps(products))

@@ -12,7 +12,7 @@ class OrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'] = forms.CharField(max_length=50)
-        self.fields['phone'] = forms.CharField(max_length=50)
+        self.fields['phone'] = forms.CharField(max_length=11)
         self.fields['name'].error_messages = {'required': user_errors["empty_username"]}
         self.fields['phone'].error_messages = {'required': user_errors["incorrect_phone"]}
         self.fields['adress'].error_messages = {'required': user_errors["incorrect_adress"]}

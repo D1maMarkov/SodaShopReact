@@ -1,12 +1,13 @@
+from django.forms import BaseModelForm
 from ..forms import RegistrationForm, LoginForm, ResetPasswordForm, ChangeProfileFieldsForm
 from ..models.token_models import TokenToConfirmEmail, TokenToResetPassword
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
+from django.views.generic import View, UpdateView
 from ..models.custom_user_model import CustomUser
 from django.core.mail import send_mail
-from django.views.generic import View
 from django.conf import settings
 from random import randrange
 
@@ -67,25 +68,25 @@ class RegisterUser(View):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class ChangeFields(View):
-    def post(self, request):
-        form = ChangeProfileFieldsForm(request.POST)
-        if form.is_valid():
-            user =  request.user
-            user.set_email(form.cleaned_data["email"])
-            user.set_phone(form.cleaned_data["phone"])
-            user.set_adress(form.cleaned_data["adress"])
-            user.set_name(form.cleaned_data["username"])
+class ChangeFields(UpdateView):
+    model = CustomUser
+    form_class = ChangeProfileFieldsForm
+    
+    def get_object(self):
+        return self.request.user
 
-            return JsonResponse({
-                "status": "valid"
-            })
+    def form_valid(self, form):
+        form.save()
 
-        else:
-            return JsonResponse({
-                "status": "invalid",
-                'errors': form.errors
-            })
+        return JsonResponse({
+            "status": "valid"
+        })
+
+    def form_invalid(self, form):
+        return JsonResponse({
+            "status": "invalid",
+            'errors': form.errors
+        })
 
 
 @method_decorator(csrf_exempt, name='dispatch')

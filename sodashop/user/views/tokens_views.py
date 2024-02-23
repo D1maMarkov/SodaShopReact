@@ -23,18 +23,18 @@ class CheckConfirmEmailToken(View):
     def get(self, request, token):
         start_date = datetime.now(tzinfo) - timedelta(hours = 1)
         end_date = datetime.now(tzinfo)
-        
+
         token_exists = TokenToConfirmEmail.objects.filter(token=token).exists()
         if not token_exists:
             return JsonResponse({
                 "status": "invalid",
                 "message": errors["confirm_email_incorrect_url"]
             })
-            
+
 
         tokens = TokenToConfirmEmail.objects.filter(created_at__range=[start_date, end_date])
         token_exists = tokens.filter(token=token)
-        
+
         if not token_exists:
             return JsonResponse({
                 "status": "invalid",
