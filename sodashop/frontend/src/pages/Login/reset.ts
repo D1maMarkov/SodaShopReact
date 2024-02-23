@@ -18,6 +18,7 @@ export function resetPassword(email : string, setLoading : Dispatch<boolean>, se
 
             if (response.status === "valid"){
                 setResetText(response.message);
+                setEmailError("");
             }
             else{
                 setEmailError(response.errors.email[0]);

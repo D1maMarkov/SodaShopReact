@@ -1,20 +1,13 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class CustomUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=50, unique=True)
+class CustomUser(AbstractUser):
     phone = models.CharField(max_length=50)
     adress = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.name
-
-    def set_password(self, new_password):
-        self.user.set_password(new_password)
-        self.user.save()
+        return self.username
         
     def set_email(self, new_email):
         self.email = new_email
@@ -30,5 +23,5 @@ class CustomUser(models.Model):
         self.save()
         
     def set_name(self, new_name):
-        self.name = new_name
+        self.username = new_name
         self.save()

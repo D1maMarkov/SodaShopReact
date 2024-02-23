@@ -1,12 +1,12 @@
-from django.contrib import admin
-from .models.custum_user_model import *
 from .models.token_models import TokenToConfirmEmail, TokenToResetPassword
+from .models.custom_user_model import CustomUser
+from django.contrib import admin
 
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ['user', 'email', 'phone', 'name']
-    list_editable = ['user', 'email', 'phone', 'name']
+    list_display = ['email', 'phone', 'username']
+    list_editable = ['email', 'phone', 'username']
     list_display_links = None
 
 @admin.register(TokenToResetPassword)

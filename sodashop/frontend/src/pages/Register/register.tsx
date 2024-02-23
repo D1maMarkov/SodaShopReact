@@ -39,9 +39,10 @@ const Register:FC = () => {
                     navigate(`/confirm/${token}`);
                 }
                 else{
-                    setError1(response.errors.username[0]);
-                    setError2(response.errors.email[0]);
-                    setError3(response.errors.password[0]);
+                    const errors = response.errors;
+                    setError1(errors.username !== undefined ? errors.username[0] : "");
+                    setError2(errors.email !== undefined ? errors.email[0] : "");
+                    setError3(errors.password !== undefined ? errors.password[0] : "");
                 }
             })
     }

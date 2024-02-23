@@ -4,8 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
-from ..models.custum_user_model import CustomUser
-from django.contrib.auth.models import User
+from ..models.custom_user_model import CustomUser
 from django.core.mail import send_mail
 from django.views.generic import View
 from django.conf import settings
@@ -72,11 +71,11 @@ class ChangeFields(View):
     def post(self, request):
         form = ChangeProfileFieldsForm(request.POST)
         if form.is_valid():
-            current_user =  CustomUser.objects.get(user=request.user)
-            current_user.set_email(form.cleaned_data["email"])
-            current_user.set_phone(form.cleaned_data["phone"])
-            current_user.set_adress(form.cleaned_data["adress"])
-            current_user.set_name(form.cleaned_data["username"])
+            user =  request.user
+            user.set_email(form.cleaned_data["email"])
+            user.set_phone(form.cleaned_data["phone"])
+            user.set_adress(form.cleaned_data["adress"])
+            user.set_name(form.cleaned_data["username"])
 
             return JsonResponse({
                 "status": "valid"
@@ -97,10 +96,10 @@ class ResetPassword(View):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password1"]
             
-            user = User.objects.get(username=username)
-            user = CustomUser.objects.get(user=user)
-            
+            user = CustomUser.objects.get(username=username)
             user.set_password(password)
+            user.save()
+
             TokenToResetPassword.objects.get(user=user).delete()
 
             user = authenticate(username=username, password=password)
@@ -125,10 +124,10 @@ class GetUserInfo(View):
                 "status": "invalid"
             })
 
-        current_user =  CustomUser.objects.get(user=request.user)
+        current_user = request.user
         
         info = {
-            "username": current_user.name,
+            "username": current_user.username,
             "email": current_user.email,
             "phone": current_user.phone if current_user.phone != None else "",
             "adress": current_user.adress if current_user.adress != None else "",

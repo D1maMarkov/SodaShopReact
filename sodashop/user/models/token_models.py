@@ -1,5 +1,6 @@
+from .custom_user_model import CustomUser
 from django.db import models
-from .custum_user_model import CustomUser
+
 
 class BaseToken(models.Model):
     token = models.CharField(max_length=32, unique=True)

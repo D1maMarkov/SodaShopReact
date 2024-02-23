@@ -9,6 +9,7 @@ export function getOrders(){
         fetch("/cart/get-orders")
             .then(response => response.json())
             .then(response => {
+
                 setOrders(response);
         })
     }, []);

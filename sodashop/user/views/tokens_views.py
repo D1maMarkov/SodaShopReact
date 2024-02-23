@@ -1,11 +1,9 @@
 from user.models.token_models import TokenToConfirmEmail, TokenToResetPassword
-from user.models.custum_user_model import CustomUser
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, JsonResponse
 from user.forms import PasswordResetRequestForm
-from django.contrib.auth.models import User
 from utils.user_success_mesages import *
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
@@ -111,11 +109,10 @@ class CheckTokenToResetPassword(View):
         
         token_exists = TokenToResetPassword.objects.filter(token = request.POST["token"]).exists()
         if not token_exists:
-            return JsonResponse(json.dumps({
+            return JsonResponse({
                 "status": "invalid",
                 "message": errors["reset_link_invalid"]
-                })
-            )
+            })
         
         tokens = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date])
         token_exists = tokens.filter(token = request.POST["token"])
@@ -130,7 +127,7 @@ class CheckTokenToResetPassword(View):
 
         return JsonResponse({
             "status": "valid",
-            "message": token.user.user.username
+            "message": token.user.username
         })
     
 
@@ -140,8 +137,11 @@ class ConfirmEmail(View):
         code = token_obj.code
         
         if code == verification_code:
-            user = User.objects.create_user(username=token_obj.username, password=token_obj.password)
-            CustomUser.objects.create(name=user.username, user=user, email=token_obj.email)
+            user = CustomUser.objects.create_user(
+                username=token_obj.username, 
+                password=token_obj.password,
+                email=token_obj.email
+            )
             
             user = authenticate(username=token_obj.username, password=token_obj.password)
             login(request, user)

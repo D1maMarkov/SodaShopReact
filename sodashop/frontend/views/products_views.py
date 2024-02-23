@@ -1,6 +1,4 @@
-from user.models.custum_user_model import CustomUser
 from django.http import HttpResponse, JsonResponse
-from django.contrib.auth.models import User
 from django.views.generic import View
 from frontend.serializer import *
 from frontend.models import *
@@ -14,13 +12,10 @@ class SendFeedback(View):
                 "status": "invalid"
             })
 
-        user = User.objects.get(username=request.user.get_username())
-        custom_user = CustomUser.objects.get(user=user)
-
         Rate.objects.create(
             product=Product.objects.get(id=product_id), 
             rate=rate, 
-            user=custom_user
+            user=request.user
         )
 
         return JsonResponse({
@@ -33,9 +28,8 @@ class GetRates(View):
         feedback_left = False
 
         if request.user.is_authenticated:
-            user = User.objects.get(username=request.user.get_username())
-            custom_user = CustomUser.objects.get(user=user)
-            rate_exists = Product.objects.get(id=product_id).rate_set.all().filter(user=custom_user).exists()
+            user = request.user
+            rate_exists = Product.objects.get(id=product_id).rate_set.all().filter(user=user).exists()
 
             if rate_exists:
                 feedback_left = True

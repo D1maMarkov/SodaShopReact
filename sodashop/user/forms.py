@@ -1,8 +1,7 @@
 from utils.user_errors import errors as user_errors
-from .models.custum_user_model import CustomUser
+from .models.custom_user_model import CustomUser
 from django.contrib.auth import authenticate
 from utils.validators import is_valid_phone
-from django.contrib.auth.models import User
 from django import forms
 
 
@@ -16,30 +15,14 @@ class RegistrationForm(forms.Form):
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
 
-        errors = {
-            "username": "",
-            "email": "",
-            "password": ""
-        }
-
-        user_exists = User.objects.filter(username=username).exists()
+        user_exists = CustomUser.objects.filter(username=username).exists()
         email_exists = CustomUser.objects.filter(email=email).exists()
         
         if user_exists:
-            errors["username"] = user_errors["username_alredy_exists"]
+            self.add_error("username", user_errors["username_alredy_exists"])
         
         if email_exists:
-            errors["email"] = user_errors["email_alredy_exists"]
-
-        no_errors = True
-        
-        for error in errors.values():
-            if len(error) > 0:
-                no_errors = False
-
-        if not no_errors:
-            for key in errors:
-                self.add_error(key, errors[key])
+            self.add_error("email", user_errors["email_alredy_exists"])
 
 
 class LoginForm(forms.Form):
@@ -57,15 +40,10 @@ class LoginForm(forms.Form):
             self.add_error("username", user_errors["incorrect_login_args"])
 
 class PasswordResetRequestForm(forms.Form):
-    email = forms.EmailField()
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get("email")
-        
-        if email is None:
-            self.add_error("email", user_errors["incorrect_email"])
-
+    email = forms.EmailField(error_messages = {
+        'required': user_errors["incorrect_email"], 
+        'invalid': user_errors["incorrect_email"]
+    })
 
 class ResetPasswordForm(forms.Form):
     username = forms.CharField(max_length=100)
@@ -80,40 +58,25 @@ class ResetPasswordForm(forms.Form):
         if password1 != password2:
             self.add_error("password1", user_errors["different_passwords"])
             
-            
+
 class ChangeProfileFieldsForm(forms.Form):
     username = forms.CharField(max_length=100)
     email = forms.EmailField()
     phone = forms.CharField(max_length=100, required=False)
     adress = forms.CharField(max_length=120, required=False)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get("username")
-        phone = cleaned_data.get("phone")
-        email = cleaned_data.get("email")
-
-        errors = {
-            "username": "",
-            "email": "",
-            "phone": "",
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].error_messages = {'required': user_errors["empty_username"]}
+        self.fields['email'].error_messages = {
+            'required': user_errors["incorrect_email"], 
+            'invalid': user_errors["incorrect_email"]
         }
 
-        if len(username) == 0:
-            errors["username"] = user_errors["empty_username"]
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
 
-        if phone is None or not is_valid_phone(phone):
-            errors["phone"] = user_errors["incorrect_phone"]
-
-        if email is None:
-            errors["email"] = user_errors["incorrect_email"]
-
-        no_errors = True
-
-        for error in errors.values():
-            if len(error) > 0:
-                no_errors = False    
-
-        if not no_errors:
-            for key in errors:
-                self.add_error(key, errors[key])
+        if not is_valid_phone(phone):
+            self.add_error("phone", user_errors["incorrect_phone"])
+            
+        return phone

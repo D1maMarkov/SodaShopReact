@@ -10,7 +10,7 @@ class Order(models.Model):
     payment = models.CharField(max_length=50, choices=Payments.choices())
     comment = models.CharField(max_length=50, null=True, blank=True)
     adress = models.CharField(max_length=255)
-    state = models.CharField(max_length=50, choices=OrderStates.choices(), default=OrderStates.warehouse)
+    state = models.CharField(max_length=50, choices=OrderStates.choices(), default=OrderStates.warehouse.value)
 
     class Meta:
         ordering = ['-id', '-date']

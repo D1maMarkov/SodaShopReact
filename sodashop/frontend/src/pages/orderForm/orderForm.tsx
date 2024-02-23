@@ -30,20 +30,18 @@ const OrderForm: FC = () => {
 
     const [name, setName] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
-
     const [payment, setPayment] = useState<string>("");
     const [delivery, setDelivery] = useState<string>("");
     const [comment, setComment] = useState<string>("");
 
     const [errorName, setErrorName] = useState<string>("");
     const [errorPhone, setErrorPhone] = useState<string>("");
-   
     const [errorPayment, setErrorPayment] = useState<string>("");
     const [errorDelivery, setErrorDelivery] = useState<string>("");
+    const [errorAdress, setErrorAdress] = useState<string>("");
 
     const [deliveryPrice, setDeliveryPrice] = useState<number>(0);
 
-    const [errorAdress, setErrorAdress] = useState<string>("");
 
     const [loading, setLoading] = useState<boolean>(false); 
     const [openSuccess, setOpenSuccess] = useState<boolean>(false);
@@ -68,11 +66,13 @@ const OrderForm: FC = () => {
                     }, 2100);
                 }
                 else{
-                    setErrorName(response.errors.name[0]);
-                    setErrorPhone(response.errors.phone[0]);
-                    setErrorPayment(response.errors.payment[0]);
-                    setErrorAdress(response.errors.adress[0]);
-                    setErrorDelivery(response.errors.delivery[0]);
+                    const errors = response.errors;
+
+                    setErrorName(errors.name !== undefined ? errors.name[0] : "");
+                    setErrorPhone(errors.phone !== undefined ? errors.phone[0] : "");
+                    setErrorPayment(errors.payment !== undefined ? errors.payment[0] : "");
+                    setErrorAdress(errors.adress !== undefined ? errors.adress[0] : "");
+                    setErrorDelivery(errors.delivery !== undefined ? errors.delivery[0] : "");
                 }
             })
     }

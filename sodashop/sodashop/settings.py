@@ -159,3 +159,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
 TELEGRAM_API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
 MY_TELEGRAM_ID = int(os.getenv('MY_TELEGRAM_ID'))
+
+AUTH_USER_MODEL = 'user.CustomUser'

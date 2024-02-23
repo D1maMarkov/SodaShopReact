@@ -1,13 +1,13 @@
-import { FC, useState, useEffect } from "react";
-import { Blobs } from "../../components/global/blobs/blobs";
-import { useNavigate } from "react-router-dom";
+import { ProfileInput } from "../../components/profileInput/profileInput";
 import { Topnav } from "../../components/global/topnav/topnav";
 import { Footer } from "../../components/global/footer/footer";
+import { Blobs } from "../../components/global/blobs/blobs";
 import { getUserInfo } from "../../hooks/useCurrentUser";
 import { Orders } from "../../components/order/order";
+import { FC, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Alert from "../../components/Alert";
 import styles from "./profile.module.scss";
-import { ProfileInput } from "../../components/profileInput/profileInput";
 
 
 const Profile: FC = () => {
@@ -55,9 +55,9 @@ const Profile: FC = () => {
                 }
                 else{
                     const errors = response.errors;
-                    setUsernameError(errors.username[0]);            
-                    setEmailError(errors.email[0]);
-                    setPhoneError(errors.phone[0]);
+                    setUsernameError(errors.username !== undefined ? errors.username[0] : "");            
+                    setEmailError(errors.email !== undefined ? errors.email[0] : "");
+                    setPhoneError(errors.phone !== undefined ? errors.phone[0] : "");
                 }
             })
     }
