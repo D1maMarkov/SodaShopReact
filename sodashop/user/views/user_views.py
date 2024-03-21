@@ -1,12 +1,11 @@
-from django.forms import BaseModelForm
-from ..forms import RegistrationForm, LoginForm, ResetPasswordForm, ChangeProfileFieldsForm
-from ..models.token_models import TokenToConfirmEmail, TokenToResetPassword
+from user.forms import RegistrationForm, LoginForm, ResetPasswordForm, ChangeProfileFieldsForm
+from user.models.token_models import TokenToConfirmEmail, TokenToResetPassword
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import View, UpdateView
-from ..models.custom_user_model import CustomUser
+from user.models.custom_user_model import CustomUser
 from django.core.mail import send_mail
 from django.conf import settings
 from random import randrange
@@ -33,7 +32,6 @@ class LoginUser(View):
                 "status": "invalid",
                 'errors': form.errors
             })
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RegisterUser(View):
@@ -66,7 +64,6 @@ class RegisterUser(View):
                 'errors': form.errors
             })
 
-
 @method_decorator(csrf_exempt, name='dispatch')
 class ChangeFields(UpdateView):
     model = CustomUser
@@ -87,7 +84,6 @@ class ChangeFields(UpdateView):
             "status": "invalid",
             'errors': form.errors
         })
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ResetPassword(View):
@@ -116,7 +112,6 @@ class ResetPassword(View):
                 'errors': form.errors
             })
 
-
 @method_decorator(csrf_exempt, name='dispatch')
 class GetUserInfo(View):  
     def post(self, request):
@@ -138,7 +133,6 @@ class GetUserInfo(View):
             "status": "valid",
             "info": info
         })
-
 
 class LogoutUser(View):
     def get(self, request):

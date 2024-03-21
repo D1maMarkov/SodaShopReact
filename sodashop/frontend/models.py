@@ -1,12 +1,11 @@
 from django.db import models
 
-        
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
     
     def __str__(self):
         return self.name
-
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
@@ -21,7 +20,6 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
 class PopularProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     code = models.PositiveIntegerField()
@@ -32,4 +30,4 @@ class PopularProduct(models.Model):
 class Rate(models.Model):
     rate = models.PositiveSmallIntegerField()
     user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name="rates", on_delete=models.CASCADE)

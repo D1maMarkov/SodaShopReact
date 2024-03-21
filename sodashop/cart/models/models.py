@@ -16,6 +16,6 @@ class Order(models.Model):
         ordering = ['-id', '-date']
 
 class CartProduct(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='order_products', on_delete=models.CASCADE)
     product = models.ForeignKey("frontend.Product", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()

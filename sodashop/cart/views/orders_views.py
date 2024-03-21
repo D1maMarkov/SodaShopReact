@@ -5,8 +5,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic import View, CreateView
 from django.conf import settings
 from cart.cart import Cart
-from ..serializer import *
-from ..forms import *
+from cart.serializer import *
+from cart.forms import *
 import telebot
 import json
 
@@ -15,9 +15,9 @@ bot = telebot.TeleBot(settings.TELEGRAM_API_TOKEN)
 
 class GetOrders(View):
     def get(self, request):
-        orders = Order.objects.filter(user=request.user)
+        orders = Order.objects.prefetch_related('order_products').filter(user=request.user)
         orders_json = OrderSerializer(orders, many=True).data
-        
+
         return HttpResponse(json.dumps(orders_json))
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -39,7 +39,7 @@ class CreateOrder(CreateView):
 
         message = "На сайте новый заказ"
         bot.send_message(settings.MY_TELEGRAM_ID, message)
-        
+
         user.set_name(form.cleaned_data["name"]) 
         user.set_phone(form.cleaned_data["phone"])
 

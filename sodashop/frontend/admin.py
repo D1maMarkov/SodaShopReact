@@ -17,7 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = [f.name for f in Category._meta.fields]
     list_editable = [f.name for f in Category._meta.fields if f.name != "id"]
     list_display_links = None
-    
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = [f.name for f in Product._meta.fields]

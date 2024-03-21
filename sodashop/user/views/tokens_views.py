@@ -21,7 +21,7 @@ tzinfo = tzoffset(None, timezone_offset * 3600)  # offset in seconds
 
 class CheckConfirmEmailToken(View):
     def get(self, request, token):
-        start_date = datetime.now(tzinfo) - timedelta(hours = 1)
+        start_date = datetime.now(tzinfo) - timedelta(hours=1)
         end_date = datetime.now(tzinfo)
 
         token_exists = TokenToConfirmEmail.objects.filter(token=token).exists()
@@ -30,7 +30,6 @@ class CheckConfirmEmailToken(View):
                 "status": "invalid",
                 "message": errors["confirm_email_incorrect_url"]
             })
-
 
         tokens = TokenToConfirmEmail.objects.filter(created_at__range=[start_date, end_date])
         token_exists = tokens.filter(token=token)
@@ -44,7 +43,6 @@ class CheckConfirmEmailToken(View):
         return JsonResponse({
             "status": "valid"
         })
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class GetResetToken(View):
@@ -115,7 +113,7 @@ class CheckTokenToResetPassword(View):
             })
         
         tokens = TokenToResetPassword.objects.filter(created_at__range=[start_date, end_date])
-        token_exists = tokens.filter(token = request.POST["token"])
+        token_exists = tokens.filter(token=request.POST["token"])
         if not token_exists:
             return JsonResponse(json.dumps({
                 "status": "invalid",
@@ -123,7 +121,7 @@ class CheckTokenToResetPassword(View):
                 })
             )
         
-        token = tokens.get(token = request.POST["token"])
+        token = tokens.get(token=request.POST["token"])
 
         return JsonResponse({
             "status": "valid",

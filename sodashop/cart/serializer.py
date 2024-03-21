@@ -30,7 +30,6 @@ class OrderProductSerializer(BaseProductSerializer):
     def get_image(self, cart_product):
         return cart_product.product.image.url
 
-
 class OrderSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
 
@@ -39,4 +38,4 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ('id', 'products', 'price', 'date', 'state')
 
     def get_products(self, order):
-        return OrderProductSerializer(CartProduct.objects.filter(order__id=order.id), many=True).data
+        return OrderProductSerializer(order.order_products, many=True).data

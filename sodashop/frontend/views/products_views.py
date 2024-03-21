@@ -26,15 +26,16 @@ class SendFeedback(CreateView):
 class GetRates(View):
     def get(self, request, product_id):
         feedback_left = False
+        rates = Product.objects.prefetch_related("rates").get(id=product_id).rates
 
         if request.user.is_authenticated:
             user = request.user
-            rate_exists = Product.objects.get(id=product_id).rate_set.filter(user=user).exists()
+            rate_exists = rates.filter(user=user).exists()
 
             if rate_exists:
                 feedback_left = True
 
-        rates = list(map(lambda x: x.rate, Product.objects.get(id=product_id).rate_set.all()))
+        rates = list(map(lambda x: x.rate, rates.all()))
         rate = {
             "value": round(sum(rates) / max(1, len(rates)), 1), 
             "count": len(rates)
@@ -49,11 +50,10 @@ class GetRates(View):
 
 
 class GetProducts(View):
-    def get(self):
+    def get(self, request):
         products = BaseProductSerializer(Product.objects.all(), many=True).data
 
         return HttpResponse(json.dumps(products))
-
 
 class GetProduct(View):
     def get(self, request, category, color):
@@ -67,7 +67,7 @@ class GetProduct(View):
         if len(products) < 4:
             products *= 4
             products = products[0:4]
-        
+    
         products_json = ProductSerializer(products, many=True).data
         
         return HttpResponse(json.dumps(products_json))

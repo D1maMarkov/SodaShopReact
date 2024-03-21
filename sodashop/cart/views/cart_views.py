@@ -1,6 +1,6 @@
 from django.views.generic import View
 from django.http import HttpResponse
-from ..cart import Cart
+from cart.cart import Cart
 import json
 
 
