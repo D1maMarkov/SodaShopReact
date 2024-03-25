@@ -1,0 +1,111 @@
+.main{
+    max-width: 900px;
+    display: inline-flex;
+    position: relative;
+    margin-top: 15%;
+    margin-bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    z-index: 1;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+}
+
+.form{
+    width: 35vw;
+    font-size: 15px;
+    text-align: center;
+    padding: 10px 0px;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    padding-bottom: 25px;
+
+    .select{
+        width: 45%;
+    }
+
+    .text__area{
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .text__area__label{
+        text-align: left;
+        width: 80%;
+        margin-left: 10%;
+        margin-top: 20px;
+    }
+
+    .error__log{
+        text-align: left;
+        color: red;
+        width: 80%;
+        right: 15%;
+        margin-left: 25%;
+        position: relative;
+    }
+
+    .order__form__butt{
+        width: 100%;
+        margin: 0px;
+        margin-top: 20px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        padding: 20px 5px;
+        color: white;
+        border: none;
+        background-color: rgb(245, 0, 87);
+        cursor: pointer;
+        transition: .2s;
+
+        &:hover{
+            opacity: .7;
+        }
+    }
+}
+
+.hint {
+    position: absolute;
+    width: 40%;
+    padding: 0px;
+    margin: 0px;
+    margin-left: 5%;
+    z-index: 2;
+
+    .svg{
+        min-height: 21px;
+        min-width: 22px;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: 22;
+        height: 21;
+    }
+
+    .li{
+        width: 100%;
+        font-size: 11px;
+        align-items: center;
+        letter-spacing: 0px;
+        display: flex;
+        background-color: rgba(225, 225, 225, 0.6);
+        padding-top: 9px;
+        padding-bottom: 9px;
+        position: relative;
+        top: -20px;
+        border-bottom: 1px solid;
+    }
+}
+
+.space__beetween{
+    display: flex;
+    justify-content: space-between;
+}
+
+.select__wrapper{
+    display: flex;
+    justify-content: space-between;
+    width: 84%;
+    margin-left: 8%;
+    margin-top: 40px;
+}

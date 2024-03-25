@@ -1,9 +1,10 @@
-sodashop/db.sqlite3
-sodashop/.env
-sodashop/frontend/migrations/
-sodashop/cart/migrations/
-sodashop/user/migrations/
-sodashop/frontend/node_modules/
+db.sqlite3
+.env
+frontend/migrations/
+cart/migrations/
+user/migrations/
+frontend/node_modules/
 *.pyc
 __pycache__
-sodashop/frontend/static/frontend/*.js
+frontend/static/frontend/*.js
+frontend/static/frontend/*.js.LICENSE.txt

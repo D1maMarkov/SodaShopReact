@@ -1,0 +1,52 @@
+.button{
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 20px 5px;
+    color: white;
+    margin-top: 5px;
+    border: none;
+    margin: 20px;
+    background-color: rgb(245, 0, 87);
+    width: 100%;
+    margin-left: 0px;
+    cursor: pointer;
+
+    &:hover{
+        opacity: .7;
+    }
+}
+
+.loading{
+    opacity: 0.7;
+    cursor: not-allowed;
+
+    * {
+        pointer-events: none;
+    }
+}
+
+.profile{
+    margin-top: 140px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: white;
+    z-index: 1;
+    width: 50%;
+
+    .fields{
+        p {
+            color: rgb(250, 210, 210);
+        }
+    }
+}
+
+.button__wrapper{
+    margin-top: 50px;
+    padding-bottom: 100px;
+}
+
+.wrapper{
+    display: flex;
+    justify-content: center;
+}

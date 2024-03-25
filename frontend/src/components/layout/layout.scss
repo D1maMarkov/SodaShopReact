@@ -1,0 +1,30 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+    overflow-x: hidden;
+    font-family: 'Bebas Neue', sans-serif;
+    min-width: 100vw;
+    min-height: 100vh;
+    --topnav-color: white;
+    background: linear-gradient(45deg, #d13381, #ffe88c);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&display=swap');
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border:none !important;
+  -webkit-text-fill-color: inherit !important;
+  background-color: transparent!important;
+  background: transparent!important;
+  transition: background-color 5000s ease-in-out 0s;
+}
