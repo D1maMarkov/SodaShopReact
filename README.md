@@ -2,7 +2,7 @@
 
 An online soda shop with an unusual design that will help you stand out from the competition
 
-![](./sodashop/frontend/static/frontend/img/mainPage.png)
+![](./frontend/static/frontend/img/mainPage.png)
 
 
 ## Инструкция по запуску
