@@ -70,8 +70,10 @@ class GetResetToken(View):
             token = TokenToResetPassword.objects.create(
                 user=current_user, token="".join([chr(randrange(97, 123)) for i in range(32)])
             )
+            
+            domain = request.build_absolute_uri('/')[:-1]
 
-            send_email_to_reset_password.delay(token.token, current_user.email)
+            send_email_to_reset_password.delay(domain, token.token, current_user.email)
 
             return JsonResponse({"status": "valid", "message": success_messages["reset_sent"]})
         else:

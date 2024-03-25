@@ -32,10 +32,10 @@ def send_email_to_confirm_email(code, users_email):
 
 
 @app.task()
-def send_email_to_reset_password(token, users_email):
+def send_email_to_reset_password(domain, token, users_email):
     text = f"""
     password reset link\n
-    http://127.0.0.1:8000/reset-password/{token} \n
+    {domain}/reset-password/{token} \n
     A password reset request has been sent to your email from the SodaStockOnlineStore website. If it wasn't you, please ignore this email
     """
 
