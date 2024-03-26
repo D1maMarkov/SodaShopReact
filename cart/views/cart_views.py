@@ -14,7 +14,7 @@ class AddProductInCart(View):
 
             return HttpResponse(status=200)
 
-        return HttpResponse(status=202)
+        return HttpResponse(status=401)
 
 
 class RemoveProductFromCart(View):

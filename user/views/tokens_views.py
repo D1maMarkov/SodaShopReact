@@ -27,20 +27,16 @@ class CheckConfirmEmailToken(View):
 
         token_exists = TokenToConfirmEmail.objects.filter(token=token).exists()
         if not token_exists:
-            return JsonResponse({"status": "invalid", "message": errors["confirm_email_incorrect_url"]})
+            return JsonResponse({"message": errors["confirm_email_incorrect_url"]}, status=404)
 
         tokens = TokenToConfirmEmail.objects.filter(created_at__range=[start_date, end_date])
         token_exists = tokens.filter(token=token)
 
         if not token_exists:
-            return JsonResponse(
-                {
-                    "status": "invalid",
-                    "message": errors["confirm_link_expired"],
-                }
-            )
+            return JsonResponse({"message": errors["confirm_link_expired"]}, status=404)
 
-        return JsonResponse({"status": "valid"})
+
+        return HttpResponse(status=200)
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -107,7 +103,7 @@ class ConfirmEmail(View):
 
         if code == verification_code:
             user = CustomUser.objects.create_user(
-                username=token_obj.username, password=token_obj.password, email=token_obj.email
+                username=token_obj.username, password=token_obj.password, email=token_obj.email, adress=""
             )
 
             user = authenticate(username=token_obj.username, password=token_obj.password)
@@ -115,9 +111,9 @@ class ConfirmEmail(View):
 
             token_obj.delete()
 
-            return JsonResponse({"status": "valid"})
+            return HttpResponse(status=200)
         else:
-            return JsonResponse({"status": "invalid", "message": errors["incorrect_emial_code"]})
+            return JsonResponse({"message": errors["incorrect_emial_code"]}, status=400)
 
 
 class SendNewCode(View):

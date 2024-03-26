@@ -10,11 +10,11 @@ from frontend.serializer import BaseProductSerializer, ProductSerializer
 class SendFeedback(CreateView):
     def get(self, request, product_id, rate):
         if not request.user.is_authenticated:
-            return JsonResponse({"status": "invalid"})
+            return HttpResponse(status=401)
 
         Rate.objects.create(product=Product.objects.get(id=product_id), rate=rate, user=request.user)
 
-        return JsonResponse({"status": "valid"})
+        return HttpResponse(status=201)
 
 
 class GetRates(View):

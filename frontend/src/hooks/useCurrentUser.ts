@@ -15,23 +15,24 @@ export const getUserInfo = ({setUserName, setEmail, setPhone, setAdress} : TypeU
             'Accept': 'application/x-www-form-urlencoded',
             'Content-Type': 'application/x-www-form-urlencoded'
         }})
-        .then(response => response.json())
         .then(response => {
-            if (response.status === "valid"){
-                const info = response.info;
-                if (setUserName){
-                    setUserName(info.username);
-                }
-                if (setEmail){
-                    setEmail(info.email);
-                }
-                if (setPhone){
-                    setPhone(info.phone);
-                }
-                if (setAdress){
-                    setAdress(info.adress);
-                }
+            if (response.status === 200){
+                return response.json()
             }
-        }
-    )
+        })
+        .then(data => {
+            const info = data.info;
+            if (setUserName){
+                setUserName(info.username);
+            }
+            if (setEmail){
+                setEmail(info.email);
+            }
+            if (setPhone){
+                setPhone(info.phone);
+            }
+            if (setAdress){
+                setAdress(info.adress);
+            }
+        })
 }

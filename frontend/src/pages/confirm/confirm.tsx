@@ -21,29 +21,31 @@ const Confirm:FC = () => {
 
     useEffect(() => {
         fetch(`/user/check-confirm-email-token/${token}`)
-            .then(response => response.json())
             .then(response => {
-                if (response.status === "valid"){
+                if (response.status === 404) {
+                    return response.json();
+                } else if (response.status === 200){
                     setValid(true);
                 }
-                else{
-                    setValidMail(response.message);
-                }
+            })
+            .then(data => {
+                setValidMail(data.message)
             })
     }, []);
 
     function confirmEmail(){
         fetch(`/user/confirm-email/${token}/${code}`)
-            .then(response => response.json())
             .then(response => {
-                if (response.status === "valid"){
+                if (response.status === 200){
                     navigate("/profile");
                 }
-                else{
-                    setError(response.message);
+                else if (response.status === 400){
+                    return response.json();
                 }
-            }
-        )
+            })
+            .then(data => {
+                setError(data.message);
+            })
     }
 
     function sendNewCode(){

@@ -4,7 +4,7 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     phone = models.CharField(max_length=11)
-    adress = models.CharField(max_length=500, blank=True, null=True)
+    adress = models.CharField(max_length=500, null=True)
 
     def __str__(self):
         return self.username

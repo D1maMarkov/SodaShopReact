@@ -109,7 +109,7 @@ class ResetPassword(View):
 class GetUserInfo(View):
     def post(self, request):
         if not request.user.is_authenticated:
-            return JsonResponse({"status": "invalid"})
+            return HttpResponse(status=401)
 
         current_user = request.user
 
@@ -120,7 +120,7 @@ class GetUserInfo(View):
             "adress": current_user.adress if current_user.adress is not None else "",
         }
 
-        return JsonResponse({"status": "valid", "info": info})
+        return JsonResponse({"info": info}, status=200)
 
 
 class LogoutUser(View):
